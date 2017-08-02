@@ -26,8 +26,8 @@ func (b *basicOrgan) R() render.Modifiable {
 }
 
 func (b *basicOrgan) Place() {
-	for x := range b.tiles {
-		for y, t := range b.tiles[x] {
+	for y := range b.tiles {
+		for x, t := range b.tiles[y] {
 			t.Place(x, y, b.typ)
 		}
 	}
@@ -47,6 +47,25 @@ func NewLiver(x, y float64) Organ {
 	bo.Vector = physics.NewVector(x, y)
 	bo.r = render.NewColorBox(6, 4, color.RGBA{240, 170, 230, 255})
 	// get some liver map
+	// for now this is a test map
+	bo.tiles = [][]Tile{
+		{Exit, Exit, Exit, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked},
+		{Exit, Exit, Exit, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked},
+		{Exit, Exit, Exit, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Open, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Open, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked},
+		{Exit, Exit, Exit, Open, Open, Open, Open, Open, Open, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked, Blocked},
+	}
 	bo.typ = LiverTile
 	bo.BodyButton = NewBodyButton(6, 4)
 	return bo

@@ -2,10 +2,11 @@ package game
 
 // Layers
 const (
-	entityLayer      = 5
-	bodyOverlayLayer = 20
-	highlightLayer   = 21
-	veinLayer        = 22
-	organLayer       = 23
-	travelerLayer    = 24
+	bodyOverlayLayer = 5
+	highlightLayer   = 10
+	veinLayer        = 15
+	organLayer       = 20
+	travelerLayer    = 25
+	tileLayer        = 30
+	entityLayer      = 35
 )

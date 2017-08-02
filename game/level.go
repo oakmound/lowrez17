@@ -69,8 +69,8 @@ func enterOrgan(no int, nothing interface{}) int {
 		// Todo: some organ tile should be an 'exit', upon which traveler.active = true
 		// and we undraw everything we drew on top of the body
 		//traveler.active = false
-		//o.Place()
-		//NewEntity(20,20)
+		o.Place()
+		NewEntity(20, 20)
 	}
 	return 0
 }
