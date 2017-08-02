@@ -12,9 +12,9 @@ import (
 
 type BodyTraveler struct {
 	entities.Doodad
-	moving      bool
-	targetPos   physics.Vector
-	travelSpeed physics.Vector
+	targetPos      physics.Vector
+	travelSpeed    physics.Vector
+	moving, active bool
 }
 
 func (bt *BodyTraveler) Init() event.CID {
@@ -27,13 +27,14 @@ func NewBodyTraveler(x, y float64) *BodyTraveler {
 	bt.Doodad = entities.NewDoodad(x, y, render.NewColorBox(3, 3, color.RGBA{0, 0, 255, 255}), bt.Init())
 	bt.Bind(startTravelerMove, "MoveTraveler")
 	bt.Bind(moveTraveler, "EnterFrame")
+	bt.active = true
 	render.Draw(bt.R, travelerLayer)
 	return bt
 }
 
 func startTravelerMove(id int, pos interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
-	if !bt.moving {
+	if !bt.moving && bt.active {
 		bt.targetPos = pos.(physics.Vector)
 		bt.moving = true
 	}
@@ -42,7 +43,7 @@ func startTravelerMove(id int, pos interface{}) int {
 
 func moveTraveler(id int, nothing interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
-	if bt.moving {
+	if bt.moving && bt.active {
 		delta := bt.targetPos.Copy().Sub(bt.Vector)
 		if delta.Magnitude() < 1 {
 			bt.moving = false
