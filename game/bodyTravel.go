@@ -33,8 +33,10 @@ func NewBodyTraveler(x, y float64) *BodyTraveler {
 
 func startTravelerMove(id int, pos interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
-	bt.targetPos = pos.(physics.Vector)
-	bt.moving = true
+	if !bt.moving {
+		bt.targetPos = pos.(physics.Vector)
+		bt.moving = true
+	}
 	return 0
 }
 
@@ -42,9 +44,10 @@ func moveTraveler(id int, nothing interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
 	if bt.moving {
 		delta := bt.targetPos.Copy().Sub(bt.Vector)
-		fmt.Println("Moving", delta)
-		if delta.Magnitude() < 2 {
+		if delta.Magnitude() < 1 {
 			bt.moving = false
+			fmt.Println(thisBody.VecIndex(bt.Vector))
+			// When you click on an organ, this will enter the lowest level once you hit it
 			event.Trigger("HitNode", nil)
 			return 0
 		}

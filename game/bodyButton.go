@@ -25,6 +25,13 @@ func (bb *BodyButton) SetPos(v physics.Vector) {
 	mouse.UpdateSpace(v.X(), v.Y(), bb.GetW(), bb.GetH(), bb.Space)
 }
 
+func (bb *BodyButton) IsTravelerAdjacent() bool {
+	v := physics.NewVector(bb.GetX(), bb.GetY())
+	thisIndex := thisBody.VecIndex(v)
+	travelIndex := thisBody.VecIndex(traveler.Vector)
+	return thisBody.IsAdjacent(thisIndex, travelIndex)
+}
+
 func NewBodyButton(w, h float64) *BodyButton {
 	bb := &BodyButton{}
 	bb.Space = collision.NewSpace(0, 0, w, h, 0)
@@ -40,8 +47,10 @@ func NewBodyButton(w, h float64) *BodyButton {
 
 func highlightBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
-	bb.highlight.SetPos(bb.GetX()-1, bb.GetY()-1)
-	render.Draw(bb.highlight, highlightLayer)
+	if bb.IsTravelerAdjacent() {
+		bb.highlight.SetPos(bb.GetX()-1, bb.GetY()-1)
+		render.Draw(bb.highlight, highlightLayer)
+	}
 	return 0
 }
 
@@ -53,6 +62,8 @@ func unhighlightBB(id int, nothing interface{}) int {
 
 func moveToBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
-	event.Trigger("MoveTraveler", physics.NewVector(bb.GetX(), bb.GetY()))
+	if bb.IsTravelerAdjacent() {
+		event.Trigger("MoveTraveler", physics.NewVector(bb.GetX(), bb.GetY()))
+	}
 	return 0
 }

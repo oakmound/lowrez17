@@ -39,6 +39,15 @@ func (b *Body) AddNodes(ns ...BodyNode) {
 	}
 }
 
+func (b *Body) IsAdjacent(i, j int) bool {
+	for _, k := range b.adjacency[i] {
+		if k == j {
+			return true
+		}
+	}
+	return false
+}
+
 type BodyNode interface {
 	Vec() physics.Vector
 	SetPos(physics.Vector)
@@ -49,11 +58,22 @@ func DemoBody() *Body {
 	b := new(Body)
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
-	b.AddNodes(NewVeinNode(10, 10), NewVeinNode(15, 20), NewLiver(40, 5))
+	b.AddNodes(NewVeinNode(10, 10), NewVeinNode(15, 20), NewLiver(40, 5), NewLiver(50, 40))
 	b.Connect(0, 1)
 	b.Connect(0, 2)
 	b.Connect(1, 2)
+	b.Connect(1, 3)
 	return b
+}
+
+func (b *Body) VecIndex(v physics.Vector) int {
+	for i, n := range b.graph {
+		dist := n.Vec().Distance(v)
+		if dist < 1 {
+			return i
+		}
+	}
+	return -1
 }
 
 // Random body ideas:

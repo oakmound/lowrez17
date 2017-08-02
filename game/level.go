@@ -8,12 +8,15 @@ import (
 
 var (
 	envFriction = 0.7
+	traveler    *BodyTraveler
+	thisBody    *Body
 )
 
 func LevelInit(prevScene string, body interface{}) {
 	// b := body.(Body)
 	// Will remove this once we actually get bodies into scenes
 	b := DemoBody()
+	thisBody = b
 	var firstVein bool
 	var playerStart int
 	render.Draw(b.overlay, bodyOverlayLayer)
@@ -50,7 +53,7 @@ func LevelInit(prevScene string, body interface{}) {
 	}
 	// Place player
 	pos := b.graph[playerStart].Vec()
-	NewBodyTraveler(pos.X(), pos.Y())
+	traveler = NewBodyTraveler(pos.X(), pos.Y())
 	// Bindings ...
 	//BindBodyTravel()
 }
