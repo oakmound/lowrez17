@@ -32,9 +32,11 @@ func (b *Body) Connect(a, c int) bool {
 	return true
 }
 
-func (b *Body) AddNode(n BodyNode) {
-	b.graph = append(b.graph, n)
-	b.adjacency = append(b.adjacency, []int{})
+func (b *Body) AddNodes(ns ...BodyNode) {
+	for _, n := range ns {
+		b.graph = append(b.graph, n)
+		b.adjacency = append(b.adjacency, []int{})
+	}
 }
 
 type BodyNode interface {
@@ -46,9 +48,7 @@ func DemoBody() *Body {
 	b := new(Body)
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
-	b.AddNode(NewVeinNode(10, 10))
-	b.AddNode(NewVeinNode(15, 20))
-	b.AddNode(NewLiver(40, 5))
+	b.AddNodes(NewVeinNode(10, 10), NewVeinNode(15, 20), NewLiver(40, 5))
 	b.Connect(0, 1)
 	b.Connect(0, 2)
 	b.Connect(1, 2)
