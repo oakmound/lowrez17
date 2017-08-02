@@ -7,15 +7,28 @@ import (
 	"github.com/oakmound/oak/render"
 )
 
+var (
+	veinNodeWidth    = 2
+	veinNodeWidthf64 = float64(veinNodeWidth)
+)
+
 type VeinNode struct {
 	physics.Vector
+	*BodyButton
 }
 
-func NewVeinNode(x, y float64) VeinNode {
-	return VeinNode{physics.NewVector(x, y)}
+func NewVeinNode(x, y float64) *VeinNode {
+	vn := &VeinNode{Vector: physics.NewVector(x, y)}
+	vn.BodyButton = NewBodyButton(veinNodeWidthf64, veinNodeWidthf64)
+	return vn
 }
 
-func (v VeinNode) Organ() (Organ, bool) {
+func (vn *VeinNode) SetPos(v physics.Vector) {
+	vn.Vector.SetPos(v.X(), v.Y())
+	vn.BodyButton.SetPos(v)
+}
+
+func (vn *VeinNode) Organ() (Organ, bool) {
 	return nil, false
 }
 

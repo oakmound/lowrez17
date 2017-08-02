@@ -41,6 +41,7 @@ func (b *Body) AddNodes(ns ...BodyNode) {
 
 type BodyNode interface {
 	Vec() physics.Vector
+	SetPos(physics.Vector)
 	Organ() (Organ, bool)
 }
 
@@ -54,3 +55,8 @@ func DemoBody() *Body {
 	b.Connect(1, 2)
 	return b
 }
+
+// Random body ideas:
+// given a shape from an image,
+// we can put in random locations for everything, where everything is a random
+// set of organs / veins
