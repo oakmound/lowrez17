@@ -9,4 +9,5 @@ const (
 	travelerLayer    = 25
 	tileLayer        = 30
 	entityLayer      = 35
+	debugLayer       = 100
 )
