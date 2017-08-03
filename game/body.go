@@ -50,6 +50,7 @@ func (b *Body) IsAdjacent(i, j int) bool {
 
 type BodyNode interface {
 	Vec() physics.Vector
+	Dims() (int, int)
 	SetPos(physics.Vector)
 	Organ() (Organ, bool)
 }

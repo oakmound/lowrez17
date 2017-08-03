@@ -39,6 +39,10 @@ func (b *basicOrgan) SetPos(v physics.Vector) {
 	b.BodyButton.SetPos(v)
 }
 
+func (b *basicOrgan) Dims() (int, int) {
+	return b.r.GetDims()
+}
+
 func (b *basicOrgan) Organ() (Organ, bool) {
 	return b, true
 }

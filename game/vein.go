@@ -28,6 +28,10 @@ func (vn *VeinNode) SetPos(v physics.Vector) {
 	vn.BodyButton.SetPos(v)
 }
 
+func (vn *VeinNode) Dims() (int, int) {
+	return 3, 3
+}
+
 func (vn *VeinNode) Organ() (Organ, bool) {
 	return nil, false
 }
@@ -37,9 +41,15 @@ type Vein struct {
 }
 
 func NewVein(n1, n2 BodyNode, c color.Color) *Vein {
-	p1 := n1.Vec()
-	p2 := n2.Vec()
+	p1 := NodeCenter(n1)
+	p2 := NodeCenter(n2)
 
 	l := render.NewLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c)
 	return &Vein{l}
+}
+
+func NodeCenter(bn BodyNode) physics.Vector {
+	pos := bn.Vec()
+	w, h := bn.Dims()
+	return physics.NewVector(pos.X()+float64(w)/2, pos.Y()+float64(h)/2)
 }

@@ -63,10 +63,10 @@ func LevelInit(prevScene string, body interface{}) {
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
-		// Todo: figure out placement of the player given an organ
 		traveler.active = false
 		o.Place()
-		NewPlayer(30, 30)
+		// Todo: figure out placement of the player given an organ
+		NewPlayer(40, 40)
 		startupPlayer()
 	}
 	return 0
