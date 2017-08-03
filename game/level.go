@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	envFriction = 0.7
+	envFriction = 0.3
 	traveler    *BodyTraveler
 	thisBody    *Body
 	player      *Entity

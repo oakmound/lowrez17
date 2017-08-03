@@ -19,7 +19,7 @@ func NewPlayer(x, y float64) *Entity {
 		e.SetMass(10)
 		r := render.NewReverting(render.NewColorBox(8, 8, color.RGBA{0, 0, 255, 255}))
 		e.Interactive = entities.NewInteractive(x, y, 8, 8, r, e.Init(), .7)
-		e.Speed = physics.NewVector(.5, .5)
+		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
 		e.RSpace.Add(collision.Label(Blocked), bounceEntity)
@@ -60,11 +60,6 @@ func bounceEntity(s1, s2 *collision.Space) {
 func playerMove(id int, frame interface{}) int {
 	p := event.GetEntity(id).(*Entity)
 
-	<-p.RSpace.CallOnHits()
-	if traveler.active {
-		return 0
-	}
-
 	p.ApplyFriction(envFriction)
 
 	// Calculate direction based on mouse position
@@ -86,6 +81,7 @@ func playerMove(id int, frame interface{}) int {
 		p.Delta.Add(p.Dir.Copy().Rotate(90).Scale(-p.Speed.X()))
 	}
 	p.ShiftPos(p.Delta.X(), p.Delta.Y())
+	<-p.RSpace.CallOnHits()
 	return 0
 }
 
