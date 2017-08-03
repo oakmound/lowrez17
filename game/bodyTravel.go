@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/oakmound/oak/entities"
@@ -47,7 +46,6 @@ func moveTraveler(id int, nothing interface{}) int {
 		delta := bt.targetPos.Copy().Sub(bt.Vector)
 		if delta.Magnitude() < 1 {
 			bt.moving = false
-			fmt.Println(thisBody.VecIndex(bt.Vector))
 			// When you click on an organ, this will enter the lowest level once you hit it
 			event.Trigger("HitNode", nil)
 			return 0

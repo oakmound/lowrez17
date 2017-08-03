@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -13,6 +11,7 @@ var (
 	envFriction = 0.7
 	traveler    *BodyTraveler
 	thisBody    *Body
+	player      *Entity
 )
 
 func LevelInit(prevScene string, body interface{}) {
@@ -64,13 +63,11 @@ func LevelInit(prevScene string, body interface{}) {
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
-		fmt.Println("Entering organ!", o)
 		// Todo: figure out placement of the player given an organ
-		// Todo: some organ tile should be an 'exit', upon which traveler.active = true
-		// and we undraw everything we drew on top of the body
-		//traveler.active = false
+		traveler.active = false
 		o.Place()
-		NewEntity(20, 20)
+		NewPlayer(30, 30)
+		startupPlayer()
 	}
 	return 0
 }

@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"github.com/200sc/go-dist/colorrange"
+	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/render"
 )
 
@@ -39,10 +40,37 @@ var (
 			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 		},
 	}
+	tileInit = map[Tile]func(x, y int){
+		Open:    func(int, int) {},
+		Blocked: addTileSpace(collision.Label(Blocked)),
+		Exit:    addTileSpace(collision.Label(Exit)),
+	}
+	tileRs     = []render.Renderable{}
+	tileSpaces = []*collision.Space{}
 )
 
 func (t Tile) Place(x, y int, typ TileType) {
 	cb := render.NewColorBox(tileDim, tileDim, tileColors[typ][t].Poll())
 	cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 	render.Draw(cb, tileLayer)
+	tileInit[t](x, y)
+	tileRs = append(tileRs, cb)
+}
+
+func addTileSpace(l collision.Label) func(x, y int) {
+	return func(x, y int) {
+		s := collision.NewLabeledSpace(float64(x)*tileDimf64, float64(y)*tileDimf64, tileDimf64, tileDimf64, l)
+		collision.Add(s)
+		tileSpaces = append(tileSpaces, s)
+	}
+}
+
+func CleanupTiles() {
+	for _, r := range tileRs {
+		r.UnDraw()
+	}
+	collision.Remove(tileSpaces...)
+	tileRs = []render.Renderable{}
+	tileSpaces = []*collision.Space{}
+
 }
