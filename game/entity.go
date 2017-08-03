@@ -20,3 +20,11 @@ func (e *Entity) Init() event.CID {
 func (e *Entity) CenterPos() physics.Vector {
 	return e.Vector.Copy().Add(physics.NewVector(e.W/2, e.H/2))
 }
+
+func (e *Entity) E() *Entity {
+	return e
+}
+
+type HasE interface {
+	E() *Entity
+}

@@ -11,7 +11,7 @@ var (
 	envFriction = 0.3
 	traveler    *BodyTraveler
 	thisBody    *Body
-	player      *Entity
+	player      *Player
 )
 
 func LevelInit(prevScene string, body interface{}) {
