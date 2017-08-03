@@ -58,11 +58,20 @@ func DemoBody() *Body {
 	b := new(Body)
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
-	b.AddNodes(NewVeinNode(10, 10), NewVeinNode(15, 20), NewLiver(40, 5), NewLiver(50, 40))
+	b.AddNodes(NewVeinNode(10, 10),
+		NewVeinNode(15, 20),
+		NewLiver(40, 5),
+		NewHeart(50, 40),
+		NewBrain(50, 10),
+		NewLung(30, 30),
+		NewStomach(4, 40))
 	b.Connect(0, 1)
 	b.Connect(0, 2)
 	b.Connect(1, 2)
 	b.Connect(1, 3)
+	b.Connect(1, 4)
+	b.Connect(1, 5)
+	b.Connect(1, 6)
 	return b
 }
 

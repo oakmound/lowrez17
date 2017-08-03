@@ -102,13 +102,6 @@ func leaveOrgan(_, _ *collision.Space) {
 	traveler.active = true
 }
 
-func bounceEntity(s1, s2 *collision.Space) {
-	// This will need work
-	e := event.GetEntity(int(s1.CID)).(HasE).E()
-	e.Delta.Scale(-1.5)
-	e.ShiftPos(e.Delta.X(), e.Delta.Y())
-}
-
 func playerMove(id int, frame interface{}) int {
 	p := event.GetEntity(id).(*Player)
 
@@ -156,7 +149,6 @@ func playerMove(id int, frame interface{}) int {
 				NewHurtBox(pos.X(), pos.Y(), 3, 3, 50*time.Millisecond, Ally)
 			}
 		}
-
 	}
 	p.ShiftPos(p.Delta.X(), p.Delta.Y())
 	<-p.RSpace.CallOnHits()

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -27,4 +28,11 @@ func (e *Entity) E() *Entity {
 
 type HasE interface {
 	E() *Entity
+}
+
+func bounceEntity(s1, s2 *collision.Space) {
+	// This will need work
+	e := event.GetEntity(int(s1.CID)).(HasE).E()
+	e.Delta.Scale(-1.5)
+	e.ShiftPos(e.Delta.X(), e.Delta.Y())
 }
