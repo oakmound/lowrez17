@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
 	"time"
 
@@ -122,7 +123,9 @@ func playerMove(id int, frame interface{}) int {
 
 func viewportFollow(id int, frame interface{}) int {
 	p := event.GetEntity(id).(*Player)
-	viewportGoalPos := p.CenterPos().Sub(physics.NewVector(float64(oak.ScreenWidth/2), float64(oak.ScreenHeight/2)))
+	fmt.Println(mouse.LastMouseEvent)
+	viewportGoalPos := p.CenterPos().Copy().Add(mouse.LastMouseEvent.ToVector().Sub(physics.NewVector(32, 32)))
+	viewportGoalPos = viewportGoalPos.Sub(physics.NewVector(float64(oak.ScreenWidth/2), float64(oak.ScreenHeight/2)))
 	delta := viewportGoalPos.Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
 
 	if delta.Magnitude() < 2 {
