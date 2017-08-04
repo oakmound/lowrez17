@@ -2,10 +2,8 @@ package game
 
 import (
 	"image/color"
-	"time"
 
 	"github.com/oakmound/oak"
-	"github.com/oakmound/oak/alg"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/mouse"
@@ -15,9 +13,7 @@ import (
 
 type Player struct {
 	Entity
-	dashCooldown  time.Time
-	leftCooldown  time.Time
-	rightCooldown time.Time
+	Weapon
 }
 
 func (p *Player) Init() event.CID {
@@ -38,6 +34,7 @@ func NewPlayer(x, y float64) *Player {
 		player = e
 	}
 	player.SetPos(x, y)
+	player.Weapon = Sword
 	return player
 }
 
@@ -47,44 +44,6 @@ func startupPlayer() {
 	player.Bind(playerMove, "EnterFrame")
 	player.Bind(viewportFollow, "EnterFrame")
 	player.Bind(playerAttack, "MouseRelease")
-}
-
-func playerAttack(id int, mouseEvent interface{}) int {
-	p := event.GetEntity(id).(*Player)
-	me := mouseEvent.(mouse.Event)
-	switch me.Button {
-	case "LeftMouse":
-		if time.Now().After(p.leftCooldown) {
-			// Todo: generalize what is essentially making a cone of hurt boxes as
-			// a sword swing
-			pos := p.CenterPos().Add(p.Dir.Copy().Rotate(-55).Scale(7))
-			basePos := pos.Copy()
-			for j := -55.0; j <= 45.0; j += 10.0 {
-				yDelta := p.Dir.Copy().Rotate(j).Scale(4)
-				pos = basePos.Copy()
-				for i := 0; i < 4; i++ {
-					NewHurtBox(pos.X(), pos.Y(), 3, 3, 50*time.Millisecond, Ally)
-					pos.Add(yDelta)
-				}
-			}
-			p.leftCooldown = time.Now().Add(1 * time.Second)
-		}
-	case "RightMouse":
-		if time.Now().After(p.rightCooldown) {
-			pos := p.CenterPos().Add(p.Dir.Copy().Rotate(55).Scale(7))
-			basePos := pos.Copy()
-			for j := 55.0; j >= -45.0; j -= 10.0 {
-				yDelta := p.Dir.Copy().Rotate(j).Scale(4)
-				pos = basePos.Copy()
-				for i := 0; i < 4; i++ {
-					NewHurtBox(pos.X(), pos.Y(), 3, 3, 50*time.Millisecond, Ally)
-					pos.Add(yDelta)
-				}
-			}
-			p.rightCooldown = time.Now().Add(1 * time.Second)
-		}
-	}
-	return 0
 }
 
 func stopPlayer() {
@@ -98,6 +57,18 @@ func leaveOrgan(_, _ *collision.Space) {
 	stopPlayer()
 	oak.SetScreen(0, 0)
 	traveler.active = true
+}
+
+func playerAttack(id int, mouseEvent interface{}) int {
+	p := event.GetEntity(id).(*Player)
+	me := mouseEvent.(mouse.Event)
+	switch me.Button {
+	case "LeftMouse":
+		p.Weapon["left"].Do(p)
+	case "RightMouse":
+		p.Weapon["right"].Do(p)
+	}
+	return 0
 }
 
 func playerMove(id int, frame interface{}) int {
@@ -132,21 +103,8 @@ func playerMove(id int, frame interface{}) int {
 		p.Delta.Scale(.8)
 	}
 
-	if oak.IsDown("Spacebar") && time.Now().After(p.dashCooldown) {
-		p.Delta.Add(p.Dir.Copy().Scale(24 * p.Speed.Y()))
-		p.dashCooldown = time.Now().Add(1 * time.Second)
-		delta := p.Dir.Copy().Scale(3)
-		perpendicular := delta.Copy().Rotate(90)
-		pos := p.CenterPos().Add(delta, perpendicular, perpendicular)
-		perpendicular.Scale(-1)
-		basePos := pos.Copy()
-		for i := 0; i < 3; i++ {
-			pos = basePos.Add(perpendicular).Copy()
-			for j := 0; j < 12; j++ {
-				pos.Add(delta)
-				NewHurtBox(pos.X(), pos.Y(), 3, 3, 50*time.Millisecond, Ally)
-			}
-		}
+	if oak.IsDown("Spacebar") {
+		p.Weapon["dash"].Do(p)
 	}
 	p.ShiftPos(p.Delta.X(), p.Delta.Y())
 	<-p.RSpace.CallOnHits()
@@ -160,23 +118,6 @@ func playerMove(id int, frame interface{}) int {
 	} else if p.Delta.Y() < -10 {
 		p.Delta.SetY(-10)
 	}
-
-	return 0
-}
-
-func viewportFollow(id int, frame interface{}) int {
-	p := event.GetEntity(id).(*Player)
-	viewportGoalPos := p.CenterPos().Copy().Add(mouse.LastMouseEvent.ToVector().Sub(physics.NewVector(32, 32)))
-	viewportGoalPos = viewportGoalPos.Sub(physics.NewVector(float64(oak.ScreenWidth/2), float64(oak.ScreenHeight/2)))
-	delta := viewportGoalPos.Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
-
-	if delta.Magnitude() < 2 {
-		return 0
-	}
-
-	oak.SetScreen(
-		alg.RoundF64(float64(oak.ViewPos.X)+delta.X()/9),
-		alg.RoundF64(float64(oak.ViewPos.Y)+delta.Y()/9))
 
 	return 0
 }
