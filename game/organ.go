@@ -19,7 +19,8 @@ type basicOrgan struct {
 	*BodyButton
 	r     *render.Sprite
 	tiles [][]Tile
-	typ   TileType
+	typ   OrganType
+	waves []Wave
 }
 
 func (b *basicOrgan) R() render.Modifiable {
@@ -47,7 +48,7 @@ func (b *basicOrgan) Organ() (Organ, bool) {
 	return b, true
 }
 
-func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ TileType) *basicOrgan {
+func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ OrganType) *basicOrgan {
 	bo := &basicOrgan{}
 	bo.Vector = physics.NewVector(x, y)
 	// Eventually this will take in a renderable instead of a color
@@ -61,23 +62,23 @@ func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ TileType) *basicOr
 }
 
 func NewLiver(x, y float64) Organ {
-	return NewBasicOrgan(x, y, 9, 8, color.RGBA{240, 170, 230, 255}, LiverTile)
+	return NewBasicOrgan(x, y, 9, 8, color.RGBA{240, 170, 230, 255}, Liver)
 }
 
 func NewHeart(x, y float64) Organ {
-	return NewBasicOrgan(x, y, 3, 3, color.RGBA{220, 30, 30, 255}, HeartTile)
+	return NewBasicOrgan(x, y, 3, 3, color.RGBA{220, 30, 30, 255}, Heart)
 }
 
 func NewLung(x, y float64) Organ {
-	return NewBasicOrgan(x, y, 3, 8, color.RGBA{240, 220, 80, 255}, LungTile)
+	return NewBasicOrgan(x, y, 3, 8, color.RGBA{240, 220, 80, 255}, Lung)
 }
 
 func NewStomach(x, y float64) Organ {
-	return NewBasicOrgan(x, y, 8, 6, color.RGBA{120, 210, 50, 255}, StomachTile)
+	return NewBasicOrgan(x, y, 8, 6, color.RGBA{120, 210, 50, 255}, Stomach)
 }
 
 func NewBrain(x, y float64) Organ {
-	return NewBasicOrgan(x, y, 4, 4, color.RGBA{130, 160, 170, 255}, BrainTile)
+	return NewBasicOrgan(x, y, 4, 4, color.RGBA{130, 160, 170, 255}, Brain)
 }
 
 func ShapeTiles(sh shape.Shape, w, h int) [][]Tile {
