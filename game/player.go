@@ -21,11 +21,11 @@ func (p *Player) Init() event.CID {
 	return p.CID
 }
 
-func NewPlayer(x, y float64) *Player {
+func NewPlayer() *Player {
 	if player == nil {
 		e := new(Player)
 		r := render.NewReverting(render.NewColorBox(8, 8, color.RGBA{0, 0, 255, 255}))
-		e.Entity = *NewEntity(x, y, 8, 8, r, e.Init(), .8, 10)
+		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 10)
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
@@ -33,7 +33,6 @@ func NewPlayer(x, y float64) *Player {
 		collision.Add(e.RSpace.Space)
 		player = e
 	}
-	player.SetPos(x, y)
 	player.Weapon = Sword
 	return player
 }

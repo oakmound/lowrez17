@@ -2,7 +2,9 @@ package game
 
 import (
 	"fmt"
+	"image"
 	"image/color"
+	"path/filepath"
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
@@ -82,8 +84,9 @@ func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ OrganType) *basicO
 	// Eventually this will take in a renderable instead of a color
 	bo.r = render.NewColorBox(w, h, c)
 	// for now this is a test map, each NewXXX function will populate this themsleves
-	bo.tiles = ShapeTiles(shape.Heart, 64, 64)
-	bo.tiles[32][50] = Exit
+	//bo.tiles = ShapeTiles(shape.Heart, 64, 64)
+	//bo.tiles[32][50] = Exit
+	bo.tiles = ImageTiles(render.LoadSprite(filepath.Join("raw", "baseliver.png")).GetRGBA())
 	bo.typ = typ
 	bo.BodyButton = NewBodyButton(float64(w), float64(h))
 	bo.waves = []Wave{
@@ -121,6 +124,31 @@ func ShapeTiles(sh shape.Shape, w, h int) [][]Tile {
 				out[x][y] = Open
 			} else {
 				out[x][y] = Blocked
+			}
+		}
+	}
+	return out
+}
+
+func ImageTiles(rgba *image.RGBA) [][]Tile {
+	rect := rgba.Bounds()
+	w, h := rect.Max.X, rect.Max.Y
+	out := make([][]Tile, w)
+	for x := 0; x < len(out); x++ {
+		out[x] = make([]Tile, h)
+		for y := 0; y < len(out[x]); y++ {
+			c := rgba.At(x, y)
+			// This could be more lenient
+			// see raw/baseliver.png
+			switch c {
+			case color.RGBA{255, 255, 255, 255}:
+				out[x][y] = Open
+			case color.RGBA{0, 0, 0, 255}:
+				out[x][y] = Blocked
+			case color.RGBA{255, 216, 0, 255}:
+				out[x][y] = Exit
+			case color.RGBA{0, 255, 33, 255}:
+				out[x][y] = PlayerStart
 			}
 		}
 	}

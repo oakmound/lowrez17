@@ -64,9 +64,8 @@ func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
 		traveler.active = false
+		NewPlayer()
 		o.Place()
-		// Todo: figure out placement of the player given an organ
-		NewPlayer(40, 40)
 		startupPlayer()
 	}
 	return 0
