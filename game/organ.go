@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
+	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/shape"
@@ -32,6 +33,7 @@ func (b *basicOrgan) R() render.Modifiable {
 }
 
 func (b *basicOrgan) Place() {
+	oak.SetViewportBounds(0, 0, len(b.tiles)*tileDim, len(b.tiles[0])*tileDim)
 	for x := range b.tiles {
 		for y, t := range b.tiles[x] {
 			t.Place(x, y, b.typ)
