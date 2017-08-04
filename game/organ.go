@@ -1,11 +1,15 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
+	"time"
 
+	"github.com/200sc/go-dist/intrange"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/shape"
+	"github.com/oakmound/oak/timing"
 )
 
 type Organ interface {
@@ -33,6 +37,28 @@ func (b *basicOrgan) Place() {
 			t.Place(x, y, b.typ)
 		}
 	}
+	go timing.DoAfter(time.Second, func() { b.PlaceWave(0) })
+}
+
+func (b *basicOrgan) PlaceWave(index int) {
+	fmt.Println("Placing Wave", index)
+	// This assumes most territory is open
+	wrange := intrange.NewLinear(0, len(b.tiles)-1)
+	hrange := intrange.NewLinear(0, len(b.tiles[0])-1)
+	es := b.waves[index].Poll()
+	for _, t := range es {
+		x := wrange.Poll()
+		y := hrange.Poll()
+		for b.tiles[x][y] != Open {
+			fmt.Println(b.tiles[x][y], x, y)
+			x = wrange.Poll()
+			y = hrange.Poll()
+		}
+		e := enemyFns[t][b.typ](x, y, b.waves[index].Difficulty)
+		fmt.Println(e)
+	}
+	// Todo: check what wave is active, time the next wave, clear organ when
+	// last wave cleared
 }
 
 func (b *basicOrgan) SetPos(v physics.Vector) {
@@ -58,6 +84,9 @@ func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ OrganType) *basicO
 	bo.tiles[32][50] = Exit
 	bo.typ = typ
 	bo.BodyButton = NewBodyButton(float64(w), float64(h))
+	bo.waves = []Wave{
+		Wave{SmallMeleeDist, 1.0, 10 * time.Second},
+		Wave{LargeMeleeDist, 1.0, 30 * time.Second}}
 	return bo
 }
 

@@ -31,6 +31,12 @@ func NewBodyTraveler(x, y float64) *BodyTraveler {
 	return bt
 }
 
+func (bt *BodyTraveler) CenterPos() physics.Vector {
+	v := bt.Vec()
+	v.Copy().Add(physics.NewVector(1.5, 1.5))
+	return v
+}
+
 func startTravelerMove(id int, pos interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
 	if !bt.moving && bt.active {

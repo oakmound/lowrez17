@@ -7,7 +7,6 @@ import (
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/alg"
 	"github.com/oakmound/oak/collision"
-	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/mouse"
 	"github.com/oakmound/oak/physics"
@@ -29,9 +28,8 @@ func (p *Player) Init() event.CID {
 func NewPlayer(x, y float64) *Player {
 	if player == nil {
 		e := new(Player)
-		e.SetMass(10)
 		r := render.NewReverting(render.NewColorBox(8, 8, color.RGBA{0, 0, 255, 255}))
-		e.Interactive = entities.NewInteractive(x, y, 8, 8, r, e.Init(), .8)
+		e.Entity = *NewEntity(x, y, 8, 8, r, e.Init(), .8, 10)
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)

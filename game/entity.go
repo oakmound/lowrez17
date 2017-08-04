@@ -5,6 +5,7 @@ import (
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
+	"github.com/oakmound/oak/render"
 )
 
 type Entity struct {
@@ -16,6 +17,14 @@ type Entity struct {
 func (e *Entity) Init() event.CID {
 	e.CID = event.NextID(e)
 	return e.CID
+}
+
+func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
+	friction, mass float64) *Entity {
+	e := new(Entity)
+	e.SetMass(mass)
+	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
+	return e
 }
 
 func (e *Entity) CenterPos() physics.Vector {

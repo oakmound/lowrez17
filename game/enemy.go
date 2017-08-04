@@ -1,5 +1,13 @@
 package game
 
+import (
+	"image/color"
+
+	"github.com/oakmound/oak/collision"
+	"github.com/oakmound/oak/event"
+	"github.com/oakmound/oak/render"
+)
+
 type EnemyType int
 
 const (
@@ -13,7 +21,12 @@ type Enemy struct {
 	Health int
 }
 
-type EnemyFn func(x, y, difficulty float64) *Enemy
+func (e *Enemy) Init() event.CID {
+	e.CID = event.NextID(e)
+	return e.CID
+}
+
+type EnemyFn func(x, y int, difficulty float64) *Enemy
 
 var (
 	enemyFns = map[EnemyType]map[OrganType]EnemyFn{
@@ -41,31 +54,36 @@ var (
 	}
 )
 
-func NewMelee(x, y, diff float64) *Enemy {
+func NewMelee(x, y int, diff float64) *Enemy {
+	e := new(Enemy)
+	r := render.NewColorBox(8, 8, color.RGBA{120, 120, 120, 255})
+	e.Entity = *NewEntity(float64(x*tileDim), float64(y*tileDim), 8, 8, r, e.Init(), 0.5, 5)
+	render.Draw(e.R, entityLayer)
+	collision.Add(e.RSpace.Space)
+	return e
+}
+
+func NewRanged(x, y int, diff float64) *Enemy {
 	return nil
 }
 
-func NewRanged(x, y, diff float64) *Enemy {
+func NewBoomer(x, y int, diff float64) *Enemy {
 	return nil
 }
 
-func NewBoomer(x, y, diff float64) *Enemy {
+func NewWizard(x, y int, diff float64) *Enemy {
 	return nil
 }
 
-func NewWizard(x, y, diff float64) *Enemy {
+func NewDasher(x, y int, diff float64) *Enemy {
 	return nil
 }
 
-func NewDasher(x, y, diff float64) *Enemy {
+func NewSummoner(x, y int, diff float64) *Enemy {
 	return nil
 }
 
-func NewSummoner(x, y, diff float64) *Enemy {
-	return nil
-}
-
-func NewVacuumer(x, y, diff float64) *Enemy {
+func NewVacuumer(x, y int, diff float64) *Enemy {
 	return nil
 }
 

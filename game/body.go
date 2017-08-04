@@ -78,8 +78,9 @@ func DemoBody() *Body {
 
 func (b *Body) VecIndex(v physics.Vector) int {
 	for i, n := range b.graph {
-		dist := n.Vec().Distance(v)
-		if dist < 1 {
+		dist := NodeCenter(n).Distance(v)
+		//fmt.Println(dist, v.X(), v.Y(), NodeCenter(n).X(), NodeCenter(n).Y())
+		if dist < 2 {
 			return i
 		}
 	}

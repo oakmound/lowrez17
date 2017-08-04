@@ -54,7 +54,7 @@ func LevelInit(prevScene string, body interface{}) {
 		}
 	}
 	// Place player
-	pos := b.graph[playerStart].Vec()
+	pos := NodeCenter(b.graph[playerStart])
 	traveler = NewBodyTraveler(pos.X(), pos.Y())
 	// Bindings ...
 	event.GlobalBind(enterOrgan, "HitNode")

@@ -26,10 +26,14 @@ func (bb *BodyButton) SetPos(v physics.Vector) {
 }
 
 func (bb *BodyButton) IsTravelerAdjacent() bool {
-	v := physics.NewVector(bb.GetX(), bb.GetY())
-	thisIndex := thisBody.VecIndex(v)
-	travelIndex := thisBody.VecIndex(traveler.Vector)
+	thisIndex := thisBody.VecIndex(bb.CenterPos())
+	travelIndex := thisBody.VecIndex(traveler.CenterPos())
+	//fmt.Println(thisIndex, travelIndex)
 	return thisBody.IsAdjacent(thisIndex, travelIndex)
+}
+
+func (bb *BodyButton) CenterPos() physics.Vector {
+	return physics.NewVector(bb.Space.GetCenter())
 }
 
 func NewBodyButton(w, h float64) *BodyButton {
@@ -63,7 +67,7 @@ func unhighlightBB(id int, nothing interface{}) int {
 func moveToBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
 	if bb.IsTravelerAdjacent() {
-		event.Trigger("MoveTraveler", physics.NewVector(bb.GetX(), bb.GetY()))
+		event.Trigger("MoveTraveler", bb.CenterPos())
 	}
 	return 0
 }
