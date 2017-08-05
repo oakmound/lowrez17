@@ -29,7 +29,10 @@ func NewPlayer() *Player {
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
-		e.RSpace.Add(collision.Label(Blocked), bounceEntity)
+		e.RSpace.Add(collision.Label(Blocked), blockingBounce)
+
+		e.RSpace.Add(collision.Label(Opposing), bounceEntity)
+		e.speedMax = 7
 		collision.Add(e.RSpace.Space)
 		player = e
 	}
@@ -72,51 +75,31 @@ func playerAttack(id int, mouseEvent interface{}) int {
 
 func playerMove(id int, frame interface{}) int {
 	p := event.GetEntity(id).(*Player)
-
-	p.ApplyFriction(envFriction)
-
 	// Calculate direction based on mouse position
 	me := mouse.LastMouseEvent
 	// Oak viewPos would be great as a vector
 	center := p.CenterPos().Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
 	p.Dir = physics.NewVector(float64(me.X), float64(me.Y)).Sub(center).Normalize()
 	p.R.(*render.Reverting).RevertAndModify(1, render.Rotate(int(-p.Dir.Angle())))
-	var vertDown, horzDown bool
+
 	if oak.IsDown("W") {
-		p.Delta.Add(p.Dir.Copy().Scale(p.Speed.Y()))
-		vertDown = true
+		p.moveForward()
 	}
 	if oak.IsDown("S") {
-		p.Delta.Add(p.Dir.Copy().Scale(-p.Speed.Y()))
-		vertDown = true
+		p.moveBack()
 	}
 	if oak.IsDown("A") {
-		p.Delta.Add(p.Dir.Copy().Rotate(90).Scale(p.Speed.X()))
-		horzDown = true
+		p.moveLeft()
 	}
 	if oak.IsDown("D") {
-		p.Delta.Add(p.Dir.Copy().Rotate(90).Scale(-p.Speed.X()))
-		horzDown = true
+		p.moveRight()
 	}
-	if horzDown && vertDown {
-		p.Delta.Scale(.8)
-	}
+	p.scaleDiagonal()
 
 	if oak.IsDown("Spacebar") {
 		p.Weapon["dash"].Do(p)
 	}
-	p.ShiftPos(p.Delta.X(), p.Delta.Y())
-	<-p.RSpace.CallOnHits()
-	if p.Delta.X() > 10 {
-		p.Delta.SetX(10)
-	} else if p.Delta.X() < -10 {
-		p.Delta.SetX(-10)
-	}
-	if p.Delta.Y() > 10 {
-		p.Delta.SetY(10)
-	} else if p.Delta.Y() < -10 {
-		p.Delta.SetY(-10)
-	}
 
+	p.applyMovement()
 	return 0
 }

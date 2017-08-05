@@ -16,11 +16,13 @@ type BodyButton struct {
 	highlight render.Renderable
 }
 
+//Init aqcuires CID
 func (bb *BodyButton) Init() event.CID {
 	bb.CID = event.NextID(bb)
 	return bb.CID
 }
 
+//SetPos sets the location for the BodyButton
 func (bb *BodyButton) SetPos(v physics.Vector) {
 	mouse.UpdateSpace(v.X(), v.Y(), bb.GetW(), bb.GetH(), bb.Space)
 }
@@ -32,6 +34,7 @@ func (bb *BodyButton) IsTravelerAdjacent() bool {
 	return thisBody.IsAdjacent(thisIndex, travelIndex)
 }
 
+//CenterPos
 func (bb *BodyButton) CenterPos() physics.Vector {
 	return physics.NewVector(bb.Space.GetCenter())
 }

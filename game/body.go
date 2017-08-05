@@ -32,6 +32,7 @@ func (b *Body) Connect(a, c int) bool {
 	return true
 }
 
+//AddNodes adds a set of body nodes to the body, placing them in the graph
 func (b *Body) AddNodes(ns ...BodyNode) {
 	for _, n := range ns {
 		b.graph = append(b.graph, n)
@@ -39,6 +40,7 @@ func (b *Body) AddNodes(ns ...BodyNode) {
 	}
 }
 
+//IsAdjacent checks to see whether a node has a second node in its adjacency list
 func (b *Body) IsAdjacent(i, j int) bool {
 	for _, k := range b.adjacency[i] {
 		if k == j {
@@ -48,6 +50,7 @@ func (b *Body) IsAdjacent(i, j int) bool {
 	return false
 }
 
+//BodyNode is a node on the body that can be traveled to
 type BodyNode interface {
 	Vec() physics.Vector
 	Dims() (int, int)
@@ -76,6 +79,7 @@ func DemoBody() *Body {
 	return b
 }
 
+//VecIndex
 func (b *Body) VecIndex(v physics.Vector) int {
 	for i, n := range b.graph {
 		dist := NodeCenter(n).Distance(v)

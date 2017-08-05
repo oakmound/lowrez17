@@ -14,6 +14,7 @@ var (
 	player      *Player
 )
 
+//LevelInit sets up a level
 func LevelInit(prevScene string, body interface{}) {
 	// b := body.(Body)
 	// Will remove this once we actually get bodies into scenes
@@ -60,6 +61,7 @@ func LevelInit(prevScene string, body interface{}) {
 	event.GlobalBind(enterOrgan, "HitNode")
 }
 
+//
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {

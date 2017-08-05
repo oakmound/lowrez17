@@ -9,6 +9,7 @@ import (
 	"github.com/oakmound/oak/render"
 )
 
+//A BodyTraveler is an entity that travels along the veins of a body on the body layer
 type BodyTraveler struct {
 	entities.Doodad
 	targetPos      physics.Vector
@@ -16,11 +17,13 @@ type BodyTraveler struct {
 	moving, active bool
 }
 
+//Init obtains a CID for an entity
 func (bt *BodyTraveler) Init() event.CID {
 	bt.CID = event.NextID(bt)
 	return bt.CID
 }
 
+//NewBodyTraveler creates a BodyTraveler, binding the appropriate functions to a Sprite
 func NewBodyTraveler(x, y float64) *BodyTraveler {
 	bt := new(BodyTraveler)
 	bt.Doodad = entities.NewDoodad(x, y, render.NewColorBox(3, 3, color.RGBA{0, 0, 255, 255}), bt.Init())
@@ -31,12 +34,14 @@ func NewBodyTraveler(x, y float64) *BodyTraveler {
 	return bt
 }
 
+//CenterPos  returns a vector to the center of BodyTraveler
 func (bt *BodyTraveler) CenterPos() physics.Vector {
 	v := bt.Vec()
 	v.Copy().Add(physics.NewVector(1.5, 1.5))
 	return v
 }
 
+//startTravelerMove is bound to a bodytraveler kicking off its motion along viens
 func startTravelerMove(id int, pos interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
 	if !bt.moving && bt.active {
@@ -46,6 +51,7 @@ func startTravelerMove(id int, pos interface{}) int {
 	return 0
 }
 
+//moveTraveler dictates the motion for the bodytraveler
 func moveTraveler(id int, nothing interface{}) int {
 	bt := event.GetEntity(id).(*BodyTraveler)
 	if bt.moving && bt.active {

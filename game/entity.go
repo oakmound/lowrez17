@@ -11,7 +11,10 @@ import (
 type Entity struct {
 	entities.Interactive
 	physics.Mass
-	Dir physics.Vector
+	Dir                 physics.Vector
+	speedMax            float64
+	collided            int
+	moveVert, moveHoriz bool
 }
 
 func (e *Entity) Init() event.CID {
@@ -39,9 +42,61 @@ type HasE interface {
 	E() *Entity
 }
 
+func (e *Entity) applyMovement() {
+	//Movement logic
+	e.enforceSpeedMax()
+	e.ShiftPos(e.Delta.X(), e.Delta.Y())
+	<-e.RSpace.CallOnHits()
+	e.enforceSpeedMax()
+	if e.collided > 0 {
+		e.collided = 0
+		e.Delta.Scale(-1)
+		e.ShiftPos(e.Delta.X(), e.Delta.Y())
+	}
+	e.ApplyFriction(envFriction)
+}
+
 func bounceEntity(s1, s2 *collision.Space) {
+	// This will need work
+	e := event.GetEntity(int(s1.CID)).(HasE).E()
+	e.collided++
+	e.Delta.Add(s1.OverlapVector(s2).Scale(1.0 / float64(e.collided)))
+}
+
+func blockingBounce(s1, s2 *collision.Space) {
 	// This will need work
 	e := event.GetEntity(int(s1.CID)).(HasE).E()
 	e.Delta.Scale(-1.5)
 	e.ShiftPos(e.Delta.X(), e.Delta.Y())
+	e.Delta.Scale(-1.0 / 1.5)
+
+}
+
+func (e *Entity) moveForward() {
+	e.Delta.Add(e.Dir.Copy().Scale(e.Speed.Y()))
+	e.moveVert = true
+}
+func (e *Entity) moveBack() {
+	e.Delta.Add(e.Dir.Copy().Scale(-e.Speed.Y()))
+	e.moveVert = true
+}
+func (e *Entity) moveRight() {
+	e.Delta.Add(e.Dir.Copy().Rotate(90).Scale(e.Speed.X()))
+	e.moveHoriz = true
+}
+func (e *Entity) moveLeft() {
+	e.Delta.Add(e.Dir.Copy().Rotate(90).Scale(-e.Speed.X()))
+	e.moveHoriz = true
+}
+func (e *Entity) scaleDiagonal() {
+	if e.moveHoriz && e.moveVert {
+		e.Delta.Scale(.8)
+	}
+	e.moveHoriz = false
+	e.moveVert = false
+}
+func (e *Entity) enforceSpeedMax() {
+	if e.Delta.Magnitude() > e.speedMax {
+		e.Delta.Scale(e.speedMax / e.Delta.Magnitude())
+	}
 }

@@ -94,6 +94,7 @@ func addTileSpace(l collision.Label) func(x, y int) {
 	}
 }
 
+//CleanupTiles removes and undraws all tiles
 func CleanupTiles() {
 	for _, r := range tileRs {
 		r.UnDraw()

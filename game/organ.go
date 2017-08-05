@@ -78,6 +78,7 @@ func (b *basicOrgan) Organ() (Organ, bool) {
 	return b, true
 }
 
+//NewBasicOrgan creates a new default organ
 func NewBasicOrgan(x, y float64, w, h int, c color.Color, typ OrganType) *basicOrgan {
 	bo := &basicOrgan{}
 	bo.Vector = physics.NewVector(x, y)
