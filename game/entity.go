@@ -60,8 +60,8 @@ func (e *Entity) applyMovement() {
 func bounceEntity(s1, s2 *collision.Space) {
 	e := event.GetEntity(int(s1.CID)).(HasE).E()
 	e.collided++
-	if ds, ok := event.GetEntity(int(s2.CID)).(*DirectionSpace); ok {
-		physics.Push(ds, e)
+	if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
+		physics.Push(psh, e)
 	} else {
 		e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
 	}
