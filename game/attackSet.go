@@ -1,9 +1,10 @@
 package game
 
 import (
+	"time"
+
 	"github.com/200sc/go-dist/intrange"
 	"github.com/oakmound/oak/alg"
-	"time"
 )
 
 type AttackSet struct {

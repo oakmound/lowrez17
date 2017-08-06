@@ -60,7 +60,7 @@ func bounceEntity(s1, s2 *collision.Space) {
 	// This will need work
 	e := event.GetEntity(int(s1.CID)).(HasE).E()
 	e.collided++
-	e.Delta.Add(s1.OverlapVector(s2).Scale(1.0 / float64(e.collided)))
+	e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
 }
 
 func blockingBounce(s1, s2 *collision.Space) {

@@ -68,7 +68,7 @@ func DemoBody() *Body {
 		NewHeart(50, 40),
 		NewBrain(50, 10),
 		NewLung(30, 30),
-		NewStomach(4, 40))
+		NewStomach(10, 40))
 	b.Connect(0, 1)
 	b.Connect(0, 2)
 	b.Connect(1, 2)
