@@ -29,8 +29,6 @@ func NewPlayer() *Player {
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
-		e.RSpace.Add(collision.Label(Blocked), blockingBounce)
-
 		e.RSpace.Add(collision.Label(Opposing), bounceEntity)
 		e.speedMax = 7
 		collision.Add(e.RSpace.Space)
@@ -42,6 +40,7 @@ func NewPlayer() *Player {
 
 func startupPlayer() {
 	render.Draw(player.R, entityLayer)
+	collision.Remove(player.RSpace.Space)
 
 	player.Bind(playerMove, "EnterFrame")
 	player.Bind(viewportFollow, "EnterFrame")
@@ -50,6 +49,7 @@ func startupPlayer() {
 
 func stopPlayer() {
 	player.SetPos(-1000, -1000)
+	collision.Add(player.RSpace.Space)
 	player.UnbindAll()
 	player.R.UnDraw()
 }

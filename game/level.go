@@ -68,6 +68,7 @@ func enterOrgan(no int, nothing interface{}) int {
 		traveler.active = false
 		NewPlayer()
 		o.Place()
+		startupWalls()
 		startupPlayer()
 	}
 	return 0

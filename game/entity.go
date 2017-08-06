@@ -27,6 +27,7 @@ func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
 	e := new(Entity)
 	e.SetMass(mass)
 	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
+	e.RSpace.Add(collision.Label(Blocked), bounceEntity)
 	return e
 }
 
@@ -57,19 +58,13 @@ func (e *Entity) applyMovement() {
 }
 
 func bounceEntity(s1, s2 *collision.Space) {
-	// This will need work
 	e := event.GetEntity(int(s1.CID)).(HasE).E()
 	e.collided++
-	e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
-}
-
-func blockingBounce(s1, s2 *collision.Space) {
-	// This will need work
-	e := event.GetEntity(int(s1.CID)).(HasE).E()
-	e.Delta.Scale(-1.5)
-	e.ShiftPos(e.Delta.X(), e.Delta.Y())
-	e.Delta.Scale(-1.0 / 1.5)
-
+	if ds, ok := event.GetEntity(int(s2.CID)).(*DirectionSpace); ok {
+		physics.Push(ds, e)
+	} else {
+		e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
+	}
 }
 
 func (e *Entity) moveForward() {

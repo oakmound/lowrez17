@@ -31,8 +31,6 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 	collision.Add(e.RSpace.Space)
 	e.Dir = physics.NewVector(1, 0)
 	e.Speed = physics.NewVector(speed, speed)
-	e.RSpace.Add(collision.Label(Blocked), blockingBounce)
-
 	e.RSpace.Add(collision.Label(Ally), hitEnemy)
 
 	e.speedMax = maxSpeed

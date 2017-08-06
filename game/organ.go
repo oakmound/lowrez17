@@ -168,6 +168,8 @@ func ImageTiles(rgba *image.RGBA) [][]Tile {
 				out[x][y] = Exit
 			case color.RGBA{0, 255, 33, 255}:
 				out[x][y] = PlayerStart
+			case color.RGBA{255, 0, 110, 255}:
+				out[x][y] = Anchor
 			}
 		}
 	}

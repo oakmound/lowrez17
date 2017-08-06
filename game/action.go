@@ -24,13 +24,8 @@ var (
 	MoveBackward = NewAction((*Entity).moveBack, 0)
 	MoveRight    = NewAction((*Entity).moveRight, 0)
 	MoveLeft     = NewAction((*Entity).moveLeft, 0)
-
-
 )
 
 func (a *Action) MustDo(e HasE) {
 	a.action(e.E())
 }
-
-
-
