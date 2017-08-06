@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -57,6 +58,5 @@ func hitEnemy(s1, s2 *collision.Space) {
 	// This will need work
 	e := event.GetEntity(int(s1.CID)).(*Enemy)
 	e.Health--
-	fmt.Println("Damaged")
 	bounceEntity(s1, s2)
 }

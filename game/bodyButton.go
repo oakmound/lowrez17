@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/oakmound/oak/collision"
@@ -31,7 +30,6 @@ func (bb *BodyButton) SetPos(v physics.Vector) {
 func (bb *BodyButton) IsTravelerAdjacent() bool {
 	thisIndex := thisBody.VecIndex(bb.CenterPos())
 	travelIndex := thisBody.VecIndex(traveler.CenterPos())
-	fmt.Println(bb.CenterPos().X(), bb.CenterPos().Y(), thisIndex, travelIndex)
 	return thisBody.IsAdjacent(thisIndex, travelIndex)
 }
 
@@ -46,11 +44,24 @@ func NewBodyButton(w, h float64) *BodyButton {
 	bb.Space.CID = bb.Init()
 	mouse.PhaseCollision(bb.Space)
 	mouse.Add(bb.Space)
+	bb.CID.Bind(tryHighlightBB, "HitNode")
 	bb.CID.Bind(highlightBB, "MouseCollisionStart")
 	bb.CID.Bind(unhighlightBB, "MouseCollisionStop")
 	bb.CID.Bind(moveToBB, "MouseReleaseOn")
 	bb.highlight = render.NewColorBox(int(w+2), int(h+2), color.RGBA{255, 255, 255, 255})
 	return bb
+}
+
+func tryHighlightBB(id int, nothing interface{}) int {
+	bb := event.GetEntity(id).(*BodyButton)
+	me := mouse.LastMouseEvent
+	hits := mouse.Hits(me.ToSpace())
+	for _, h := range hits {
+		if h == bb.Space {
+			return highlightBB(id, nil)
+		}
+	}
+	return 0
 }
 
 func highlightBB(id int, nothing interface{}) int {

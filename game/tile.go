@@ -36,16 +36,16 @@ const (
 var (
 	tileColors = map[OrganType]map[Tile]colorrange.Range{
 		Liver: {
+			Open:        colorrange.NewLinear(color.RGBA{60, 50, 160, 254}, color.RGBA{90, 70, 200, 254}),
+			Blocked:     colorrange.NewLinear(color.RGBA{30, 25, 80, 254}, color.RGBA{45, 35, 100, 254}),
+			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			PlayerStart: colorrange.NewLinear(color.RGBA{60, 50, 160, 254}, color.RGBA{90, 70, 200, 254}),
+		},
+		Brain: {
 			Open:        colorrange.NewLinear(color.RGBA{230, 50, 5, 254}, color.RGBA{254, 60, 140, 254}),
 			Blocked:     colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 60, 254}),
 			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			PlayerStart: colorrange.NewLinear(color.RGBA{230, 50, 5, 254}, color.RGBA{254, 60, 140, 254}),
-		},
-		Brain: {
-			Open:        colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
-			Blocked:     colorrange.NewLinear(color.RGBA{30, 35, 40, 254}, color.RGBA{40, 60, 90, 254}),
-			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
-			PlayerStart: colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
 		},
 		Heart: {
 			Open:        colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
@@ -54,16 +54,16 @@ var (
 			PlayerStart: colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
 		},
 		Lung: {
+			Open:        colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
+			Blocked:     colorrange.NewLinear(color.RGBA{30, 35, 40, 254}, color.RGBA{40, 60, 90, 254}),
+			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			PlayerStart: colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
+		},
+		Stomach: {
 			Open:        colorrange.NewLinear(color.RGBA{230, 230, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			Blocked:     colorrange.NewLinear(color.RGBA{110, 110, 5, 254}, color.RGBA{140, 140, 60, 254}),
 			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			PlayerStart: colorrange.NewLinear(color.RGBA{230, 230, 5, 254}, color.RGBA{254, 254, 140, 254}),
-		},
-		Stomach: {
-			Open:        colorrange.NewLinear(color.RGBA{50, 230, 5, 254}, color.RGBA{60, 254, 140, 254}),
-			Blocked:     colorrange.NewLinear(color.RGBA{10, 110, 5, 254}, color.RGBA{20, 110, 60, 254}),
-			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
-			PlayerStart: colorrange.NewLinear(color.RGBA{50, 230, 5, 254}, color.RGBA{60, 254, 140, 254}),
 		},
 	}
 	tileInit = map[Tile]func(x, y int){
