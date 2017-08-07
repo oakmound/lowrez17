@@ -2,9 +2,11 @@ package menu
 
 import (
 	"image/color"
+	"path/filepath"
 
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
+	"github.com/oakmound/oak/dlog"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/render"
@@ -29,7 +31,7 @@ func StartScene(string, interface{}) {
 	collision.Add(collision.NewLabeledSpace(22, 22, 16, 6, blocking))
 	table := render.NewColorBox(16, 6, color.RGBA{200, 200, 200, 255})
 	table.SetPos(22, 22)
-	render.Draw(table, 12)
+	render.Draw(table, entityLayer)
 }
 
 func LoopScene() bool {
@@ -46,6 +48,7 @@ type Player struct {
 	collision.Phase
 	stop       bool
 	interactFn func()
+	interactR  render.Renderable
 }
 
 func (p *Player) Init() event.CID {
@@ -58,7 +61,7 @@ func NewPlayer() {
 	r := render.NewColorBox(3, 7, color.RGBA{255, 255, 255, 255})
 	p.Reactive = entities.NewReactive(5, 5, 3, 7, r, p.Init())
 	collision.Add(p.RSpace.Space)
-	render.Draw(p.R, 10)
+	render.Draw(p.R, entityLayer)
 	p.RSpace.Add(blocking, playerStop)
 	collision.PhaseCollision(p.RSpace.Space)
 	p.Bind(triggerInteractive, "CollisionStart")
@@ -90,8 +93,16 @@ func playerStop(s1, s2 *collision.Space) {
 
 func triggerInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
+	var err error
 	switch label.(collision.Label) {
 	case nextLevel:
+		p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1, []int{0, 0, 1, 0})
+		// I tried using attachment here, it was bugged?
+		p.interactR.SetPos(p.X()-1, p.Y()-8)
+		if err != nil {
+			dlog.Error(err)
+		}
+		render.Draw(p.interactR, uiLayer)
 		p.interactFn = func() {
 			nextScene = "level"
 			sceneContinue = false
@@ -103,7 +114,9 @@ func triggerInteractive(id int, label interface{}) int {
 func unbindInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
 	if label.(collision.Label) != blocking {
+		p.Vector = p.Vector.Detach()
 		p.interactFn = nil
+		p.interactR.UnDraw()
 	}
 	return 0
 }
@@ -131,6 +144,9 @@ func playerWalk(id int, nothing interface{}) int {
 	}
 	if oak.IsDown("D") {
 		shiftX++
+	}
+	if p.interactR != nil {
+		p.interactR.SetPos(p.X()-1, p.Y()-8)
 	}
 	collision.ShiftSpace(shiftX, shiftY, p.RSpace.Space)
 	<-p.RSpace.CallOnHits()
