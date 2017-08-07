@@ -35,7 +35,8 @@ func startupWalls() {
 		}
 		// Initialize a directional collision space pointing toward the nearby anchor
 		ds := NewDirectionSpace(collision.NewLabeledSpace(w.X(), w.Y(), tileDimf64, tileDimf64, collision.Label(Blocked)),
-			physics.NewForceVector(w.Sub(minV).Normalize(), 20))
+			physics.NewForceVector(w.Sub(minV).Normalize(), 10))
 		collision.Add(ds.Space)
+		tileSpaces = append(tileSpaces, ds.Space)
 	}
 }

@@ -60,7 +60,7 @@ func (b *basicOrgan) PlaceWave(index int) {
 			y = hrange.Poll()
 		}
 		e := enemyFns[t][b.typ](x, y, b.waves[index].Difficulty)
-		fmt.Println(e)
+		enemies = append(enemies, e)
 	}
 	// Todo: check what wave is active, time the next wave, clear organ when
 	// last wave cleared
@@ -96,36 +96,6 @@ func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganTyp
 	bo.w = w
 	bo.h = h
 	return bo
-}
-
-func NewLiver(x, y float64) Organ {
-	r := images["midliver"]
-	w, h := r.GetDims()
-	return NewBasicOrgan(x, y, float64(w), float64(h), r, Liver)
-}
-
-func NewHeart(x, y float64) Organ {
-	r := images["midheart"]
-	w, h := r.GetDims()
-	return NewBasicOrgan(x, y, float64(w), float64(h), r, Heart)
-}
-
-func NewLung(x, y float64) Organ {
-	r := images["midlung"]
-	w, h := r.GetDims()
-	return NewBasicOrgan(x, y, float64(w), float64(h), r, Lung)
-}
-
-func NewStomach(x, y float64) Organ {
-	r := images["midstomach"]
-	w, h := r.GetDims()
-	return NewBasicOrgan(x, y, float64(w), float64(h), r, Stomach)
-}
-
-func NewBrain(x, y float64) Organ {
-	r := images["midbrain"]
-	w, h := r.GetDims()
-	return NewBasicOrgan(x, y, float64(w), float64(h), r, Brain)
 }
 
 func ShapeTiles(sh shape.Shape, w, h int) [][]Tile {

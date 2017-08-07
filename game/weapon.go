@@ -1,17 +1,18 @@
 package game
 
 import (
-	"github.com/oakmound/oak/collision"
 	"time"
+
+	"github.com/oakmound/oak/collision"
 )
 
 type Weapon map[string]*Action
 
 var (
 	Sword = Weapon(map[string]*Action{
-		"left":  NewAction(SwordLeft(Ally), 1*time.Second),
-		"right": NewAction(SwordRight(Ally), 1*time.Second),
-		"dash":  NewAction(SwordDash(Ally), 1*time.Second),
+		"left":  NewAction(SwordLeft(Ally), 100*time.Millisecond),
+		"right": NewAction(SwordRight(Ally), 100*time.Millisecond),
+		"dash":  NewAction(SwordDash(Ally), 500*time.Millisecond),
 	})
 )
 

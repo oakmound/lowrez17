@@ -46,7 +46,11 @@ func NewMelee(x, y int, diff float64) *Enemy {
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
 	e.Health = 1000
 	e.AttackSet = NewAttackSet(intrange.NewLinear(5000, 15000), []float64{1.0}, []*Action{NewAction(SwordDash(Opposing), 0)})
-	e.MoveSet = NewMoveSet([]float64{1.0, 1.0}, []*Action{MoveLeft, MoveLeft}, []*Action{MoveForward})
+	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 0.1, 0.1},
+		Move(Left, 2),
+		Move(Forward, 1),
+		Move(Forward, 10),
+		Move(Right, 10))
 	return e
 }
 

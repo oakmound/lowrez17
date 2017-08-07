@@ -40,7 +40,7 @@ func NewPlayer() *Player {
 
 func startupPlayer() {
 	render.Draw(player.R, entityLayer)
-	collision.Remove(player.RSpace.Space)
+	collision.Add(player.RSpace.Space)
 
 	player.Bind(playerMove, "EnterFrame")
 	player.Bind(viewportFollow, "EnterFrame")
@@ -49,16 +49,19 @@ func startupPlayer() {
 
 func stopPlayer() {
 	player.SetPos(-1000, -1000)
-	collision.Add(player.RSpace.Space)
+	collision.Remove(player.RSpace.Space)
 	player.UnbindAll()
 	player.R.UnDraw()
 }
 
 func leaveOrgan(_, _ *collision.Space) {
-	CleanupTiles()
-	stopPlayer()
-	oak.SetScreen(0, 0)
-	traveler.active = true
+	if player.X() > -1000 {
+		stopPlayer()
+		CleanupTiles()
+		CleanupEnemies()
+		oak.SetScreen(0, 0)
+		traveler.active = true
+	}
 }
 
 func playerAttack(id int, mouseEvent interface{}) int {

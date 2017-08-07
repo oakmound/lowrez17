@@ -9,6 +9,10 @@ import (
 	"github.com/oakmound/oak/render"
 )
 
+var (
+	enemies []*Enemy
+)
+
 type Enemy struct {
 	Entity
 	Health int
@@ -19,6 +23,11 @@ type Enemy struct {
 func (e *Enemy) Init() event.CID {
 	e.CID = event.NextID(e)
 	return e.CID
+}
+
+func (e *Enemy) Cleanup() {
+	collision.Remove(e.RSpace.Space)
+	e.R.UnDraw()
 }
 
 type EnemyFn func(x, y int, difficulty float64) *Enemy
@@ -57,4 +66,12 @@ func hitEnemy(s1, s2 *collision.Space) {
 	e := event.GetEntity(int(s1.CID)).(*Enemy)
 	e.Health--
 	bounceEntity(s1, s2)
+}
+
+func CleanupEnemies() {
+	for _, e := range enemies {
+		e.Cleanup()
+	}
+	enemies = []*Enemy{}
+	fmt.Println("Enemies cleaned up")
 }
