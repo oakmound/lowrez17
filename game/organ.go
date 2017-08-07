@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"path/filepath"
+	"math/rand"
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
@@ -24,7 +24,7 @@ type Organ interface {
 type basicOrgan struct {
 	physics.Vector
 	*BodyButton
-	r     *render.Sprite
+	r     render.Modifiable
 	tiles [][]Tile
 	typ   OrganType
 	waves []Wave
@@ -80,14 +80,14 @@ func (b *basicOrgan) Organ() (Organ, bool) {
 }
 
 //NewBasicOrgan creates a new default organ
-func NewBasicOrgan(x, y float64, w, h float64, r *render.Sprite, typ OrganType) *basicOrgan {
+func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganType) *basicOrgan {
 	bo := &basicOrgan{}
 	bo.Vector = physics.NewVector(x, y)
 	bo.r = r
 	// for now this is a test map, each NewXXX function will populate this themsleves
 	//bo.tiles = ShapeTiles(shape.Heart, 64, 64)
 	//bo.tiles[32][50] = Exit
-	bo.tiles = ImageTiles(render.LoadSprite(filepath.Join("raw", "baseliver.png")).GetRGBA())
+	bo.tiles = levels[typ][rand.Intn(5)]
 	bo.typ = typ
 	bo.BodyButton = NewBodyButton(float64(w), float64(h))
 	bo.waves = []Wave{
@@ -99,37 +99,31 @@ func NewBasicOrgan(x, y float64, w, h float64, r *render.Sprite, typ OrganType) 
 }
 
 func NewLiver(x, y float64) Organ {
-	// Todo: move this renderable initialization out to a proper init function
-	r := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[0][0]
-	r.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	r := images["midliver"]
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Liver)
 }
 
 func NewHeart(x, y float64) Organ {
-	r := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[3][0]
-	r.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	r := images["midheart"]
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Heart)
 }
 
 func NewLung(x, y float64) Organ {
-	r := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[1][0]
-	r.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	r := images["midlung"]
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Lung)
 }
 
 func NewStomach(x, y float64) Organ {
-	r := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[2][0]
-	r.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	r := images["midstomach"]
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Stomach)
 }
 
 func NewBrain(x, y float64) Organ {
-	r := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[4][0]
-	r.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	r := images["midbrain"]
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Brain)
 }

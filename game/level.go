@@ -16,6 +16,7 @@ var (
 
 //LevelInit sets up a level
 func LevelInit(prevScene string, body interface{}) {
+	Init()
 	// b := body.(Body)
 	// Will remove this once we actually get bodies into scenes
 	b := DemoBody()
