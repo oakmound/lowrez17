@@ -16,7 +16,7 @@ const (
 )
 
 var (
-	enemyFns = map[EnemyType]map[OrganType]EnemyFn{
+	enemyFns = map[EnemyType]map[OrganType]EnemyCreation{
 		Melee: {
 			Brain:   NewMelee,
 			Heart:   NewMelee,
