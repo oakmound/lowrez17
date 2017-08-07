@@ -1,8 +1,9 @@
 package game
 
 import (
-	"image/color"
+	"path/filepath"
 
+	"github.com/disintegration/gift"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
@@ -24,7 +25,8 @@ func (p *Player) Init() event.CID {
 func NewPlayer() *Player {
 	if player == nil {
 		e := new(Player)
-		r := render.NewReverting(render.NewColorBox(8, 8, color.RGBA{0, 0, 255, 255}))
+		s := render.GetSheet(filepath.Join("8x8", "lowerlevelplayer.png"))[1][0].Copy().Modify(render.FlipX)
+		r := render.NewReverting(s)
 		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 10)
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
@@ -83,7 +85,8 @@ func playerMove(id int, frame interface{}) int {
 	// Oak viewPos would be great as a vector
 	center := p.CenterPos().Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
 	p.Dir = physics.NewVector(float64(me.X), float64(me.Y)).Sub(center).Normalize()
-	p.R.(*render.Reverting).RevertAndModify(1, render.Rotate(int(-p.Dir.Angle())))
+	p.R.(*render.Reverting).RevertAndModify(1,
+		render.RotateInterpolated(int(-p.Dir.Angle()), gift.NearestNeighborInterpolation))
 
 	if oak.IsDown("W") {
 		p.moveForward()
