@@ -53,8 +53,7 @@ func enemyEnter(id int, frame interface{}) int {
 		fmt.Println("An enemy is dead!")
 		e.Destroy()
 	}
-	center := e.CenterPos()
-	e.Dir = player.Vec().Copy().Sub(center).Normalize()
+	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
 	e.attack(e)
 	e.move(frame.(int), e)
 	e.applyMovement()
