@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 	"path/filepath"
 	"strconv"

@@ -2,6 +2,7 @@ package game
 
 import (
 	"path/filepath"
+	"time"
 
 	"github.com/disintegration/gift"
 	"github.com/oakmound/oak"
@@ -10,11 +11,14 @@ import (
 	"github.com/oakmound/oak/mouse"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/timing"
 )
 
 type Player struct {
 	Entity
 	Weapon
+	leaveTime time.Time
+	hitExit   bool
 }
 
 func (p *Player) Init() event.CID {
@@ -57,17 +61,28 @@ func stopPlayer() {
 }
 
 func leaveOrgan(_, _ *collision.Space) {
-	if player.X() > -1000 {
-		stopPlayer()
-		CleanupTiles()
-		CleanupEnemies()
-		oak.SetScreen(0, 0)
-		traveler.active = true
-		select {
-		case <-waveExitCh:
-		default:
+
+	if player.hitExit {
+		if time.Now().After(player.leaveTime) {
+			if player.X() > -1000 {
+				stopPlayer()
+				CleanupTiles()
+				CleanupEnemies()
+				oak.SetScreen(0, 0)
+				traveler.active = true
+				select {
+				case <-waveExitCh:
+				default:
+				}
+			}
 		}
+	} else {
+		player.leaveTime = time.Now().Add(1500 * time.Millisecond)
+		go timing.DoAfter(1600*time.Millisecond, func() {
+			player.hitExit = false
+		})
 	}
+	player.hitExit = true
 }
 
 func playerAttack(id int, mouseEvent interface{}) int {

@@ -47,7 +47,6 @@ func LevelInit(prevScene string, inLevel interface{}) {
 			render.Draw(r, veinLayer)
 		}
 	}
-	// This will draw all veins twice
 	for i, list := range b.adjacency {
 		for _, j := range list {
 			if i > j {
@@ -79,7 +78,7 @@ func enterOrgan(no int, nothing interface{}) int {
 }
 
 func LevelLoop() bool {
-	return true
+	return !thisBody.complete
 }
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {

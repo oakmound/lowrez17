@@ -15,6 +15,7 @@ type Body struct {
 	veins                 [][]*Vein
 	infected              []int
 	cleansed              map[int]bool
+	complete              bool
 }
 
 // Connect connects two bodyNodes on a body, and returns whether
