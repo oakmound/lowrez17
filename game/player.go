@@ -83,7 +83,7 @@ func playerMove(id int, frame interface{}) int {
 	// Calculate direction based on mouse position
 	me := mouse.LastMouseEvent
 	// Oak viewPos would be great as a vector
-	center := p.CenterPos().Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
+	center := p.CenterPos().Sub(oak.ViewVector())
 	p.Dir = physics.NewVector(float64(me.X), float64(me.Y)).Sub(center).Normalize()
 	p.R.(*render.Reverting).RevertAndModify(1,
 		render.RotateInterpolated(int(-p.Dir.Angle()), gift.NearestNeighborInterpolation))
@@ -103,7 +103,7 @@ func playerMove(id int, frame interface{}) int {
 	p.scaleDiagonal()
 
 	if oak.IsDown("Spacebar") {
-		p.Weapon["dash"].Do(p)
+		p.Weapon["space"].Do(p)
 	}
 
 	p.applyMovement()

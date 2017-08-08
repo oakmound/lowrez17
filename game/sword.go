@@ -7,21 +7,6 @@ import (
 	"github.com/oakmound/oak/physics"
 )
 
-type Weapon map[string]*Action
-
-var (
-	Sword = Weapon(map[string]*Action{
-		"left":  NewAction(SwordLeft(Ally), 100*time.Millisecond),
-		"right": NewAction(SwordRight(Ally), 100*time.Millisecond),
-		"dash":  NewAction(SwordDash(Ally), 500*time.Millisecond),
-	})
-	Whip = Weapon(map[string]*Action{
-		"left":  NewAction(WhipLeft(Ally), 200*time.Millisecond),
-		"right": NewAction(WhipRight(Ally), 200*time.Millisecond),
-		"dash":  NewAction(WhipTwirl(Ally), 700*time.Millisecond),
-	})
-)
-
 func SwordLeft(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
 		pos := p.CenterPos().Add(p.Dir.Copy().Rotate(-55).Scale(7))
@@ -69,22 +54,5 @@ func SwordDash(label collision.Label) func(p *Entity) {
 				NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 			}
 		}
-	}
-}
-
-func WhipLeft(label collision.Label) func(p *Entity) {
-	return func(p *Entity) {
-
-	}
-}
-func WhipRight(label collision.Label) func(p *Entity) {
-	return func(p *Entity) {
-
-	}
-}
-
-func WhipTwirl(label collision.Label) func(p *Entity) {
-	return func(p *Entity) {
-
 	}
 }
