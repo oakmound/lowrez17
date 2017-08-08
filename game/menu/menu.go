@@ -126,7 +126,7 @@ func triggerInteractive(id int, label interface{}) int {
 
 func setLevelInteracts(p *Player) {
 	var err error
-	p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1, []int{0, 0, 1, 0})
+	p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1.5, []int{0, 0, 1, 0})
 	// I tried using attachment here, it was bugged?
 	p.interactR.SetPos(p.X()-1, p.Y()-8)
 	if err != nil {

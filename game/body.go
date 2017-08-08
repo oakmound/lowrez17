@@ -16,6 +16,7 @@ type Body struct {
 	infected              []int
 	cleansed              map[int]bool
 	complete              bool
+	infectionPattern      [][]int
 }
 
 // Connect connects two bodyNodes on a body, and returns whether
@@ -44,7 +45,7 @@ func (b *Body) AddNodes(ns ...BodyNode) {
 	}
 }
 
-//IsAdjacent checks to see whether a node has a second node in its adjacency list
+// IsAdjacent returns whether the nodes at indices i and j in this graph are adjacent
 func (b *Body) IsAdjacent(i, j int) bool {
 	for _, k := range b.adjacency[i] {
 		if k == j {
@@ -74,48 +75,8 @@ func (b *Body) Infect(i int) {
 
 }
 
-//BodyNode is a node on the body that can be traveled to
-type BodyNode interface {
-	Vec() physics.Vector
-	Dims() (int, int)
-	SetPos(physics.Vector)
-	Organ() (Organ, bool)
-	Infect(...float64) bool
-	DiseaseLevel() float64
-	R() render.Modifiable
-}
-
-func DemoBody() *Body {
-	b := new(Body)
-	b.infected = []int{}
-	b.cleansed = make(map[int]bool)
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
-	b.veinColor = color.RGBA{255, 0, 0, 255}
-	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewVeinNode(10, 10, b.veinColor),
-		NewVeinNode(15, 20, b.veinColor),
-		NewLiver(40, 5),
-		NewHeart(50, 40),
-		NewBrain(50, 10),
-		NewLung(30, 30),
-		NewStomach(10, 40))
-	b.Connect(0, 1)
-	b.Connect(0, 2)
-	b.Connect(1, 2)
-	b.Connect(1, 3)
-	b.Connect(1, 4)
-	b.Connect(1, 5)
-	b.Connect(1, 6)
-
-	//b.Infect(0)
-	//b.Infect(1)
-	//b.Infect(2)
-	b.Infect(3)
-	//b.Infect(4)
-	//b.Infect(5)
-	//b.Infect(6)
-	b.InitVeins()
-	return b
+func (b *Body) InfectionPattern(pattern [][]int) {
+	b.infectionPattern = pattern
 }
 
 func (b *Body) VecIndex(v physics.Vector) int {
@@ -126,6 +87,14 @@ func (b *Body) VecIndex(v physics.Vector) int {
 		}
 	}
 	return -1
+}
+
+// MonitorInfections Monitors ongoing cleared organs, advancing to the next set
+// or beating the level when appropriate
+func (b *Body) MonitorInfections() {
+	go func() {
+		// Todo
+	}()
 }
 
 func spreadInfection(id int, nothing interface{}) int {

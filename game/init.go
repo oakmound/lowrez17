@@ -54,7 +54,7 @@ func Init() {
 	levels[Heart] = levels[Liver]
 
 	levelBodies = map[string]*Body{
-		"level1": DemoBody(),
+		"level1": Body1(),
 		"level2": DemoBody(),
 		"level3": DemoBody(),
 		"level4": DemoBody(),

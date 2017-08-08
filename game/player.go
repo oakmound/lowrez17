@@ -71,7 +71,7 @@ func leaveOrgan(_, _ *collision.Space) {
 				oak.SetScreen(0, 0)
 				traveler.active = true
 				select {
-				case <-waveExitCh:
+				case waveExitCh <- true:
 				default:
 				}
 			}

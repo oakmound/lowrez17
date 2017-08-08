@@ -21,7 +21,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	b := GetBody(inLevel.(string))
 
 	thisBody = b
-	var firstVein bool
+	var firstVein = true
 	var playerStart int
 	render.Draw(b.overlay, bodyOverlayLayer)
 	for i, n := range b.graph {
@@ -68,11 +68,13 @@ func LevelInit(prevScene string, inLevel interface{}) {
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
-		traveler.active = false
-		NewPlayer()
-		o.Place()
-		startupWalls()
-		startupPlayer()
+		if o.DiseaseLevel() > 0 {
+			traveler.active = false
+			NewPlayer()
+			o.Place()
+			startupWalls()
+			startupPlayer()
+		}
 	}
 	return 0
 }
