@@ -16,13 +16,15 @@ var (
 type VeinNode struct {
 	physics.Vector
 	*BodyButton
-	disease float64
+	Infectable
 }
 
 //NewVeinNode creates a vein node
-func NewVeinNode(x, y float64) *VeinNode {
+func NewVeinNode(x, y float64, veinColor color.Color) *VeinNode {
 	vn := &VeinNode{Vector: physics.NewVector(x, y)}
 	vn.BodyButton = NewBodyButton(veinNodeWidthf64, veinNodeWidthf64)
+	vn.diseaseRate = .0001
+	vn.r = render.NewReverting(render.NewColorBox(3, 3, veinColor))
 	return vn
 }
 
@@ -42,27 +44,31 @@ func (vn *VeinNode) Organ() (Organ, bool) {
 	return nil, false
 }
 
-func (vn *VeinNode) DiseaseLevel() float64 {
-	return vn.disease
-}
-func (vn *VeinNode) Infect(infection float64) bool {
-	out := vn.disease < 1
-	vn.disease = infection
-	return out
-}
-
 //A Vein is a graphical connection between nodes on the body
 type Vein struct {
 	*render.Sprite
 }
 
 //NewVein creates a Vein
-func NewVein(n1, n2 BodyNode, c1, c2 color.Color) *Vein {
+func NewVein(n1, n2 BodyNode, b *Body) *Vein {
+	v := new(Vein)
 	p1 := NodeCenter(n1)
 	p2 := NodeCenter(n2)
+	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, n1.DiseaseLevel())
+	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, n2.DiseaseLevel())
+	v.Sprite = render.NewGradientLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c2, c1, 0)
+	return v
+}
 
-	l := render.NewGradientLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c1, c2, 0)
-	return &Vein{l}
+func (v *Vein) Refresh(n1, n2 BodyNode, b *Body) {
+	p1 := NodeCenter(n1)
+	p2 := NodeCenter(n2)
+	p1.Sub(v.Vec())
+	p2.Sub(v.Vec())
+	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, n1.DiseaseLevel())
+	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, n2.DiseaseLevel())
+	rgba := v.GetRGBA()
+	render.DrawGradientLine(rgba, int(p1.X()), int(p1.Y()), int(p2.X()), int(p2.Y()), c2, c1, 0)
 }
 
 //TODO: Is this function in the right file?

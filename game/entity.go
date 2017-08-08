@@ -39,6 +39,13 @@ func (e *Entity) E() *Entity {
 	return e
 }
 
+func (e *Entity) Cleanup() {
+	e.UnbindAll()
+	collision.Remove(e.RSpace.Space)
+	e.R.UnDraw()
+	event.DestroyEntity(int(e.CID))
+}
+
 type HasE interface {
 	E() *Entity
 }
@@ -58,12 +65,15 @@ func (e *Entity) applyMovement() {
 }
 
 func bounceEntity(s1, s2 *collision.Space) {
-	e := event.GetEntity(int(s1.CID)).(HasE).E()
-	e.collided++
-	if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
-		physics.Push(psh, e)
-	} else {
-		e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
+	ent := event.GetEntity(int(s1.CID))
+	if hase, ok := ent.(HasE); ok {
+		e := hase.E()
+		e.collided++
+		if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
+			physics.Push(psh, e)
+		} else {
+			e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
+		}
 	}
 }
 

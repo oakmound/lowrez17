@@ -10,8 +10,7 @@ import (
 )
 
 var (
-	enemies          []*Enemy
-	destroyedEnemies int // for tracking wave progress, could use a channel
+	enemies []*Enemy
 )
 
 type Enemy struct {
@@ -27,15 +26,8 @@ func (e *Enemy) Init() event.CID {
 }
 
 func (e *Enemy) Destroy() {
-	destroyedEnemies++
+	enemyCh <- true
 	e.Cleanup()
-}
-
-func (e *Enemy) Cleanup() {
-	e.UnbindAll()
-	collision.Remove(e.RSpace.Space)
-	e.R.UnDraw()
-	event.DestroyEntity(int(e.CID))
 }
 
 type EnemyCreation func(x, y int, difficulty float64) *Enemy

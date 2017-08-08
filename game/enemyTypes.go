@@ -2,6 +2,7 @@ package game
 
 import (
 	"image/color"
+	"time"
 
 	"github.com/200sc/go-dist/intrange"
 	"github.com/oakmound/oak/render"
@@ -55,7 +56,18 @@ func NewMelee(x, y int, diff float64) *Enemy {
 }
 
 func NewRanged(x, y int, diff float64) *Enemy {
-	return nil
+	r := render.NewColorBox(8, 8, color.RGBA{170, 170, 170, 255})
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
+	e.Health = 50
+	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 2000), []float64{1.0},
+		[]*Action{NewAction(Shoot(1, 1, 2, color.RGBA{255, 255, 255, 255}, Opposing, 3*time.Second, .5, 10), 0)})
+	e.MoveSet = NewMoveSet([]float64{1.0, .2, 0.2, 1.0, 2.0},
+		Move(Left, 5),
+		Move(Forward, 5),
+		Move(Backward, 5),
+		Move(Right, 5),
+		Move(Wait, 30))
+	return e
 }
 
 func NewBoomer(x, y int, diff float64) *Enemy {

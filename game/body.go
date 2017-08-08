@@ -3,7 +3,6 @@ package game
 import (
 	"image/color"
 
-	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 )
@@ -13,7 +12,9 @@ type Body struct {
 	veinColor, veinColor2 color.RGBA
 	graph                 []BodyNode
 	adjacency             [][]int
-	infected, cleansed    []int
+	veins                 [][]*Vein
+	infected              []int
+	cleansed              map[int]bool
 }
 
 // Connect connects two bodyNodes on a body, and returns whether
@@ -52,13 +53,19 @@ func (b *Body) IsAdjacent(i, j int) bool {
 	return false
 }
 
+func (b *Body) InitVeins() {
+	w := len(b.graph)
+	b.veins = make([][]*Vein, w)
+	for i := range b.veins {
+		b.veins[i] = make([]*Vein, w)
+	}
+}
+
 // Infect infects organs that have not previously been cleansed.
 // If an organ is not already infected it is then added to the body's diseased organs list.
 func (b *Body) Infect(i int) {
-	for j := range b.cleansed {
-		if j == i {
-			return
-		}
+	if _, ok := b.cleansed[i]; ok {
+		return
 	}
 	if b.graph[i].Infect(.3) {
 		b.infected = append(b.infected, i)
@@ -72,19 +79,20 @@ type BodyNode interface {
 	Dims() (int, int)
 	SetPos(physics.Vector)
 	Organ() (Organ, bool)
+	Infect(...float64) bool
 	DiseaseLevel() float64
-	Infect(float64) bool
+	R() render.Modifiable
 }
 
 func DemoBody() *Body {
 	b := new(Body)
 	b.infected = []int{}
-	b.cleansed = []int{}
+	b.cleansed = make(map[int]bool)
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewVeinNode(10, 10),
-		NewVeinNode(15, 20),
+	b.AddNodes(NewVeinNode(10, 10, b.veinColor),
+		NewVeinNode(15, 20, b.veinColor),
 		NewLiver(40, 5),
 		NewHeart(50, 40),
 		NewBrain(50, 10),
@@ -105,9 +113,7 @@ func DemoBody() *Body {
 	//b.Infect(4)
 	//b.Infect(5)
 	//b.Infect(6)
-
-	event.GlobalBind(SpreadInfection, "EnterFrame")
-
+	b.InitVeins()
 	return b
 }
 
@@ -122,10 +128,18 @@ func (b *Body) VecIndex(v physics.Vector) int {
 	return -1
 }
 
-func SpreadInfection(id int, nothing interface{}) int {
-	for _, o := range thisBody.infected {
-		thisBody.graph[o].Infect(.5)
-		//fmt.Println("Infecting more of ", o)
+func spreadInfection(id int, nothing interface{}) int {
+	if traveler.active {
+		for i, n := range thisBody.graph {
+			if n.DiseaseLevel() > 0 {
+				n.Infect()
+				for j, v := range thisBody.veins[i] {
+					if v != nil {
+						v.Refresh(n, thisBody.graph[j], thisBody)
+					}
+				}
+			}
+		}
 	}
 	return 0
 }

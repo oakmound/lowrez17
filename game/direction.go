@@ -7,6 +7,7 @@ const (
 	Backward
 	Left
 	Right
+	Wait
 )
 
 func (dir Direction) Move() *Action {
@@ -19,6 +20,8 @@ func (dir Direction) Move() *Action {
 		return MoveLeft
 	case Right:
 		return MoveRight
+	case Wait:
+		return NewAction(func(*Entity) {}, 0)
 	}
 	return nil
 }

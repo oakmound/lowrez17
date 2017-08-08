@@ -1,13 +1,11 @@
 package game
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math/rand"
 	"time"
 
-	"github.com/200sc/go-dist/intrange"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
@@ -18,22 +16,16 @@ import (
 type Organ interface {
 	BodyNode
 	Place()
-	R() render.Modifiable
 }
 
 type basicOrgan struct {
 	physics.Vector
 	*BodyButton
-	r             render.Modifiable
-	tiles         [][]Tile
-	typ           OrganType
-	waves         []Wave
-	w, h, disease float64
-}
-
-func (b *basicOrgan) R() render.Modifiable {
-	return b.r.Modify(render.Fade(int(b.disease * 200))).(*render.Sprite)
-
+	Infectable
+	tiles [][]Tile
+	typ   OrganType
+	waves []Wave
+	w, h  float64
 }
 
 func (b *basicOrgan) Place() {
@@ -43,47 +35,9 @@ func (b *basicOrgan) Place() {
 			t.Place(x, y, b.typ)
 		}
 	}
-	go timing.DoAfter(time.Second, func() { b.PlaceWave(0) })
-}
-
-//DiseaseLevel gets the current disease level for the organ
-func (b *basicOrgan) DiseaseLevel() float64 {
-	return b.disease
-}
-
-// DiseaseLevel adds the given float as a percent to the current disease factor returns true that this has been infected
-func (b *basicOrgan) Infect(infection float64) bool {
-	out := b.disease < 1
-	if b.disease > -1 {
-		b.disease += infection
-	} else {
-		b.disease = infection
-	}
-	if b.disease > 1 {
-		b.disease = 1
-	}
-	return out
-}
-
-func (b *basicOrgan) PlaceWave(index int) {
-	fmt.Println("Placing Wave", index)
-	// This assumes most territory is open
-	wrange := intrange.NewLinear(0, len(b.tiles)-1)
-	hrange := intrange.NewLinear(0, len(b.tiles[0])-1)
-	es := b.waves[index].Poll()
-	for _, t := range es {
-		x := wrange.Poll()
-		y := hrange.Poll()
-		for b.tiles[x][y] != Open {
-			fmt.Println(b.tiles[x][y], x, y)
-			x = wrange.Poll()
-			y = hrange.Poll()
-		}
-		e := enemyFns[t][b.typ](x, y, b.waves[index].Difficulty)
-		enemies = append(enemies, e)
-	}
-	// Todo: check what wave is active, time the next wave, clear organ when
-	// last wave cleared
+	go timing.DoAfter(time.Second, func() {
+		go handleWaves(b.waves, b.tiles, b.typ)
+	})
 }
 
 func (b *basicOrgan) SetPos(v physics.Vector) {
@@ -103,7 +57,7 @@ func (b *basicOrgan) Organ() (Organ, bool) {
 func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganType) *basicOrgan {
 	bo := &basicOrgan{}
 	bo.Vector = physics.NewVector(x, y)
-	bo.r = r
+	bo.r = render.NewReverting(r)
 	// for now this is a test map, each NewXXX function will populate this themsleves
 	//bo.tiles = ShapeTiles(shape.Heart, 64, 64)
 	//bo.tiles[32][50] = Exit
@@ -111,10 +65,11 @@ func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganTyp
 	bo.typ = typ
 	bo.BodyButton = NewBodyButton(float64(w), float64(h))
 	bo.waves = []Wave{
-		Wave{SmallMeleeDist, 1.0, 10 * time.Second},
-		Wave{LargeMeleeDist, 1.0, 30 * time.Second}}
+		Wave{SmallRangedDist, 1.0, 10 * time.Second},
+		Wave{SmallMeleeDist, 1.0, 30 * time.Second}}
 	bo.w = w
 	bo.h = h
+	bo.diseaseRate = .0001
 	return bo
 }
 

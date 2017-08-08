@@ -40,22 +40,21 @@ func LevelInit(prevScene string, body interface{}) {
 			}
 			firstVein = false
 			// We could modify color at nodes
-			r := render.NewColorBox(veinNodeWidth, veinNodeWidth, b.veinColor)
+			r := n.R()
 			pos.Sub(physics.NewVector(1, 1))
 			r.SetPos(pos.X(), pos.Y())
 			n.SetPos(pos)
 			render.Draw(r, veinLayer)
-
 		}
 	}
 	// This will draw all veins twice
 	for i, list := range b.adjacency {
 		for _, j := range list {
 			if i > j {
-				v := NewVein(b.graph[i], b.graph[j],
-					render.GradientColorAt(b.veinColor, b.veinColor2, b.graph[j].DiseaseLevel()),
-					render.GradientColorAt(b.veinColor, b.veinColor2, b.graph[i].DiseaseLevel()))
+				v := NewVein(b.graph[i], b.graph[j], b)
 				render.Draw(v, veinLayer)
+				b.veins[i][j] = v
+				b.veins[j][i] = v
 			}
 		}
 	}
@@ -64,6 +63,7 @@ func LevelInit(prevScene string, body interface{}) {
 	traveler = NewBodyTraveler(pos.X(), pos.Y())
 	// Bindings ...
 	event.GlobalBind(enterOrgan, "HitNode")
+	event.GlobalBind(spreadInfection, "EnterFrame")
 }
 
 //

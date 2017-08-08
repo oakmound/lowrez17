@@ -63,6 +63,10 @@ func leaveOrgan(_, _ *collision.Space) {
 		CleanupEnemies()
 		oak.SetScreen(0, 0)
 		traveler.active = true
+		select {
+		case <-waveExitCh:
+		default:
+		}
 	}
 }
 
