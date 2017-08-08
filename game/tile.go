@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/200sc/go-dist/colorrange"
@@ -59,11 +60,11 @@ var (
 			Anchor:      colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
 		},
 		Lung: {
-			Open:        colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
+			Open:        colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
 			Blocked:     colorrange.NewLinear(color.RGBA{30, 35, 40, 254}, color.RGBA{40, 60, 90, 254}),
 			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
-			PlayerStart: colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
-			Anchor:      colorrange.NewLinear(color.RGBA{100, 120, 125, 254}, color.RGBA{190, 200, 210, 254}),
+			PlayerStart: colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
+			Anchor:      colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
 		},
 		Stomach: {
 			Open:        colorrange.NewLinear(color.RGBA{230, 230, 5, 254}, color.RGBA{254, 254, 140, 254}),
@@ -112,5 +113,5 @@ func CleanupTiles() {
 	tileSpaces = []*collision.Space{}
 	anchors = []physics.Vector{}
 	walls = []physics.Vector{}
-	// Todo: clean up enemies
+	fmt.Println("Tiles cleaned up")
 }

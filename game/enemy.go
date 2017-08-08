@@ -9,6 +9,11 @@ import (
 	"github.com/oakmound/oak/render"
 )
 
+var (
+	enemies          []*Enemy
+	destroyedEnemies int // for tracking wave progress, could use a channel
+)
+
 type Enemy struct {
 	Entity
 	Health int
@@ -21,9 +26,20 @@ func (e *Enemy) Init() event.CID {
 	return e.CID
 }
 
-type EnemyFn func(x, y int, difficulty float64) *Enemy
+func (e *Enemy) Destroy() {
+	destroyedEnemies++
+	e.Cleanup()
+}
 
-//NewEnemy
+func (e *Enemy) Cleanup() {
+	e.UnbindAll()
+	collision.Remove(e.RSpace.Space)
+	e.R.UnDraw()
+	event.DestroyEntity(int(e.CID))
+}
+
+type EnemyCreation func(x, y int, difficulty float64) *Enemy
+
 func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64) (e *Enemy) {
 	e = new(Enemy)
 	e.Entity = *NewEntity(x, y, w, h, r, e.Init(), friction, mass)
@@ -43,6 +59,7 @@ func enemyEnter(id int, frame interface{}) int {
 	e := event.GetEntity(id).(*Enemy)
 	if e.Health < 1 {
 		fmt.Println("An enemy is dead!")
+		e.Destroy()
 	}
 	center := e.CenterPos()
 	e.Dir = player.Vec().Copy().Sub(center).Normalize()
@@ -53,8 +70,17 @@ func enemyEnter(id int, frame interface{}) int {
 }
 
 func hitEnemy(s1, s2 *collision.Space) {
-	// This will need work
-	e := event.GetEntity(int(s1.CID)).(*Enemy)
-	e.Health--
-	bounceEntity(s1, s2)
+	ent := event.GetEntity(int(s1.CID))
+	if e, ok := ent.(*Enemy); ok {
+		e.Health--
+		bounceEntity(s1, s2)
+	}
+}
+
+func CleanupEnemies() {
+	for _, e := range enemies {
+		e.Cleanup()
+	}
+	enemies = []*Enemy{}
+	fmt.Println("Enemies cleaned up")
 }
