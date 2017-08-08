@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/oakmound/oak/collision"
@@ -30,6 +31,10 @@ func (bb *BodyButton) SetPos(v physics.Vector) {
 func (bb *BodyButton) IsTravelerAdjacent() bool {
 	thisIndex := thisBody.VecIndex(bb.CenterPos())
 	travelIndex := thisBody.VecIndex(traveler.CenterPos())
+	if thisIndex == -1 || travelIndex == -1 {
+		fmt.Println("Vector not on body:", thisIndex, travelIndex)
+		return false
+	}
 	return thisBody.IsAdjacent(thisIndex, travelIndex)
 }
 

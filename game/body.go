@@ -117,11 +117,10 @@ func DemoBody() *Body {
 	return b
 }
 
-//VecIndex
 func (b *Body) VecIndex(v physics.Vector) int {
 	for i, n := range b.graph {
 		dist := NodeCenter(n).Distance(v)
-		if dist < 2 {
+		if dist < 3 {
 			return i
 		}
 	}

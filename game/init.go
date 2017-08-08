@@ -19,6 +19,7 @@ var (
 		Brain:   [][][]Tile{},
 		Heart:   [][][]Tile{},
 	}
+	levelBodies = map[string]*Body{}
 )
 
 func Init() {
@@ -44,7 +45,6 @@ func Init() {
 	for i := 1; i < 6; i++ {
 		s := "liver" + strconv.Itoa(i) + ".png"
 		sp := render.LoadSprite(filepath.Join("raw", s))
-		fmt.Println(s, sp)
 		ts := ImageTiles(sp.GetRGBA())
 		levels[Liver] = append(levels[Liver], ts)
 	}
@@ -53,4 +53,12 @@ func Init() {
 	levels[Lung] = levels[Liver]
 	levels[Brain] = levels[Liver]
 	levels[Heart] = levels[Liver]
+
+	levelBodies = map[string]*Body{
+		"level1": DemoBody(),
+		"level2": DemoBody(),
+		"level3": DemoBody(),
+		"level4": DemoBody(),
+		"level5": DemoBody(),
+	}
 }

@@ -30,7 +30,6 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 			x := wrange.Poll()
 			y := hrange.Poll()
 			for tiles[x][y] != Open {
-				fmt.Println(tiles[x][y], x, y)
 				x = wrange.Poll()
 				y = hrange.Poll()
 			}

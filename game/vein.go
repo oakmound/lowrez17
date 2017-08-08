@@ -24,7 +24,7 @@ func NewVeinNode(x, y float64, veinColor color.Color) *VeinNode {
 	vn := &VeinNode{Vector: physics.NewVector(x, y)}
 	vn.BodyButton = NewBodyButton(veinNodeWidthf64, veinNodeWidthf64)
 	vn.diseaseRate = .0001
-	vn.r = render.NewReverting(render.NewColorBox(3, 3, veinColor))
+	vn.r = render.NewReverting(render.NewColorBox(veinNodeWidth, veinNodeWidth, veinColor))
 	return vn
 }
 

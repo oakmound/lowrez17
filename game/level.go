@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -17,12 +15,11 @@ var (
 )
 
 //LevelInit sets up a level
-func LevelInit(prevScene string, body interface{}) {
-	fmt.Println("Input", body)
+func LevelInit(prevScene string, inLevel interface{}) {
+
 	Init()
-	// b := body.(Body)
-	// Will remove this once we actually get bodies into scenes
-	b := DemoBody()
+	b := GetBody(inLevel.(string))
+
 	thisBody = b
 	var firstVein bool
 	var playerStart int
@@ -69,7 +66,6 @@ func LevelInit(prevScene string, body interface{}) {
 	event.GlobalBind(spreadInfection, "EnterFrame")
 }
 
-//
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
