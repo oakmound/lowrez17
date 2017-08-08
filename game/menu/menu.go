@@ -3,6 +3,7 @@ package menu
 import (
 	"image/color"
 	"path/filepath"
+	"strconv"
 
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
@@ -16,6 +17,7 @@ var (
 	currentLevel  = 0
 	sceneContinue = true
 	nextScene     = "menu"
+	levelData     = ""
 )
 
 func StartScene(string, interface{}) {
@@ -40,7 +42,10 @@ func LoopScene() bool {
 
 func EndScene() (string, *oak.SceneResult) {
 	sceneContinue = false
-	return nextScene, nil
+	return nextScene, &oak.SceneResult{
+		levelData,
+		oak.TransitionFade(.001, 700),
+	}
 }
 
 type Player struct {
@@ -93,22 +98,45 @@ func playerStop(s1, s2 *collision.Space) {
 
 func triggerInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
-	var err error
 	switch label.(collision.Label) {
+	case level1:
+		levelData = "level1"
+		setLevelInteracts(p)
+	case level2:
+		levelData = "level2"
+		setLevelInteracts(p)
+	case level3:
+		levelData = "level3"
+		setLevelInteracts(p)
+	case level4:
+		levelData = "level4"
+		setLevelInteracts(p)
+	case level5:
+		levelData = "level5"
+		setLevelInteracts(p)
+	case endurance:
+		levelData = "endurance"
 	case nextLevel:
-		p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1, []int{0, 0, 1, 0})
-		// I tried using attachment here, it was bugged?
-		p.interactR.SetPos(p.X()-1, p.Y()-8)
-		if err != nil {
-			dlog.Error(err)
-		}
-		render.Draw(p.interactR, uiLayer)
-		p.interactFn = func() {
-			nextScene = "level"
-			sceneContinue = false
-		}
+		levelData = "level" + strconv.Itoa(currentLevel+1)
+		// Todo: don't try to go to level6, reset to 0
+		setLevelInteracts(p)
 	}
 	return 0
+}
+
+func setLevelInteracts(p *Player) {
+	var err error
+	p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1, []int{0, 0, 1, 0})
+	// I tried using attachment here, it was bugged?
+	p.interactR.SetPos(p.X()-1, p.Y()-8)
+	if err != nil {
+		dlog.Error(err)
+	}
+	render.Draw(p.interactR, uiLayer)
+	p.interactFn = func() {
+		nextScene = "level"
+		sceneContinue = false
+	}
 }
 
 func unbindInteractive(id int, label interface{}) int {
@@ -117,6 +145,7 @@ func unbindInteractive(id int, label interface{}) int {
 		p.Vector = p.Vector.Detach()
 		p.interactFn = nil
 		p.interactR.UnDraw()
+		levelData = ""
 	}
 	return 0
 }

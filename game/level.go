@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -16,6 +18,7 @@ var (
 
 //LevelInit sets up a level
 func LevelInit(prevScene string, body interface{}) {
+	fmt.Println("Input", body)
 	Init()
 	// b := body.(Body)
 	// Will remove this once we actually get bodies into scenes
