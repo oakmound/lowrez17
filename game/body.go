@@ -3,7 +3,6 @@ package game
 import (
 	"image/color"
 
-	"fmt"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
