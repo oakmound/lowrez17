@@ -50,8 +50,12 @@ func LevelInit(prevScene string, body interface{}) {
 	// This will draw all veins twice
 	for i, list := range b.adjacency {
 		for _, j := range list {
-			v := NewVein(b.graph[i], b.graph[j], b.veinColor)
-			render.Draw(v, veinLayer)
+			if i > j {
+				v := NewVein(b.graph[i], b.graph[j],
+					render.GradientColorAt(b.veinColor, b.veinColor2, b.graph[j].DiseaseLevel()),
+					render.GradientColorAt(b.veinColor, b.veinColor2, b.graph[i].DiseaseLevel()))
+				render.Draw(v, veinLayer)
+			}
 		}
 	}
 	// Place player

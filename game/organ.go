@@ -24,15 +24,16 @@ type Organ interface {
 type basicOrgan struct {
 	physics.Vector
 	*BodyButton
-	r     *render.Sprite
-	tiles [][]Tile
-	typ   OrganType
-	waves []Wave
-	w, h  float64
+	r             *render.Sprite
+	tiles         [][]Tile
+	typ           OrganType
+	waves         []Wave
+	w, h, disease float64
 }
 
 func (b *basicOrgan) R() render.Modifiable {
-	return b.r
+	return b.r.Modify(render.Fade(int(b.disease * 200))).(*render.Sprite)
+
 }
 
 func (b *basicOrgan) Place() {
@@ -43,6 +44,25 @@ func (b *basicOrgan) Place() {
 		}
 	}
 	go timing.DoAfter(time.Second, func() { b.PlaceWave(0) })
+}
+
+//DiseaseLevel gets the current disease level for the organ
+func (b *basicOrgan) DiseaseLevel() float64 {
+	return b.disease
+}
+
+// DiseaseLevel adds the given float as a percent to the current disease factor returns true that this has been infected
+func (b *basicOrgan) Infect(infection float64) bool {
+	out := b.disease < 1
+	if b.disease > -1 {
+		b.disease += infection
+	} else {
+		b.disease = infection
+	}
+	if b.disease > 1 {
+		b.disease = 1
+	}
+	return out
 }
 
 func (b *basicOrgan) PlaceWave(index int) {

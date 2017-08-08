@@ -16,6 +16,7 @@ var (
 type VeinNode struct {
 	physics.Vector
 	*BodyButton
+	disease float64
 }
 
 //NewVeinNode creates a vein node
@@ -41,17 +42,26 @@ func (vn *VeinNode) Organ() (Organ, bool) {
 	return nil, false
 }
 
+func (vn *VeinNode) DiseaseLevel() float64 {
+	return vn.disease
+}
+func (vn *VeinNode) Infect(infection float64) bool {
+	out := vn.disease < 1
+	vn.disease = infection
+	return out
+}
+
 //A Vein is a graphical connection between nodes on the body
 type Vein struct {
 	*render.Sprite
 }
 
 //NewVein creates a Vein
-func NewVein(n1, n2 BodyNode, c color.Color) *Vein {
+func NewVein(n1, n2 BodyNode, c1, c2 color.Color) *Vein {
 	p1 := NodeCenter(n1)
 	p2 := NodeCenter(n2)
 
-	l := render.NewLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c)
+	l := render.NewGradientLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c1, c2, 0)
 	return &Vein{l}
 }
 
