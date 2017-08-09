@@ -31,7 +31,7 @@ func NewPlayer() *Player {
 		e := new(Player)
 		s := render.GetSheet(filepath.Join("8x8", "lowerlevelplayer.png"))[1][0].Copy().Modify(render.FlipX)
 		r := render.NewReverting(s)
-		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 10)
+		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 13)
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)

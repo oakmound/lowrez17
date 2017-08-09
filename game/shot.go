@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 	"time"
 
@@ -29,7 +28,6 @@ func MakeShot(pos physics.Vector, dir physics.Vector, speed, accel float64, w in
 	s.Dir = dir.Copy()
 	s.accel = accel
 	s.Speed = dir.Copy().Scale(speed)
-	fmt.Println(s.Speed.X(), s.Speed.Y())
 	s.speedMax = 10
 	s.RSpace.Space.UpdateLabel(label)
 	render.Draw(s.R, entityLayer)

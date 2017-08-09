@@ -1,8 +1,6 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/oakmound/lowrez17/game"
 	"github.com/oakmound/lowrez17/game/menu"
 	"github.com/oakmound/oak"
@@ -18,10 +16,10 @@ func main() {
 		game.LevelInit,
 		game.LevelLoop,
 		game.LevelEnd)
-	grayScale := []color.Color{}
-	for i := uint8(0); i < 127; i++ {
-		grayScale = append(grayScale, color.RGBA{i * 2, i * 2, i * 2, 255})
-	}
-	oak.SetPalette(grayScale)
+	// grayScale := []color.Color{}
+	// for i := uint8(0); i < 127; i++ {
+	// 	grayScale = append(grayScale, color.RGBA{i * 2, i * 2, i * 2, 255})
+	// }
+	// oak.SetPalette(grayScale)
 	oak.Init("menu")
 }

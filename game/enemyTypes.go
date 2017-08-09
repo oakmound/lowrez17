@@ -49,7 +49,7 @@ func NewMelee(x, y int, diff float64) *Enemy {
 	r := render.NewColorBox(8, 8, color.RGBA{120, 120, 120, 255})
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
 	e.Health = 70
-	e.AttackSet = NewAttackSet(intrange.NewLinear(500, 1500),
+	e.AttackSet = NewAttackSet(intrange.NewLinear(2000, 4000),
 		[]float64{1.0},
 		[]*Action{NewAction(SwordDash(Opposing), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 0.1, 0.1},
