@@ -13,7 +13,7 @@ type Body struct {
 	graph                 []BodyNode
 	adjacency             [][]int
 	veins                 [][]*Vein
-	infected              []int
+	infected              []int 
 	cleansed              map[int]bool
 	complete              bool
 	infectionPattern      [][]int
