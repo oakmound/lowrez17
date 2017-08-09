@@ -24,6 +24,11 @@ var (
 	MoveBackward = NewAction((*Entity).moveBack, 0)
 	MoveRight    = NewAction((*Entity).moveRight, 0)
 	MoveLeft     = NewAction((*Entity).moveLeft, 0)
+
+	TeleportForward  = func(d float64) *Action { return NewAction(func(e *Entity) { e.teleportForward(d) }, 0) }
+	TeleportBackward = func(d float64) *Action { return NewAction(func(e *Entity) { e.teleportBack(d) }, 0) }
+	TeleportRight    = func(d float64) *Action { return NewAction(func(e *Entity) { e.teleportRight(d) }, 0) }
+	TeleportLeft     = func(d float64) *Action { return NewAction(func(e *Entity) { e.teleportLeft(d) }, 0) }
 )
 
 func (a *Action) MustDo(e HasE) {

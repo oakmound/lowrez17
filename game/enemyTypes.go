@@ -49,7 +49,9 @@ func NewMelee(x, y int, diff float64) *Enemy {
 	r := render.NewColorBox(8, 8, color.RGBA{120, 120, 120, 255})
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
 	e.Health = 50
-	e.AttackSet = NewAttackSet(intrange.NewLinear(500, 1500), []float64{1.0}, []*Action{NewAction(SwordDash(Opposing), 0)})
+	e.AttackSet = NewAttackSet(intrange.NewLinear(500, 1500),
+		[]float64{1.0},
+		[]*Action{NewAction(SwordDash(Opposing), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 0.1, 0.1},
 		Move(Left, 2),
 		Move(Forward, 1),
@@ -62,7 +64,8 @@ func NewRanged(x, y int, diff float64) *Enemy {
 	r := render.NewColorBox(8, 8, color.RGBA{170, 170, 170, 255})
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
 	e.Health = 50
-	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 2000), []float64{1.0},
+	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 2000),
+		[]float64{1.0},
 		[]*Action{NewAction(Shoot(1, 1, 2, color.RGBA{255, 255, 255, 255}, Opposing, 3*time.Second, .5, 2), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, .2, 0.2, 1.0, 2.0},
 		Move(Left, 5),
@@ -108,7 +111,19 @@ func explode(id int, nothing interface{}) int {
 }
 
 func NewWizard(x, y int, diff float64) *Enemy {
-	return nil
+	r := render.NewColorBox(12, 12, color.RGBA{200, 120, 120, 255})
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 12, 12, r, 0.2, 20, 0.05, 2)
+	e.Health = 150
+	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
+		[]float64{1.0, 1.0},
+		[]*Action{NewAction(Shoot(1, 1.2, 4, color.RGBA{190, 20, 20, 190}, Opposing, 5*time.Second, .25, 1), 0)})
+	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 1.0, 1.0, 1.0},
+		Teleport(Left, 15),
+		Teleport(Forward, 5),
+		Teleport(Backward, 5),
+		Teleport(Right, 15),
+		Move(Wait, 45))
+	return e
 }
 
 func NewDasher(x, y int, diff float64) *Enemy {

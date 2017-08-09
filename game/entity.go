@@ -93,6 +93,23 @@ func (e *Entity) moveLeft() {
 	e.Delta.Add(e.Dir.Copy().Rotate(90).Scale(-e.Speed.X()))
 	e.moveHoriz = true
 }
+
+func (e *Entity) teleportForward(distance float64) {
+	e.Vector.Add(e.Dir.Copy().Scale(distance))
+}
+
+func (e *Entity) teleportBack(distance float64) {
+	e.Vector.Add(e.Dir.Copy().Scale(-distance))
+}
+
+func (e *Entity) teleportRight(distance float64) {
+	e.Vector.Add(e.Dir.Copy().Rotate(90).Scale(distance))
+}
+
+func (e *Entity) teleportLeft(distance float64) {
+	e.Vector.Add(e.Dir.Copy().Rotate(90).Scale(-distance))
+}
+
 func (e *Entity) scaleDiagonal() {
 	if e.moveHoriz && e.moveVert {
 		e.Delta.Scale(.8)

@@ -33,3 +33,25 @@ func Move(dir Direction, n int) []*Action {
 	}
 	return out
 }
+
+func (dir Direction) Teleport(distance float64) *Action {
+	switch dir {
+	case Forward:
+		return TeleportForward(distance)
+	case Backward:
+		return TeleportBackward(distance)
+	case Left:
+		return TeleportLeft(distance)
+	case Right:
+		return TeleportRight(distance)
+	}
+	return nil
+}
+
+func Teleport(dir Direction, distance float64) []*Action {
+	// Todo: preparatory / ending actions
+	return []*Action{
+		dir.Teleport(distance),
+	}
+}
+
