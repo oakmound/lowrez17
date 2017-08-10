@@ -40,6 +40,7 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 	e.Dir = physics.NewVector(1, 0)
 	e.Speed = physics.NewVector(speed, speed)
 	e.RSpace.Add(collision.Label(Ally), hitEnemy)
+	e.RSpace.Add(collision.Label(Acid), hurtEnemy)
 
 	e.speedMax = maxSpeed
 
@@ -58,6 +59,13 @@ func enemyEnter(id int, frame interface{}) int {
 	e.move(frame.(int), e)
 	e.applyMovement()
 	return 0
+}
+
+func hurtEnemy(s1, _ *collision.Space) {
+	ent := event.GetEntity(int(s1.CID))
+	if e, ok := ent.(*Enemy); ok {
+		e.Health--
+	}
 }
 
 func hitEnemy(s1, s2 *collision.Space) {

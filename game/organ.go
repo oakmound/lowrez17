@@ -111,6 +111,10 @@ func ImageTiles(rgba *image.RGBA) [][]Tile {
 				out[x][y] = Anchor
 			case color.RGBA{0, 148, 255, 255}:
 				out[x][y] = PressureFan
+			case color.RGBA{255, 106, 0, 255}:
+				out[x][y] = Acid
+			case color.RGBA{255, 0, 0, 255}:
+				out[x][y] = Ventricle
 			}
 		}
 	}

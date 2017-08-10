@@ -79,6 +79,7 @@ var (
 		Exit:        addTileSpace(collision.Label(Exit)),
 		Anchor:      addTo(&anchors),
 		PressureFan: addTo(&fans),
+		Acid:        addTileSpace(collision.Label(Acid)),
 	}
 	tileRs     = []render.Renderable{}
 	tileSpaces = []*collision.Space{}
