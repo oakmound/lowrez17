@@ -27,6 +27,7 @@ var (
 
 func NewVent(x, y int, r render.Renderable) {
 	v := new(Vent)
+	v.Init()
 	m1 := r.(render.Modifiable)
 	m2 := render.NewColorBox(tileDim, tileDim, openVentColor.Poll())
 	v.cmp = render.NewCompound("closed", map[string]render.Modifiable{
