@@ -41,15 +41,20 @@ func Init() {
 	images["midbrain"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[4][0].Copy()
 	images["midbrain"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
-	for i := 1; i < 6; i++ {
-		s := "liver" + strconv.Itoa(i) + ".png"
-		sp := render.LoadSprite(filepath.Join("raw", s))
-		ts := ImageTiles(sp.GetRGBA())
-		levels[Liver] = append(levels[Liver], ts)
+	levelTypes := map[string]OrganType{
+		"liver": Liver,
+		"lung":  Lung,
+	}
+	for k, v := range levelTypes {
+		for i := 1; i < 6; i++ {
+			s := k + strconv.Itoa(i) + ".png"
+			sp := render.LoadSprite(filepath.Join("raw", s))
+			ts := ImageTiles(sp.GetRGBA())
+			levels[v] = append(levels[v], ts)
+		}
 	}
 	// Placeholder
 	levels[Stomach] = levels[Liver]
-	levels[Lung] = levels[Liver]
 	levels[Brain] = levels[Liver]
 	levels[Heart] = levels[Liver]
 

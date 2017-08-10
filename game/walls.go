@@ -11,14 +11,13 @@ import (
 var (
 	anchors = []physics.Vector{}
 	walls   = []physics.Vector{}
+	fans    = []physics.Vector{}
 )
 
-func addAnchor(x, y int) {
-	anchors = append(anchors, physics.NewVector(float64(x)*tileDimf64, float64(y)*tileDimf64))
-}
-
-func addWall(x, y int) {
-	walls = append(walls, physics.NewVector(float64(x)*tileDimf64, float64(y)*tileDimf64))
+func addTo(vs *[]physics.Vector) func(x, y int) {
+	return func(x, y int) {
+		*vs = append(*vs, physics.NewVector(float64(x)*tileDimf64, float64(y)*tileDimf64))
+	}
 }
 
 func startupWalls() {
@@ -38,5 +37,34 @@ func startupWalls() {
 			physics.NewForceVector(w.Sub(minV).Normalize(), 10))
 		collision.Add(ds.Space)
 		tileSpaces = append(tileSpaces, ds.Space)
+	}
+}
+
+func startupFans() {
+	if len(fans) > 1 {
+		f := fans[0]
+		fans = fans[1:]
+		for len(fans) > 0 {
+			// Find a close by second fan
+			dist := f.Distance(fans[0])
+			minFan := 0
+			for i := 1; i < len(fans); i++ {
+				d := f.Distance(fans[i])
+				if d < dist {
+					minFan = i
+					dist = d
+				}
+			}
+			// set the direction of the fan to be towards that close second fan
+			ds := NewDirectionSpace(collision.NewLabeledSpace(f.X()-tileDimf64, f.Y()-tileDimf64, tileDimf64*3, tileDimf64*3, collision.Label(PressureFan)),
+				physics.NewForceVector(f.Sub(fans[minFan]).Normalize(), 5))
+			collision.Add(ds.Space)
+			tileSpaces = append(tileSpaces, ds.Space)
+
+			// update current fan, reduce length of list
+			fans[0], fans[minFan] = fans[minFan], fans[0]
+			f = fans[0]
+			fans = fans[1:]
+		}
 	}
 }

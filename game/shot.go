@@ -53,7 +53,7 @@ func shotEnter(id int, nothing interface{}) int {
 
 func shotBlocked(s1, s2 *collision.Space) {
 	ent := event.GetEntity(int(s1.CID))
-	if sh, ok := ent.(*Shot); ok {
+	if sh, ok := ent.(*Shot); ok && sh != nil {
 		sh.Cleanup()
 	}
 	// Todo: hurt organ

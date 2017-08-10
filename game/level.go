@@ -73,6 +73,7 @@ func enterOrgan(no int, nothing interface{}) int {
 			NewPlayer()
 			o.Place()
 			startupWalls()
+			startupFans()
 			startupPlayer()
 		}
 	}
