@@ -1,0 +1,16 @@
+I'm thinking something like this for the five bodies,
+where the organs that are infected simultaenously are those in parens with eachother
+
+Lung Liver
+
+(Liver Stomach) Heart Lung
+
+(Stomach Heart Liver) Stomach
+
+(Lung Stomach) (Brain Liver) Heart
+
+(Liver Heart Stomach) (Brain Lung Lung Heart) (Brain)
+
+
+
+This way everything shows up 5 times except for brain
