@@ -70,9 +70,9 @@ var (
 			Acid:    colorrange.NewLinear(color.RGBA{0, 0, 200, 255}, color.RGBA{40, 40, 255, 255}),
 		},
 	}
-	tileInit = map[Tile]func(x, y int){
-		Open: func(int, int) {},
-		PlayerStart: func(x, y int) {
+	tileInit = map[Tile]func(x, y int, r render.Renderable){
+		Open: func(int, int, render.Renderable) {},
+		PlayerStart: func(x, y int, r render.Renderable) {
 			player.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 		},
 		Blocked:     addTo(&walls),
@@ -80,6 +80,17 @@ var (
 		Anchor:      addTo(&anchors),
 		PressureFan: addTo(&fans),
 		Acid:        addTileSpace(collision.Label(Acid)),
+		Ventricle:   NewVent,
+	}
+	tileDraw = map[Tile]bool{
+		Open:        true,
+		PlayerStart: true,
+		Blocked:     true,
+		Exit:        true,
+		Anchor:      true,
+		PressureFan: true,
+		Acid:        true,
+		Ventricle:   false,
 	}
 	tileRs     = []render.Renderable{}
 	tileSpaces = []*collision.Space{}
@@ -92,14 +103,16 @@ func (t Tile) Place(x, y int, typ OrganType) {
 		c = tileColors[typ][Open]
 	}
 	cb := render.NewColorBox(tileDim, tileDim, c.Poll())
-	cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
-	render.Draw(cb, tileLayer)
-	tileInit[t](x, y)
+	if tileDraw[t] {
+		cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
+		render.Draw(cb, tileLayer)
+	}
+	tileInit[t](x, y, cb)
 	tileRs = append(tileRs, cb)
 }
 
-func addTileSpace(l collision.Label) func(x, y int) {
-	return func(x, y int) {
+func addTileSpace(l collision.Label) func(x, y int, r render.Renderable) {
+	return func(x, y int, r render.Renderable) {
 		s := collision.NewLabeledSpace(float64(x)*tileDimf64, float64(y)*tileDimf64, tileDimf64, tileDimf64, l)
 		collision.Add(s)
 		tileSpaces = append(tileSpaces, s)

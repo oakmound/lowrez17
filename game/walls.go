@@ -3,6 +3,7 @@ package game
 import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
+	"github.com/oakmound/oak/render"
 )
 
 // We keep track of all anchors and walls, and run an initialization on said anchors and walls
@@ -14,8 +15,8 @@ var (
 	fans    = []physics.Vector{}
 )
 
-func addTo(vs *[]physics.Vector) func(x, y int) {
-	return func(x, y int) {
+func addTo(vs *[]physics.Vector) func(x, y int, r render.Renderable) {
+	return func(x, y int, r render.Renderable) {
 		*vs = append(*vs, physics.NewVector(float64(x)*tileDimf64, float64(y)*tileDimf64))
 	}
 }
