@@ -44,6 +44,7 @@ func Init() {
 	levelTypes := map[string]OrganType{
 		"liver": Liver,
 		"lung":  Lung,
+		"heart": Heart,
 	}
 	for k, v := range levelTypes {
 		for i := 1; i < 6; i++ {
@@ -56,7 +57,6 @@ func Init() {
 	// Placeholder
 	levels[Stomach] = levels[Liver]
 	levels[Brain] = levels[Liver]
-	levels[Heart] = levels[Liver]
 
 	levelBodies = map[string]*Body{
 		"level1": Body1(),

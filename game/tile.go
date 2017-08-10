@@ -52,9 +52,10 @@ var (
 			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 		},
 		Heart: {
-			Open:    colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
-			Blocked: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
-			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			Open:      colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
+			Blocked:   colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
+			Exit:      colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			Ventricle: colorrange.NewLinear(color.RGBA{254, 100, 100, 254}, color.RGBA{255, 110, 110, 255}),
 		},
 		Lung: {
 			Open:        colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
@@ -66,6 +67,7 @@ var (
 			Open:    colorrange.NewLinear(color.RGBA{230, 230, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			Blocked: colorrange.NewLinear(color.RGBA{110, 110, 5, 254}, color.RGBA{140, 140, 60, 254}),
 			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			Acid:    colorrange.NewLinear(color.RGBA{0, 0, 200, 255}, color.RGBA{40, 40, 255, 255}),
 		},
 	}
 	tileInit = map[Tile]func(x, y int){
