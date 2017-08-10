@@ -46,6 +46,7 @@ func Init() {
 		"lung":    Lung,
 		"heart":   Heart,
 		"stomach": Stomach,
+		"brain":   Brain,
 	}
 	for k, v := range levelTypes {
 		for i := 1; i < 6; i++ {
@@ -55,8 +56,6 @@ func Init() {
 			levels[v] = append(levels[v], ts)
 		}
 	}
-	// Placeholder
-	levels[Brain] = levels[Liver]
 
 	levelBodies = map[string]*Body{
 		"level1": Body1(),
