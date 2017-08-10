@@ -42,9 +42,10 @@ func Init() {
 	images["midbrain"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
 	levelTypes := map[string]OrganType{
-		"liver": Liver,
-		"lung":  Lung,
-		"heart": Heart,
+		"liver":   Liver,
+		"lung":    Lung,
+		"heart":   Heart,
+		"stomach": Stomach,
 	}
 	for k, v := range levelTypes {
 		for i := 1; i < 6; i++ {
@@ -55,7 +56,6 @@ func Init() {
 		}
 	}
 	// Placeholder
-	levels[Stomach] = levels[Liver]
 	levels[Brain] = levels[Liver]
 
 	levelBodies = map[string]*Body{
