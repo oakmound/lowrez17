@@ -21,19 +21,26 @@ var (
 )
 
 func StartScene(string, interface{}) {
-	NewPlayer()
+	p := NewPlayer()
+	p.SetPos(30, 54)
 	nextScene = "menu"
 	// Create blocking zones
+	// walls
 	collision.Add(collision.NewLabeledSpace(-2, -2, 2, 66, blocking))
-	collision.Add(collision.NewLabeledSpace(-2, -2, 40, 2, blocking))
+	collision.Add(collision.NewLabeledSpace(-2, -2, 28, 19, blocking))
+	collision.Add(collision.NewLabeledSpace(38, -2, 28, 19, blocking))
 	collision.Add(collision.NewLabeledSpace(-2, 64, 64, 2, blocking))
 	collision.Add(collision.NewLabeledSpace(64, -66, 2, 128, blocking))
+	// not walls
+	collision.Add(collision.NewLabeledSpace(0, 17, 14, 22, blocking))
+	collision.Add(collision.NewLabeledSpace(43, 17, 20, 17, blocking))
 	// Create zones that lead to levels, menu
-	collision.Add(collision.NewLabeledSpace(20, 20, 20, 10, nextLevel))
-	collision.Add(collision.NewLabeledSpace(22, 22, 16, 6, blocking))
-	table := render.NewColorBox(16, 6, color.RGBA{200, 200, 200, 255})
-	table.SetPos(22, 22)
-	render.Draw(table, entityLayer)
+	// Next level zone
+	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
+	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
+	// Background
+	s := render.LoadSprite(filepath.Join("raw", "toplayer.png"))
+	render.Draw(s, backgroundLayer)
 }
 
 func LoopScene() bool {
@@ -61,9 +68,9 @@ func (p *Player) Init() event.CID {
 	return p.CID
 }
 
-func NewPlayer() {
+func NewPlayer() *Player {
 	p := new(Player)
-	r := render.NewColorBox(3, 7, color.RGBA{255, 255, 255, 255})
+	r := render.NewColorBox(3, 7, color.RGBA{0, 0, 255, 255})
 	p.Reactive = entities.NewReactive(5, 5, 3, 7, r, p.Init())
 	collision.Add(p.RSpace.Space)
 	render.Draw(p.R, entityLayer)
@@ -73,7 +80,7 @@ func NewPlayer() {
 	p.Bind(unbindInteractive, "CollisionStop")
 	p.Bind(playerWalk, "EnterFrame")
 	p.Bind(playerInteract, "KeyUpE")
-
+	return p
 }
 
 const (
