@@ -21,8 +21,9 @@ var (
 )
 
 func StartScene(string, interface{}) {
+	initLetters()
 	p := NewPlayer()
-	p.SetPos(30, 54)
+	p.SetPos(55, 34)
 	nextScene = "menu"
 	// Create blocking zones
 	// walls
@@ -35,6 +36,7 @@ func StartScene(string, interface{}) {
 	collision.Add(collision.NewLabeledSpace(0, 17, 14, 22, blocking))
 	collision.Add(collision.NewLabeledSpace(43, 17, 20, 17, blocking))
 	// Create zones that lead to levels, menu
+	collision.Add(collision.NewLabeledSpace(50, 35, 10, 2, wasd))
 	// Next level zone
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
@@ -52,6 +54,23 @@ func EndScene() (string, *oak.SceneResult) {
 	return nextScene, &oak.SceneResult{
 		levelData,
 		oak.TransitionFade(.001, 700),
+	}
+}
+
+var letters = map[rune]render.Modifiable{}
+
+func initLetters() {
+	frameRate := 1.5
+	sh := render.GetSheet(filepath.Join("5x7", "letters.png"))
+	runeMap := map[rune]int{
+		'e': 0,
+		'w': 1,
+		'a': 2,
+		's': 3,
+		'd': 4,
+	}
+	for r, col := range runeMap {
+		letters[r] = render.NewSequence([]render.Modifiable{sh[0][col], sh[1][col]}, frameRate)
 	}
 }
 
@@ -95,6 +114,7 @@ const (
 	endurance
 	// other places
 	settings
+	wasd
 	/// ...
 )
 
@@ -127,13 +147,21 @@ func triggerInteractive(id int, label interface{}) int {
 		levelData = "level" + strconv.Itoa(currentLevel+1)
 		// Todo: don't try to go to level6, reset to 0
 		setLevelInteracts(p)
+	case wasd:
+		w, a, s, d := letters['w'], letters['a'], letters['s'], letters['d']
+		w.SetPos(0, -7)
+		a.SetPos(-5, 0)
+		d.SetPos(5, 0)
+		p.interactR = render.NewComposite([]render.Modifiable{w, a, s, d})
+		p.interactR.SetPos(p.X()-1, p.Y()-8)
+		render.Draw(p.interactR, uiLayer)
 	}
 	return 0
 }
 
 func setLevelInteracts(p *Player) {
 	var err error
-	p.interactR, err = render.LoadSheetAnimation(filepath.Join("5x7", "e.png"), 5, 7, 0, 1.5, []int{0, 0, 1, 0})
+	p.interactR = letters['e']
 	// I tried using attachment here, it was bugged?
 	p.interactR.SetPos(p.X()-1, p.Y()-8)
 	if err != nil {
