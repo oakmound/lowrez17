@@ -99,7 +99,7 @@ func (b *Body) MonitorInfections() {
 
 func spreadInfection(id int, frame interface{}) int {
 
-	if traveler.active && frame.(int)%4 == 0 {
+	if traveler.active && frame.(int)%10 == 0 {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				n.Infect()
