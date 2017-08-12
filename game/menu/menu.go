@@ -44,6 +44,11 @@ func StartScene(string, interface{}) {
 	// Next level zone
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
+	collision.Add(collision.NewLabeledSpace(67, 40, 8, 2, level1))
+	collision.Add(collision.NewLabeledSpace(79, 40, 8, 2, level2))
+	collision.Add(collision.NewLabeledSpace(91, 40, 8, 2, level3))
+	collision.Add(collision.NewLabeledSpace(103, 40, 8, 2, level4))
+	collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
 	// door to morgue
 	collision.Add(collision.NewLabeledSpace(26, 17, 10, 2, door))
 	// door back
@@ -63,7 +68,7 @@ func EndScene() (string, *oak.SceneResult) {
 	sceneContinue = false
 	return nextScene, &oak.SceneResult{
 		levelData,
-		oak.TransitionFade(.001, 500),
+		oak.TransitionZoom(.51, .67, 200, .009),
 	}
 }
 

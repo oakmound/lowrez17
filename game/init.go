@@ -29,20 +29,80 @@ func Init() {
 		return
 	}
 	inited = true
-	images["midliver"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[0][0].Copy()
+
+	organSheet := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))
+
+	images["midliver"] = organSheet[0][0].Copy()
 	images["midliver"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
-	images["midlung"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[1][0].Copy()
+	images["midlung"] = organSheet[1][0].Copy()
 	images["midlung"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
-	images["midstomach"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[2][0].Copy()
+	images["midstomach"] = organSheet[2][0].Copy()
 	images["midstomach"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
-	images["midheart"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[3][0].Copy()
+	images["midheart"] = organSheet[3][0].Copy()
 	images["midheart"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
-	images["midbrain"] = render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))[4][0].Copy()
+	images["midbrain"] = organSheet[4][0].Copy()
 	images["midbrain"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+
+	enemySheet1 := render.GetSheet(filepath.Join("8x8", "genericfoes.png"))
+	enemySheet2 := render.GetSheet(filepath.Join("16x16", "specialfoes.png"))
+
+	images["meleeFoe"] = render.NewReverting(enemySheet1[0][0].Copy())
+	images["rangedFoe"] = render.NewReverting(enemySheet1[0][1].Copy())
+	images["stomachFoe"] = render.NewReverting(render.NewCompound("base", map[string]render.Modifiable{
+		"base": enemySheet2[0][0].Copy().Modify(render.Rotate(180)),
+		"attacking": render.NewSequence([]render.Modifiable{
+			enemySheet2[0][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[1][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[2][0].Copy().Modify(render.Rotate(180))}, 2),
+	}))
+	images["heartFoe"] = render.NewReverting(render.NewSequence([]render.Modifiable{
+		enemySheet2[0][1].Copy(),
+		enemySheet2[0][1].Copy(),
+		enemySheet2[0][1].Copy(),
+		enemySheet2[1][1].Copy(),
+		enemySheet2[2][1].Copy(),
+		enemySheet2[1][1].Copy(),
+	}, 4))
+	images["liverFoe"] = render.NewReverting(render.NewCompound("base", map[string]render.Modifiable{
+		"base": enemySheet2[0][2].Copy().Modify(render.Rotate(90)),
+		"attacking": render.NewSequence([]render.Modifiable{
+			enemySheet2[0][2].Copy().Modify(render.Rotate(90)),
+			enemySheet2[1][2].Copy().Modify(render.Rotate(90)),
+			enemySheet2[2][2].Copy().Modify(render.Rotate(90))}, 2),
+	}))
+	images["lungFoe"] = render.NewReverting(enemySheet2[0][4].Copy())
+	images["brainFoe"] = render.NewReverting(
+		render.NewCompound("base", map[string]render.Modifiable{
+			"base": enemySheet2[0][3].Copy(),
+			"teleLeft": render.NewSequence(
+				[]render.Modifiable{
+					enemySheet2[0][3].Copy(),
+					enemySheet2[1][3].Copy(),
+					enemySheet2[2][3].Copy()}, 2,
+			),
+			"teleRight": render.NewSequence(
+				[]render.Modifiable{
+					enemySheet2[0][3].Copy().Modify(render.Rotate(180)),
+					enemySheet2[1][3].Copy().Modify(render.Rotate(180)),
+					enemySheet2[2][3].Copy().Modify(render.Rotate(180))}, 2,
+			),
+			"teleBack": render.NewSequence(
+				[]render.Modifiable{
+					enemySheet2[0][3].Copy().Modify(render.Rotate(-90)),
+					enemySheet2[1][3].Copy().Modify(render.Rotate(-90)),
+					enemySheet2[2][3].Copy().Modify(render.Rotate(-90))}, 2,
+			),
+			"teleForward": render.NewSequence(
+				[]render.Modifiable{
+					enemySheet2[0][3].Copy().Modify(render.Rotate(90)),
+					enemySheet2[1][3].Copy().Modify(render.Rotate(90)),
+					enemySheet2[2][3].Copy().Modify(render.Rotate(90))}, 2,
+			),
+		}))
 
 	levelTypes := map[string]OrganType{
 		"liver":   Liver,
