@@ -3,6 +3,7 @@ package game
 import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"math"
 )
 
 //A Vein is a graphical connection between nodes on the body
@@ -15,8 +16,8 @@ func NewVein(n1, n2 BodyNode, b *Body) *Vein {
 	v := new(Vein)
 	p1 := NodeCenter(n1)
 	p2 := NodeCenter(n2)
-	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, n1.DiseaseLevel())
-	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, n2.DiseaseLevel())
+	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, math.Min(1.0, (3*n1.DiseaseLevel()+n2.DiseaseLevel())/3))
+	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, math.Min(1.0, (3*n2.DiseaseLevel()+n1.DiseaseLevel())/3))
 	v.Sprite = render.NewGradientLine(p1.X(), p1.Y(), p2.X(), p2.Y(), c2, c1, 0)
 	return v
 }
@@ -26,8 +27,10 @@ func (v *Vein) Refresh(n1, n2 BodyNode, b *Body) {
 	p2 := NodeCenter(n2)
 	p1.Sub(v.Vec())
 	p2.Sub(v.Vec())
-	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, n1.DiseaseLevel())
-	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, n2.DiseaseLevel())
+
+	c1 := render.GradientColorAt(b.veinColor, b.veinColor2, math.Min(1.0, (3*n1.DiseaseLevel()+n2.DiseaseLevel())/3))
+	c2 := render.GradientColorAt(b.veinColor, b.veinColor2, math.Min(1.0, (3*n2.DiseaseLevel()+n1.DiseaseLevel())/3))
+
 	rgba := v.GetRGBA()
 	render.DrawGradientLine(rgba, int(p1.X()), int(p1.Y()), int(p2.X()), int(p2.Y()), c2, c1, 0)
 }

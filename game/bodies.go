@@ -55,7 +55,7 @@ func Body1() *Body {
 		NewHeart(35, 8),
 		NewLung(34, 25))
 	b.AddNodes(NewVeinNode(10, 40, b.veinColor),
-		NewVeinNode(25, 5, b.veinColor),
+		NewVeinNode(23, 5, b.veinColor),
 		NewVeinNode(30, 38, b.veinColor),
 		NewVeinNode(50, 22, b.veinColor))
 

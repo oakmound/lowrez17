@@ -5,6 +5,7 @@ import (
 
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"math/rand"
 )
 
 type Body struct {
@@ -69,7 +70,7 @@ func (b *Body) Infect(i int) {
 	if _, ok := b.cleansed[i]; ok {
 		return
 	}
-	if b.graph[i].Infect(.3) {
+	if b.graph[i].Infect(.3 + rand.Float64()*0.1) {
 		b.infected = append(b.infected, i)
 	}
 
@@ -99,7 +100,7 @@ func (b *Body) MonitorInfections() {
 
 func spreadInfection(id int, frame interface{}) int {
 
-	if traveler.active && frame.(int)%10 == 0 {
+	if traveler.active && frame.(int)%4 == 0 {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				n.Infect()

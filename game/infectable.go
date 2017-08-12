@@ -34,14 +34,15 @@ func (i *Infectable) Infect(fs ...float64) bool {
 	}
 
 	// Update renderable
-	i.r.(*render.Reverting).RevertAll()
 
-	i.r.(*render.Reverting).Modify(render.Brighten(float32(i.Disease) * 10))
-	if int(i.Disease/i.diseaseRate)%40 < 10 {
-		i.r.(*render.Reverting).Modify(render.Fade(int(-i.Disease)))
-		i.r.(*render.Reverting).Modify(render.ApplyColor(color.RGBA{0, 0, 255, 255}))
+	if i.Disease == 1 {
+		i.r.(*render.Reverting).RevertAndModify(1, render.ApplyColor(color.RGBA{0, 0, 255, 255}))
+	} else if int(i.Disease/i.diseaseRate)%20 < 8 {
+		i.r.(*render.Reverting).RevertAndModify(1,
+			render.And(render.Fade(int(-i.Disease)), render.ApplyColor(color.RGBA{0, 0, 255, 255})))
+	} else {
+		i.r.(*render.Reverting).RevertAndModify(1, render.Brighten(float32(i.Disease)*10))
 	}
-
 	return out
 }
 

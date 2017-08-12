@@ -23,6 +23,7 @@ func (ed EnemyDist) Poll() []EnemyType {
 }
 
 var (
+	SingleMelee           = EnemyDist{1, []float64{1.0, 0.0, 0.0}}
 	SmallMeleeDist        = EnemyDist{8, []float64{1.0, 0.0, 0.0}}
 	ModerateMeleeDist     = EnemyDist{16, []float64{1.0, 0.0, 0.0}}
 	LargeMeleeDist        = EnemyDist{40, []float64{1.0, 0.0, 0.0}}
