@@ -40,6 +40,10 @@ func StartScene(string, interface{}) {
 	// Next level zone
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
+	// door to morgue
+	collision.Add(collision.NewLabeledSpace(26, 17, 8, 2, door))
+	// door back
+	collision.Add(collision.NewLabeledSpace(26+64, 17, 8, 2, door))
 	// Background
 	s := render.LoadSprite(filepath.Join("raw", "toplayer.png"))
 	render.Draw(s, backgroundLayer)
@@ -53,7 +57,7 @@ func EndScene() (string, *oak.SceneResult) {
 	sceneContinue = false
 	return nextScene, &oak.SceneResult{
 		levelData,
-		oak.TransitionFade(.001, 700),
+		oak.TransitionFade(.001, 500),
 	}
 }
 
@@ -115,6 +119,7 @@ const (
 	// other places
 	settings
 	wasd
+	door
 	/// ...
 )
 
@@ -155,6 +160,13 @@ func triggerInteractive(id int, label interface{}) int {
 		p.interactR = render.NewComposite([]render.Modifiable{w, a, s, d})
 		p.interactR.SetPos(p.X()-1, p.Y()-8)
 		render.Draw(p.interactR, uiLayer)
+	case door:
+		p.ShiftX(64)
+		p.ShiftY(5)
+		if p.X() > 128 {
+			p.ShiftX(-128)
+		}
+		oak.SetScreen((oak.ViewPos.X+64)%128, oak.ViewPos.Y)
 	}
 	return 0
 }
