@@ -13,7 +13,7 @@ type Body struct {
 	graph                 []BodyNode
 	adjacency             [][]int
 	veins                 [][]*Vein
-	infected              []int 
+	infected              []int
 	cleansed              map[int]bool
 	complete              bool
 	infectionPattern      [][]int
@@ -97,8 +97,9 @@ func (b *Body) MonitorInfections() {
 	}()
 }
 
-func spreadInfection(id int, nothing interface{}) int {
-	if traveler.active {
+func spreadInfection(id int, frame interface{}) int {
+
+	if traveler.active && frame.(int)%4 == 0 {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				n.Infect()

@@ -69,7 +69,7 @@ func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganTyp
 		Wave{SmallMeleeDist, 1.0, 30 * time.Second}}
 	bo.w = w
 	bo.h = h
-	bo.diseaseRate = .0001
+	bo.diseaseRate = .0005
 	return bo
 }
 
