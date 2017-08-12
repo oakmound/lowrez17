@@ -90,9 +90,9 @@ func playerAttack(id int, mouseEvent interface{}) int {
 	me := mouseEvent.(mouse.Event)
 	switch me.Button {
 	case "LeftMouse":
-		p.Weapon["left"].Do(p)
+		p.Weapon.left.Do(p)
 	case "RightMouse":
-		p.Weapon["right"].Do(p)
+		p.Weapon.right.Do(p)
 	}
 	return 0
 }
@@ -122,7 +122,7 @@ func playerMove(id int, frame interface{}) int {
 	p.scaleDiagonal()
 
 	if oak.IsDown("Spacebar") {
-		p.Weapon["space"].Do(p)
+		p.Weapon.space.Do(p)
 	}
 
 	p.applyMovement()
