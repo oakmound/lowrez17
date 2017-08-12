@@ -66,4 +66,6 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 	}
 	// Beat the organ
 	fmt.Println("Organ beat")
+	<-time.After(2 * time.Second)
+	CleanupActiveOrgan(true)
 }

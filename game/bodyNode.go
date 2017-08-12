@@ -13,5 +13,6 @@ type BodyNode interface {
 	Organ() (Organ, bool)
 	Infect(...float64) bool
 	DiseaseLevel() float64
+	Cleanse()
 	R() render.Modifiable
 }

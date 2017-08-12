@@ -8,8 +8,6 @@ import (
 
 func DemoBody() *Body {
 	b := new(Body)
-	b.infected = []int{}
-	b.cleansed = make(map[int]bool)
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
@@ -41,12 +39,7 @@ func DemoBody() *Body {
 
 func Body1() *Body {
 	b := new(Body)
-	b.infected = []int{}
-	b.cleansed = map[int]bool{
-		5: true,
-		6: true,
-		7: true,
-	}
+
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
@@ -70,10 +63,13 @@ func Body1() *Body {
 	b.Connect(1, 7)
 	b.Connect(6, 7)
 	b.Connect(4, 5)
-
-	b.Infect(0)
+	//
 
 	b.InfectionPattern([][]int{{0}, {1}})
+	for _, oNum := range b.infectionPattern[b.infectionSet] {
+		b.Infect(oNum)
+	}
+
 	b.InitVeins()
 	return b
 }
