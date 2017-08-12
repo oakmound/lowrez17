@@ -5,6 +5,7 @@ import (
 
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
+	"github.com/oakmound/oak/timing"
 )
 
 type Weapon struct {
@@ -34,15 +35,29 @@ var (
 	}
 )
 
+const (
+	Stun collision.Label = 100
+)
+
 func SpearJab(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-
+		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
+		pos := p.CenterPos().Add(p.Dir.Copy().Scale(15))
+		NewHurtBox(pos.X(), pos.Y(), 7, 7, 75*time.Millisecond, label, fv)
+		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
+		collision.Add(stick)
+		go timing.DoAfter(75*time.Millisecond, func() {
+			collision.Remove(stick)
+		})
 	}
 }
 
 func SpearDash(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-
+		p.Delta.Add(p.Dir.Copy().Scale(24 * p.Speed.Y()))
+		fv := physics.NewForceVector(p.Dir.Copy(), 30)
+		pos := p.CenterPos().Add(p.Dir.Copy().Scale(15))
+		NewHurtBox(pos.X(), pos.Y(), 7, 7, 75*time.Millisecond, label, fv)
 	}
 }
 
