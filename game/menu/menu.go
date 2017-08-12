@@ -68,7 +68,7 @@ func EndScene() (string, *oak.SceneResult) {
 	sceneContinue = false
 	return nextScene, &oak.SceneResult{
 		levelData,
-		oak.TransitionFade(.001, 500),
+		oak.TransitionZoom(.51, .67, 200, .009),
 	}
 }
 
