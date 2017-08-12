@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/oakmound/oak/collision"
+	"github.com/oakmound/oak/physics"
 )
 
 type Weapon struct {
@@ -47,18 +48,42 @@ func SpearDash(label collision.Label) func(*Entity) {
 
 func NetLeft(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-
+		fv := physics.NewForceVector(p.Dir.Copy().Rotate(180), 3)
+		basePos := p.CenterPos()
+		rot := p.Dir.Copy().Rotate(-130)
+		for a := 0; a < 90; a += 10 {
+			pos := basePos.Copy().Add(rot.Copy().Scale(6))
+			NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+			rot.Rotate(10)
+		}
 	}
 }
 
 func NetRight(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-
+		fv := physics.NewForceVector(p.Dir.Copy().Rotate(180), 3)
+		basePos := p.CenterPos()
+		rot := p.Dir.Copy().Rotate(130)
+		for a := 0; a < 90; a += 10 {
+			pos := basePos.Copy().Add(rot.Copy().Scale(6))
+			NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+			rot.Rotate(-10)
+		}
 	}
 }
 
 func NetTwirl(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-
+		go func() {
+			basePos := p.CenterPos()
+			rot := p.Dir.Copy().Rotate(-10)
+			for a := 0; a < 260; a += 10 {
+				pos := basePos.Copy().Add(rot.Copy().Scale(6))
+				fv := physics.NewForceVector(rot.Copy().Rotate(90), 3)
+				NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+				rot.Rotate(-10)
+				time.Sleep(5 * time.Millisecond)
+			}
+		}()
 	}
 }

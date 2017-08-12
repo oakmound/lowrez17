@@ -40,7 +40,7 @@ func NewPlayer() *Player {
 		collision.Add(e.RSpace.Space)
 		player = e
 	}
-	player.Weapon = Whip
+	player.Weapon = Net
 	return player
 }
 
