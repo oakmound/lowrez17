@@ -30,19 +30,10 @@ func Init() {
 	organSheet := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))
 
 	images["midliver"] = organSheet[0][0].Copy()
-	images["midliver"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
-
 	images["midlung"] = organSheet[1][0].Copy()
-	images["midlung"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
-
 	images["midstomach"] = organSheet[2][0].Copy()
-	images["midstomach"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
-
 	images["midheart"] = organSheet[3][0].Copy()
-	images["midheart"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
-
 	images["midbrain"] = organSheet[4][0].Copy()
-	images["midbrain"].Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 
 	enemySheet1 := render.GetSheet(filepath.Join("8x8", "genericfoes.png"))
 	enemySheet2 := render.GetSheet(filepath.Join("16x16", "specialfoes.png"))
@@ -100,6 +91,10 @@ func Init() {
 					enemySheet2[2][3].Copy().Modify(render.Rotate(90))}, 2,
 			),
 		}))
+
+	for k, v := range images {
+		images[k] = v.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
+	}
 
 	levelTypes := map[string]OrganType{
 		"liver":   Liver,

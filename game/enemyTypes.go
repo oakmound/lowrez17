@@ -46,8 +46,9 @@ var (
 )
 
 func NewMelee(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(8, 8, color.RGBA{120, 120, 120, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
+	r := images["meleeFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.1, 4)
 	e.Health = 70
 	e.AttackSet = NewAttackSet(intrange.NewLinear(2000, 4000),
 		[]float64{1.0},
@@ -61,8 +62,9 @@ func NewMelee(x, y int, diff float64) *Enemy {
 }
 
 func NewRanged(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(8, 8, color.RGBA{170, 170, 170, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 8, 8, r, 0.2, 5, 0.1, 4)
+	r := images["rangedFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.1, 4)
 	e.Health = 50
 	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 2000),
 		[]float64{1.0},
@@ -77,8 +79,9 @@ func NewRanged(x, y int, diff float64) *Enemy {
 }
 
 func NewBoomer(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(12, 12, color.RGBA{200, 120, 120, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 12, 12, r, 0.2, 20, 0.05, 2)
+	r := images["heartFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 20, 0.05, 2)
 	e.Health = 300
 	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 3000),
 		[]float64{1.0, 1.0},
@@ -111,8 +114,9 @@ func explode(id int, nothing interface{}) int {
 }
 
 func NewWizard(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(6, 6, color.RGBA{90, 20, 120, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 6, 6, r, 0.2, 5, 0.05, 2)
+	r := images["brainFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.05, 2)
 	e.Health = 150
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0},
@@ -127,8 +131,9 @@ func NewWizard(x, y int, diff float64) *Enemy {
 }
 
 func NewDasher(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(6, 6, color.RGBA{20, 120, 90, 170})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 6, 6, r, 0.2, 4, 2, 8)
+	r := images["lungFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 4, 2, 8)
 	e.Health = 100
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0, 1.0},
@@ -144,8 +149,9 @@ func NewDasher(x, y int, diff float64) *Enemy {
 }
 
 func NewSummoner(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(10, 10, color.RGBA{255, 120, 255, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 10, 10, r, 0.2, 10, 0.1, 4)
+	r := images["liverFoe"].Copy()
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 10, 0.1, 4)
 	e.Health = 250
 	e.AttackSet = NewAttackSet(intrange.NewLinear(3000, 5000),
 		[]float64{1.0},
@@ -168,7 +174,8 @@ func Summon(ec EnemyCreation) func(*Entity) {
 
 func NewVacuumer(x, y int, diff float64) *Enemy {
 	r := render.NewColorBox(10, 10, color.RGBA{255, 255, 150, 255})
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), 10, 10, r, 0.2, 5, 1, 4)
+	w, h := r.GetDims()
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 1, 4)
 	e.Health = 160
 	e.AttackSet = NewAttackSet(intrange.NewLinear(2000, 3000),
 		[]float64{1.0},
