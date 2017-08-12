@@ -32,6 +32,10 @@ func StartScene(string, interface{}) {
 	collision.Add(collision.NewLabeledSpace(38, -2, 28, 19, blocking))
 	collision.Add(collision.NewLabeledSpace(-2, 64, 64, 2, blocking))
 	collision.Add(collision.NewLabeledSpace(64, -66, 2, 128, blocking))
+	collision.Add(collision.NewLabeledSpace(64, 0, 64, 35, blocking))
+	collision.Add(collision.NewLabeledSpace(126, 0, 2, 64, blocking))
+	collision.Add(collision.NewLabeledSpace(64, 60, 30, 2, blocking))
+	collision.Add(collision.NewLabeledSpace(104, 60, 30, 2, blocking))
 	// not walls
 	collision.Add(collision.NewLabeledSpace(0, 17, 14, 22, blocking))
 	collision.Add(collision.NewLabeledSpace(43, 17, 20, 17, blocking))
@@ -41,12 +45,14 @@ func StartScene(string, interface{}) {
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
 	// door to morgue
-	collision.Add(collision.NewLabeledSpace(26, 17, 8, 2, door))
+	collision.Add(collision.NewLabeledSpace(26, 17, 10, 2, door))
 	// door back
-	collision.Add(collision.NewLabeledSpace(26+64, 17, 8, 2, door))
+	collision.Add(collision.NewLabeledSpace(26+64, 60, 10, 2, doorBack))
 	// Background
-	s := render.LoadSprite(filepath.Join("raw", "toplayer.png"))
-	render.Draw(s, backgroundLayer)
+	render.Draw(render.LoadSprite(filepath.Join("raw", "toplayer.png")), backgroundLayer)
+	morgue := render.LoadSprite(filepath.Join("raw", "morgue.png"))
+	morgue.SetPos(64, 0)
+	render.Draw(morgue, backgroundLayer)
 }
 
 func LoopScene() bool {
@@ -120,6 +126,7 @@ const (
 	settings
 	wasd
 	door
+	doorBack
 	/// ...
 )
 
@@ -161,12 +168,11 @@ func triggerInteractive(id int, label interface{}) int {
 		p.interactR.SetPos(p.X()-1, p.Y()-8)
 		render.Draw(p.interactR, uiLayer)
 	case door:
-		p.ShiftX(64)
-		p.ShiftY(5)
-		if p.X() > 128 {
-			p.ShiftX(-128)
-		}
-		oak.SetScreen((oak.ViewPos.X+64)%128, oak.ViewPos.Y)
+		p.SetPos(96, 50)
+		oak.SetScreen(64, 0)
+	case doorBack:
+		p.SetPos(32, 20)
+		oak.SetScreen(0, 0)
 	}
 	return 0
 }
