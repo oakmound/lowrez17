@@ -91,5 +91,5 @@ func LevelLoop() bool {
 }
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {
-	return "firstScene", nil
+	return "menu", nil
 }

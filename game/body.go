@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"math/rand"
+	"time"
 )
 
 type Body struct {
@@ -113,6 +114,8 @@ func (b *Body) InfectionProgress() {
 		b.infectionSet--
 		fmt.Println("This body has been completed!")
 		fmt.Println("We really need a way for the player to leave the body!")
+		<-time.After(2 * time.Second)
+		thisBody.complete = true
 		return
 	}
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
