@@ -5,6 +5,7 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"image/color"
 )
 
 var (
@@ -57,6 +58,11 @@ func LevelInit(prevScene string, inLevel interface{}) {
 			}
 		}
 	}
+	diseasedPalette = []color.Color{}
+	rd, gd, bd, _ := thisBody.veinColor2.RGBA()
+	for i := uint8(0); i < 127; i++ {
+		diseasedPalette = append(diseasedPalette, color.RGBA{i * (uint8(rd)), i * (uint8(gd)), i * (uint8(bd)), 255})
+	}
 	// Place player
 	pos := NodeCenter(b.graph[playerStart])
 	traveler = NewBodyTraveler(pos.X(), pos.Y())
@@ -68,7 +74,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
-		if o.DiseaseLevel() > 0 {
+		if o.DiseaseLevel() > 0 && o.DiseaseLevel() < 1 {
 			traveler.active = false
 			NewPlayer()
 			o.Place()

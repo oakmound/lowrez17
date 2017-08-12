@@ -18,7 +18,10 @@ var (
 		Brain:   [][][]Tile{},
 		Heart:   [][][]Tile{},
 	}
-	levelBodies = map[string]*Body{}
+	levelBodies     = map[string]*Body{}
+	hurtPalette     = []color.Color{}
+	diseasedPalette = []color.Color{}
+	grayScale       = []color.Color{}
 )
 
 func Init() {
@@ -119,4 +122,14 @@ func Init() {
 		"level4": DemoBody(),
 		"level5": DemoBody(),
 	}
+
+	for i := uint8(0); i < 127; i++ {
+		hurtPalette = append(hurtPalette, color.RGBA{255, i * 2, i * 2, 255})
+	}
+	for i := uint8(0); i < 127; i++ {
+		grayScale = append(grayScale, color.RGBA{i * 2, i * 2, i * 2, 255})
+	}
+	//for i := uint8(0); i < 127; i++ {
+	//	diseasedPalette = append(diseasedPalette, color.RGBA{(i - 127) * 2, (i - 127) * 2, (i - 127) * 2, 255})
+	//}
 }

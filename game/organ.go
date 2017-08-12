@@ -64,9 +64,12 @@ func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganTyp
 	bo.tiles = levels[typ][rand.Intn(5)]
 	bo.typ = typ
 	bo.BodyButton = NewBodyButton(float64(w), float64(h))
+	//bo.waves = []Wave{
+	//	Wave{SmallRangedDist, 1.0, 10 * time.Second},
+	//	Wave{SmallMeleeDist, 1.0, 30 * time.Second}}
 	bo.waves = []Wave{
-		Wave{SmallRangedDist, 1.0, 10 * time.Second},
-		Wave{SmallMeleeDist, 1.0, 30 * time.Second}}
+		Wave{SingleMelee, 1.0, time.Second},
+	}
 	bo.w = w
 	bo.h = h
 	bo.diseaseRate = .001
@@ -119,4 +122,33 @@ func ImageTiles(rgba *image.RGBA) [][]Tile {
 		}
 	}
 	return out
+}
+
+//TODO: Refactor this name
+//CleanupActiveOrgan cleans up when leaving an organ to return to body map
+func CleanupActiveOrgan(cleared bool) {
+	stopPlayer()
+	CleanupTiles()
+	CleanupEnemies()
+	oak.SetScreen(0, 0)
+	oak.ClearPalette()
+
+	i := thisBody.VecIndex(traveler.Vector)
+	o := thisBody.graph[i]
+	if cleared {
+		o.Cleanse()
+		for j, v := range thisBody.veins[i] {
+			if v != nil {
+				v.Refresh(o, thisBody.graph[j], thisBody)
+			}
+		}
+	}
+	if o.DiseaseLevel() == 0 || o.DiseaseLevel() == 1 {
+		thisBody.InfectionProgress()
+	}
+	traveler.active = true
+	select {
+	case waveExitCh <- true:
+	default:
+	}
 }

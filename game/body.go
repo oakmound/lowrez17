@@ -3,6 +3,8 @@ package game
 import (
 	"image/color"
 
+	"fmt"
+	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"math/rand"
@@ -14,10 +16,10 @@ type Body struct {
 	graph                 []BodyNode
 	adjacency             [][]int
 	veins                 [][]*Vein
-	infected              []int
-	cleansed              map[int]bool
-	complete              bool
-	infectionPattern      [][]int
+
+	infectionPattern [][]int
+	infectionSet     int
+	complete         bool
 }
 
 // Connect connects two bodyNodes on a body, and returns whether
@@ -67,13 +69,13 @@ func (b *Body) InitVeins() {
 // Infect infects organs that have not previously been cleansed.
 // If an organ is not already infected it is then added to the body's diseased organs list.
 func (b *Body) Infect(i int) {
-	if _, ok := b.cleansed[i]; ok {
-		return
-	}
-	if b.graph[i].Infect(.3 + rand.Float64()*0.1) {
-		b.infected = append(b.infected, i)
-	}
-
+	b.graph[i].Infect(.3 + rand.Float64()*0.1)
+	//if _, ok := b.cleansed[i]; ok {
+	//	return
+	//}
+	//if b.graph[i].Infect(.3 + rand.Float64()*0.1) {
+	//	b.infected = append(b.infected, i)
+	//}
 }
 
 func (b *Body) InfectionPattern(pattern [][]int) {
@@ -98,12 +100,35 @@ func (b *Body) MonitorInfections() {
 	}()
 }
 
+//InfectionProgress is called when an organ fails or is cleansed and is responsible for
+// updating overall infection and level progress
+func (b *Body) InfectionProgress() {
+	for _, oNum := range b.infectionPattern[b.infectionSet] {
+		if b.graph[oNum].DiseaseLevel() != 0 && b.graph[oNum].DiseaseLevel() != 1 {
+			return
+		}
+	}
+	b.infectionSet++
+	if b.infectionSet >= len(b.infectionPattern) {
+		b.infectionSet--
+		fmt.Println("This body has been completed!")
+		fmt.Println("We really need a way for the player to leave the body!")
+		return
+	}
+	for _, oNum := range b.infectionPattern[b.infectionSet] {
+		fmt.Println("Progressing to next infection set. There should be some feeback to the player.")
+		b.Infect(oNum)
+	}
+}
+
 func spreadInfection(id int, frame interface{}) int {
 
 	if traveler.active && frame.(int)%4 == 0 {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
-				n.Infect()
+				if n.Infect() == true {
+					thisBody.InfectionProgress()
+				}
 				for j, v := range thisBody.veins[i] {
 					if v != nil {
 						v.Refresh(n, thisBody.graph[j], thisBody)
@@ -111,7 +136,20 @@ func spreadInfection(id int, frame interface{}) int {
 				}
 			}
 		}
+	} else if traveler.active == false {
+		o := thisBody.graph[thisBody.VecIndex(traveler.Vector)]
+		if frame.(int)%200 == 0 {
+			oak.SetPalette(grayScale)
+			o.Infect()
+			if o.DiseaseLevel() == 1 {
+				CleanupActiveOrgan(false)
+			}
+		}
+		if frame.(int)%10 == 9 {
+			oak.ClearPalette()
+		}
 	}
+
 	return 0
 }
 

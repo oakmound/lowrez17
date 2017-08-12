@@ -21,16 +21,16 @@ func (i *Infectable) Infect(fs ...float64) bool {
 			infection += f
 		}
 	}
-	out := i.Disease == 0
+
 	//pastDisease := i.Disease
 	i.Disease += infection
-	if i.Disease > 1 {
+	if i.Disease >= 1 {
 		i.Disease = 1
 	}
 	if len(fs) != 0 {
 		//Infect with fs is currently used only for setup
 		//If modifications are applied while in setup (predraw) it can cause the image to disappear on revert.
-		return true
+		return i.Disease == 1
 	}
 
 	// Update renderable
@@ -43,7 +43,7 @@ func (i *Infectable) Infect(fs ...float64) bool {
 	} else {
 		i.r.(*render.Reverting).RevertAndModify(1, render.Brighten(float32(i.Disease)*10))
 	}
-	return out
+	return i.Disease == 1
 }
 
 func (i *Infectable) R() render.Modifiable {
@@ -52,4 +52,9 @@ func (i *Infectable) R() render.Modifiable {
 
 func (i *Infectable) DiseaseLevel() float64 {
 	return i.Disease
+}
+
+func (i *Infectable) Cleanse() {
+	i.Disease = 0
+	i.r.(*render.Reverting).RevertAll()
 }

@@ -35,7 +35,9 @@ func NewPlayer() *Player {
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
+
 		e.RSpace.Add(collision.Label(Opposing), bounceEntity)
+		e.RSpace.Add(collision.Label(Opposing), playerHurt)
 		e.speedMax = 7
 		collision.Add(e.RSpace.Space)
 		player = e
@@ -65,15 +67,7 @@ func leaveOrgan(_, _ *collision.Space) {
 	if player.hitExit {
 		if time.Now().After(player.leaveTime) {
 			if player.X() > -1000 {
-				stopPlayer()
-				CleanupTiles()
-				CleanupEnemies()
-				oak.SetScreen(0, 0)
-				traveler.active = true
-				select {
-				case waveExitCh <- true:
-				default:
-				}
+				CleanupActiveOrgan(false)
 			}
 		}
 	} else {
@@ -127,4 +121,8 @@ func playerMove(id int, frame interface{}) int {
 
 	p.applyMovement()
 	return 0
+}
+func playerHurt(s1, s2 *collision.Space) {
+	oak.SetPalette(hurtPalette)
+	bounceEntity(s1, s2)
 }
