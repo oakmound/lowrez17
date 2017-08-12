@@ -1,5 +1,7 @@
 package game
 
+import "github.com/oakmound/oak/render"
+
 func NewLiver(x, y float64) Organ {
 	r := images["midliver"].Copy()
 	w, h := r.GetDims()
@@ -14,6 +16,12 @@ func NewHeart(x, y float64) Organ {
 
 func NewLung(x, y float64) Organ {
 	r := images["midlung"].Copy()
+	w, h := r.GetDims()
+	return NewBasicOrgan(x, y, float64(w), float64(h), r, Lung)
+}
+func NewRLung(x, y float64) Organ {
+	r := images["midlung"].Copy()
+	r = r.Modify(render.FlipX).Copy()
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Lung)
 }
