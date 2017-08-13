@@ -3,12 +3,12 @@ package game
 import (
 	"image/color"
 
-	"fmt"
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"strconv"
 )
 
 var (
@@ -23,8 +23,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 
 	Init()
 	b := GetBody(inLevel.(string))
-	fmt.Println("LEVEL IS ", inLevel)
-
+	b.level, _ = strconv.Atoi(inLevel.(string)[5:])
 	thisBody = b
 	var firstVein = true
 	var playerStart int

@@ -146,11 +146,28 @@ func Body3() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewStomach(24, 25),
-		NewHeart(27, 55),
-		NewLiver(35, 8),
-		NewStomach(34, 25))
-	b.AddNodes(NewVeinNode(10, 40, b.veinColor))
+	b.AddNodes(NewStomach(25, 45),
+		NewHeart(26, 18),
+		NewLiver(15, 28),
+		NewStomach(39, 45),
+		NewLiver(48, 28))
+	b.AddNodes(NewVeinNode(36, 10, b.veinColor),
+		NewVeinNode(33, 21, b.veinColor))
+
+	b.Connect(0, 2)
+	b.Connect(3, 4)
+	b.Connect(1, 2)
+
+	//b.Connect(2, 4)
+	b.Connect(0, 3)
+
+	//Vein Connection
+	b.Connect(5, 4)
+	b.Connect(5, 1)
+	b.Connect(6, 2)
+	b.Connect(6, 4)
+
+	b.Connect(6, 5)
 
 	b.InfectionPattern([][]int{{0, 1, 2}, {3}})
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
@@ -171,11 +188,30 @@ func Body4() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLung(24, 25),
-		NewStomach(27, 55),
+	b.AddNodes(NewLung(8, 55),
+		NewStomach(27, 30),
+		NewBrain(20, 8),
+		NewLiver(34, 55),
 		NewBrain(35, 8),
-		NewLiver(34, 25))
-	b.AddNodes(NewVeinNode(10, 40, b.veinColor))
+		NewRLung(52, 55))
+	b.AddNodes(NewVeinNode(28, 43, b.veinColor),
+		NewVeinNode(14, 33, b.veinColor),
+		NewVeinNode(46, 33, b.veinColor))
+
+	b.Connect(2, 4)
+	b.Connect(2, 1)
+	b.Connect(4, 1)
+	b.Connect(0, 3)
+	b.Connect(3, 5)
+	//VeinConnections
+	b.Connect(7, 2)
+	b.Connect(8, 4)
+	b.Connect(6, 7)
+	b.Connect(6, 8)
+	b.Connect(6, 5)
+	b.Connect(6, 0)
+	b.Connect(0, 7)
+	b.Connect(5, 8)
 
 	b.InfectionPattern([][]int{{0, 1}, {2, 3}, {4}})
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
@@ -195,16 +231,40 @@ func Body5() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLiver(24, 25),
-		NewHeart(27, 55),
-		NewStomach(35, 8),
-
-		NewBrain(34, 25),
-		NewLung(34, 25),
-		NewRLung(34, 25),
+	b.AddNodes(NewLiver(18, 42),
+		NewHeart(27, 25),
+		NewStomach(37, 47),
+		NewBrain(31, 6),
+		NewLung(48, 28),
+		NewRLung(55, 28),
 		NewHeart(34, 25),
+		NewLung(8, 28),
+		NewRLung(15, 28),
 	)
-	b.AddNodes(NewVeinNode(10, 40, b.veinColor))
+	b.AddNodes(NewVeinNode(46, 12, b.veinColor),
+		NewVeinNode(12, 12, b.veinColor),
+		NewVeinNode(25, 55, b.veinColor),
+	)
+
+	b.Connect(4, 5)
+	b.Connect(1, 6)
+	b.Connect(2, 0)
+	b.Connect(0, 1)
+	b.Connect(2, 6)
+
+	//Vein connect
+	b.Connect(9, 4)
+	b.Connect(9, 5)
+	b.Connect(9, 6)
+	b.Connect(9, 3)
+
+	b.Connect(10, 8)
+	b.Connect(10, 7)
+	b.Connect(10, 1)
+	b.Connect(10, 3)
+
+	b.Connect(11, 0)
+	b.Connect(11, 2)
 
 	b.InfectionPattern([][]int{{0, 1, 2}, {3, 4, 5, 6}, {3}})
 	for _, oNum := range b.infectionPattern[b.infectionSet] {

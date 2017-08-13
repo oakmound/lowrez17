@@ -42,6 +42,9 @@ func StartScene(_ string, levelData interface{}) {
 		sData := levelData.(LevelStats)
 		sData.CalculateScore()
 		stats.Stats[sData.Level] = sData
+
+		currentLevel = sData.Level
+
 	}
 	jsonData, err := json.Marshal(stats)
 	if err != nil {
@@ -188,9 +191,7 @@ func triggerInteractive(id int, label interface{}) int {
 	case endurance:
 		levelData = "endurance"
 	case nextLevel:
-		currentLevel = (currentLevel + 1) % 6
-
-		levelData = "level" + strconv.Itoa(currentLevel)
+		levelData = "level" + strconv.Itoa((currentLevel+1)%6)
 		// Todo: don't try to go to level6, reset to 0
 		setLevelInteracts(p)
 	case wasd:

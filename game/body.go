@@ -3,14 +3,12 @@ package game
 import (
 	"image/color"
 
-	"fmt"
-	"math/rand"
-	"time"
-
 	"github.com/oakmound/lowrez17/game/menu"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"math/rand"
+	"time"
 )
 
 type Body struct {
@@ -117,14 +115,12 @@ func (b *Body) InfectionProgress() {
 	b.infectionSet++
 	if b.infectionSet >= len(b.infectionPattern) {
 		b.infectionSet--
-		fmt.Println("This body has been completed!")
-		fmt.Println("We really need a way for the player to leave the body!")
+
 		<-time.After(2 * time.Second)
 		thisBody.complete = true
 		return
 	}
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
-		fmt.Println("Progressing to next infection set. There should be some feeback to the player.")
 		b.Infect(oNum)
 	}
 }
