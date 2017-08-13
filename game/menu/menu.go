@@ -1,11 +1,13 @@
 package menu
 
 import (
+	"encoding/json"
 	"image/color"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strconv"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/dlog"
@@ -19,11 +21,34 @@ var (
 	sceneContinue = true
 	nextScene     = "menu"
 	levelData     = ""
+	stats         *LevelStorage
 )
 
 func StartScene(_ string, levelData interface{}) {
 	initLetters()
-	spew.Dump(levelData)
+	if stats == nil {
+		stats = &LevelStorage{}
+		f, err := os.Open("save.json")
+		if err == nil {
+			err = json.NewDecoder(f).Decode(stats)
+			if err != nil {
+				dlog.Error(err)
+			}
+		} else {
+			dlog.Error(err)
+		}
+	}
+	if levelData != nil {
+		sData := levelData.(LevelStats)
+		sData.CalculateScore()
+		stats.Stats[sData.Level] = sData
+	}
+	jsonData, err := json.Marshal(stats)
+	if err != nil {
+		dlog.Error(err)
+	} else {
+		ioutil.WriteFile("save.json", jsonData, os.ModeType)
+	}
 	p := NewPlayer()
 	p.SetPos(55, 34)
 	nextScene = "menu"

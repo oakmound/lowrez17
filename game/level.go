@@ -92,6 +92,7 @@ func LevelLoop() bool {
 }
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {
+	oak.ClearPalette()
 	return "menu", &oak.SceneResult{
 		NextSceneInput: thisBody.Stats(),
 		Transition:     oak.TransitionZoom(.56, .56, 500, -.001),
