@@ -4,10 +4,10 @@ import (
 	"image/color"
 
 	"github.com/200sc/go-dist/colorrange"
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/render"
-	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type Vent struct {
@@ -41,6 +41,9 @@ func NewVent(x, y int, r render.Renderable) {
 		tileDimf64, tileDimf64, collision.Label(Blocked))
 	collision.Add(v.s)
 	v.Bind(toggleVent, "Heartbeat")
+
+	tileRs = append(tileRs, v.cmp)
+	tileSpaces = append(tileSpaces, v.s)
 }
 
 func toggleVent(id int, nothing interface{}) int {

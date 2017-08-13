@@ -5,10 +5,10 @@ import (
 	"image/color"
 
 	"github.com/200sc/go-dist/colorrange"
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"github.com/oakmound/lowrez17/game/layers"
 )
 
 const (
@@ -68,7 +68,7 @@ var (
 			Open:    colorrange.NewLinear(color.RGBA{230, 230, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			Blocked: colorrange.NewLinear(color.RGBA{110, 110, 5, 254}, color.RGBA{140, 140, 60, 254}),
 			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
-			Acid:    colorrange.NewLinear(color.RGBA{0, 0, 200, 255}, color.RGBA{40, 40, 255, 255}),
+			Acid:    colorrange.NewLinear(color.RGBA{0, 200, 0, 255}, color.RGBA{40, 255, 40, 255}),
 		},
 	}
 	tileInit = map[Tile]func(x, y int, r render.Renderable){
@@ -107,9 +107,9 @@ func (t Tile) Place(x, y int, typ OrganType) {
 	if tileDraw[t] {
 		cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 		render.Draw(cb, layers.TileLayer)
+		tileRs = append(tileRs, cb)
 	}
 	tileInit[t](x, y, cb)
-	tileRs = append(tileRs, cb)
 }
 
 func addTileSpace(l collision.Label) func(x, y int, r render.Renderable) {

@@ -42,11 +42,26 @@ func StartScene(_ string, levelData interface{}) {
 	if levelData != nil {
 		sData := levelData.(LevelStats)
 		sData.CalculateScore()
-		stats.Stats[sData.Level] = sData
-
-		currentLevel = sData.Level
-
+		oldScore := stats.Stats[sData.Level].Score
+		if oldScore <= 0 || oldScore > sData.Score {
+			stats.Stats[sData.Level] = sData
+		}
+		currentLevel = (sData.Level + 1) % 6
+	} else {
+		// Set current level based on which levels have been completed already
+		if stats.Stats[4].Score > 0 {
+			currentLevel = 0 // Endurance?
+		} else if stats.Stats[3].Score > 0 {
+			currentLevel = 4
+		} else if stats.Stats[2].Score > 0 {
+			currentLevel = 3
+		} else if stats.Stats[1].Score > 0 {
+			currentLevel = 2
+		} else if stats.Stats[0].Score > 0 {
+			currentLevel = 1
+		}
 	}
+	currentLevel = 1
 	jsonData, err := json.Marshal(stats)
 	if err != nil {
 		dlog.Error(err)
@@ -75,11 +90,24 @@ func StartScene(_ string, levelData interface{}) {
 	// Next level zone
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
-	collision.Add(collision.NewLabeledSpace(67, 40, 8, 2, level1))
-	collision.Add(collision.NewLabeledSpace(79, 40, 8, 2, level2))
-	collision.Add(collision.NewLabeledSpace(91, 40, 8, 2, level3))
-	collision.Add(collision.NewLabeledSpace(103, 40, 8, 2, level4))
-	collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
+
+	// Add level specific zones if those levels have been cleared before
+	// todo: also add coloration indicating the morgue slots are open
+	if stats.Stats[0].Score > 0 {
+		collision.Add(collision.NewLabeledSpace(67, 40, 8, 2, level1))
+	}
+	if stats.Stats[1].Score > 0 {
+		collision.Add(collision.NewLabeledSpace(79, 40, 8, 2, level2))
+	}
+	if stats.Stats[2].Score > 0 {
+		collision.Add(collision.NewLabeledSpace(91, 40, 8, 2, level3))
+	}
+	if stats.Stats[3].Score > 0 {
+		collision.Add(collision.NewLabeledSpace(103, 40, 8, 2, level4))
+	}
+	if stats.Stats[4].Score > 0 {
+		collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
+	}
 	// door to morgue
 	collision.Add(collision.NewLabeledSpace(26, 17, 10, 2, door))
 	// door back
@@ -190,6 +218,7 @@ func triggerInteractive(id int, label interface{}) int {
 		levelData = "level5"
 		setLevelInteracts(p)
 	case endurance:
+		// Todo: this isn't placed, could make it "level6"
 		levelData = "endurance"
 	case nextLevel:
 		levelData = "level" + strconv.Itoa((currentLevel+1)%6)

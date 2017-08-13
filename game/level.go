@@ -3,12 +3,13 @@ package game
 import (
 	"image/color"
 
+	"strconv"
+
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"strconv"
 )
 
 var (
@@ -78,6 +79,16 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	// Bindings ...
 	event.GlobalBind(enterOrgan, "HitNode")
 	event.GlobalBind(spreadInfection, "EnterFrame")
+	event.GlobalBind(heartBeat, "EnterFrame")
+}
+
+func heartBeat(no int, frame interface{}) int {
+	f := frame.(int)
+	// Todo: increase heart rate with poor body health
+	if f%120 == 0 {
+		event.Trigger("Heartbeat", nil)
+	}
+	return 0
 }
 
 func enterOrgan(no int, nothing interface{}) int {
@@ -103,6 +114,6 @@ func LevelEnd() (nextScene string, result *oak.SceneResult) {
 	oak.ClearPalette()
 	return "menu", &oak.SceneResult{
 		NextSceneInput: thisBody.Stats(),
-		Transition:     oak.TransitionZoom(.56, .56, 400, -.001),
+		Transition:     oak.TransitionFade(.03, 100),
 	}
 }
