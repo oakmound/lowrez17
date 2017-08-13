@@ -30,6 +30,7 @@ func StartScene(_ string, levelData interface{}) {
 		stats = &LevelStorage{}
 		f, err := os.Open("save.json")
 		if err == nil {
+			defer f.Close()
 			err = json.NewDecoder(f).Decode(stats)
 			if err != nil {
 				dlog.Error(err)
