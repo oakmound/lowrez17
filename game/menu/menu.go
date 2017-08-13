@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/dlog"
@@ -20,8 +21,9 @@ var (
 	levelData     = ""
 )
 
-func StartScene(string, interface{}) {
+func StartScene(_ string, levelData interface{}) {
 	initLetters()
+	spew.Dump(levelData)
 	p := NewPlayer()
 	p.SetPos(55, 34)
 	nextScene = "menu"
@@ -67,8 +69,8 @@ func LoopScene() bool {
 func EndScene() (string, *oak.SceneResult) {
 	sceneContinue = true
 	return nextScene, &oak.SceneResult{
-		levelData,
-		oak.TransitionZoom(.51, .67, 50, .009),
+		NextSceneInput: levelData,
+		Transition:     oak.TransitionZoom(.51, .67, 50, .009),
 	}
 }
 

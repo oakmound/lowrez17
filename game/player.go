@@ -53,6 +53,19 @@ func startupPlayer() {
 	player.Bind(playerMove, "EnterFrame")
 	player.Bind(viewportFollow, "EnterFrame")
 	player.Bind(playerAttack, "MouseRelease")
+	player.Bind(equip(Sword), "KeyUp1")
+	player.Bind(equip(Whip), "KeyUp2")
+	player.Bind(equip(Net), "KeyUp3")
+	player.Bind(equip(Spear), "KeyUp4")
+}
+
+func equip(w Weapon) func(id int, nothing interface{}) int {
+	return func(id int, nothing interface{}) int {
+		p := event.GetEntity(id).(*Player)
+		// These globals will keep their cooldowns
+		p.Weapon = w
+		return 0
+	}
 }
 
 func stopPlayer() {

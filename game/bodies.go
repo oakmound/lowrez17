@@ -2,12 +2,15 @@ package game
 
 import (
 	"image/color"
+	"time"
 
 	"github.com/oakmound/oak/render"
 )
 
 func DemoBody() *Body {
 	b := new(Body)
+	b.level = -1
+	b.startTime = time.Now()
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
@@ -40,6 +43,8 @@ func DemoBody() *Body {
 //Body1 infection of the Lung Liver
 func Body1() *Body {
 	b := new(Body)
+	b.level = 0
+	b.startTime = time.Now()
 
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
@@ -79,6 +84,8 @@ func Body1() *Body {
 func Body2() *Body {
 	//(Liver Stomach) Heart Lung
 	b := new(Body)
+	b.level = 1
+	b.startTime = time.Now()
 
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
@@ -102,6 +109,8 @@ func Body2() *Body {
 //Body3 infection of the (Stomach Heart Liver) Stomach
 func Body3() *Body {
 	b := new(Body)
+	b.level = 2
+	b.startTime = time.Now()
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
@@ -124,6 +133,8 @@ func Body3() *Body {
 //Body4 infection of the  (Lung Stomach) (Brain Liver) Heart
 func Body4() *Body {
 	b := new(Body)
+	b.level = 3
+	b.startTime = time.Now()
 
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
@@ -146,6 +157,8 @@ func Body4() *Body {
 //Body5 infection of the (Liver Heart Stomach) (Brain Lung Lung Heart) (Brain)
 func Body5() *Body {
 	b := new(Body)
+	b.level = 4
+	b.startTime = time.Now()
 
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}

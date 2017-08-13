@@ -4,11 +4,13 @@ import (
 	"image/color"
 
 	"fmt"
+	"math/rand"
+	"time"
+
+	"github.com/oakmound/lowrez17/game/menu"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"math/rand"
-	"time"
 )
 
 type Body struct {
@@ -21,6 +23,9 @@ type Body struct {
 	infectionPattern [][]int
 	infectionSet     int
 	complete         bool
+
+	level     int
+	startTime time.Time
 }
 
 // Connect connects two bodyNodes on a body, and returns whether
@@ -160,3 +165,23 @@ func spreadInfection(id int, frame interface{}) int {
 // given a shape from an image,
 // we can put in random locations for everything, where everything is a random
 // set of organs / veins
+
+func (b *Body) Stats() menu.LevelStats {
+	cleared := 0.0
+	total := 0.0
+	for _, col := range b.infectionPattern {
+		for _, o := range col {
+			if b.graph[o].DiseaseLevel() <= 0 {
+				cleared++
+			}
+			total++
+		}
+	}
+	cleared /= total
+	return menu.LevelStats{
+		Score:   -1,
+		Time:    int(time.Now().Sub(b.startTime).Nanoseconds()),
+		Cleared: cleared,
+		Level:   b.level,
+	}
+}

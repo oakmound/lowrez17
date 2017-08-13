@@ -1,11 +1,12 @@
 package game
 
 import (
+	"image/color"
+
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"image/color"
 )
 
 var (
@@ -91,5 +92,8 @@ func LevelLoop() bool {
 }
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {
-	return "menu", nil
+	return "menu", &oak.SceneResult{
+		NextSceneInput: thisBody.Stats(),
+		Transition:     oak.TransitionZoom(.56, .56, 500, -.001),
+	}
 }

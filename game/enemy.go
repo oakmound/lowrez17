@@ -2,11 +2,13 @@ package game
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/timing"
 )
 
 var (
@@ -34,8 +36,8 @@ type EnemyCreation func(x, y int, difficulty float64) *Enemy
 
 func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64) (e *Enemy) {
 	e = new(Enemy)
+	render.Draw(r, entityLayer)
 	e.Entity = *NewEntity(x, y, w, h, r, e.Init(), friction, mass)
-	render.Draw(e.R, entityLayer)
 	collision.Add(e.RSpace.Space)
 	e.Dir = physics.NewVector(1, 0)
 	e.Speed = physics.NewVector(speed, speed)
@@ -44,7 +46,9 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 
 	e.speedMax = maxSpeed
 
-	e.Bind(enemyEnter, "EnterFrame")
+	go timing.DoAfter(100*time.Millisecond, func() {
+		e.Bind(enemyEnter, "EnterFrame")
+	})
 	return e
 }
 
@@ -55,6 +59,9 @@ func enemyEnter(id int, frame interface{}) int {
 		e.Destroy()
 	}
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
+	// e.R.(*render.Reverting).RevertAndModify(1,
+	// 	render.RotateInterpolated(int(-e.Dir.Angle()), gift.NearestNeighborInterpolation))
+
 	e.attack(e)
 	e.move(frame.(int), e)
 	e.applyMovement()
