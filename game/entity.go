@@ -29,7 +29,7 @@ func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
 	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
 	// Todo: Distinguish these two, when we start tracking hits on walls
 	e.RSpace.Add(collision.Label(Blocked), bounceEntity)
-	e.RSpace.Add(collision.Label(PressureFan), bounceEntity)
+	e.RSpace.Add(collision.Label(PressureFan), nudgeEntity)
 	e.RSpace.Add(Stun, stopEntity)
 	return e
 }
@@ -76,6 +76,18 @@ func bounceEntity(s1, s2 *collision.Space) {
 			physics.Push(psh, e)
 		} else {
 			e.Delta.Add(s1.OverlapVector(s2).Scale(.5))
+		}
+	}
+}
+func nudgeEntity(s1, s2 *collision.Space) {
+	ent := event.GetEntity(int(s1.CID))
+	if hase, ok := ent.(HasE); ok {
+		e := hase.E()
+		//e.collided++
+		if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
+			physics.Push(psh, e)
+		} else {
+			e.Delta.Add(s1.OverlapVector(s2).Scale(.2))
 		}
 	}
 }

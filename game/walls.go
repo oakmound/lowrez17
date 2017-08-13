@@ -58,7 +58,7 @@ func startupFans() {
 			}
 			// set the direction of the fan to be towards that close second fan
 			ds := NewDirectionSpace(collision.NewLabeledSpace(f.X()-tileDimf64, f.Y()-tileDimf64, tileDimf64*3, tileDimf64*3, collision.Label(PressureFan)),
-				physics.NewForceVector(f.Sub(fans[minFan]).Normalize(), 5))
+				physics.NewForceVector(f.Sub(fans[minFan]).Normalize(), 1))
 			collision.Add(ds.Space)
 			tileSpaces = append(tileSpaces, ds.Space)
 

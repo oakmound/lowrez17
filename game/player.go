@@ -136,6 +136,6 @@ func playerMove(id int, frame interface{}) int {
 	return 0
 }
 func playerHurt(s1, s2 *collision.Space) {
-	oak.SetPalette(hurtPalette)
+	//oak.SetPalette(hurtPalette)
 	bounceEntity(s1, s2)
 }
