@@ -3,6 +3,7 @@ package game
 import (
 	"time"
 
+	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 )
@@ -14,7 +15,7 @@ func WhipLeft(label collision.Label) func(p *Entity) {
 		fv := physics.NewForceVector(out.Copy(), 20)
 		for i := 0; i < 25; i++ {
 			pos.Add(out)
-			NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 		}
 	}
 }
@@ -25,7 +26,7 @@ func WhipRight(label collision.Label) func(p *Entity) {
 		fv := physics.NewForceVector(out.Copy(), 20)
 		for i := 0; i < 25; i++ {
 			pos.Add(out)
-			NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 		}
 
 	}
@@ -38,7 +39,7 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 		for angle := 0; angle < 360; angle += 10 {
 			pos := basePos.Copy().Add(rot.Rotate(10))
 			fv := physics.NewForceVector(rot.Copy(), 20)
-			NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 		}
 	}
 }

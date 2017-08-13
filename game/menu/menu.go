@@ -189,7 +189,9 @@ func triggerInteractive(id int, label interface{}) int {
 	case endurance:
 		levelData = "endurance"
 	case nextLevel:
-		levelData = "level" + strconv.Itoa(currentLevel+1)
+		currentLevel = (currentLevel + 1) % 6
+
+		levelData = "level" + strconv.Itoa(currentLevel)
 		// Todo: don't try to go to level6, reset to 0
 		setLevelInteracts(p)
 	case wasd:

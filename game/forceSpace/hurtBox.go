@@ -1,9 +1,10 @@
-package game
+package forceSpace
 
 import (
 	"image/color"
 	"time"
 
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
@@ -21,7 +22,7 @@ func NewHurtBox(x, y, w, h float64, duration time.Duration, l collision.Label, f
 	// Debug renderable to see the hurtbox
 	cb := render.NewColorBox(int(w), int(h), color.RGBA{100, 100, 100, 100})
 	cb.SetPos(x, y)
-	render.Draw(cb, debugLayer)
+	render.Draw(cb, layers.DebugLayer)
 	go timing.DoAfter(duration, func() {
 		collision.Remove(hb.Space)
 		cb.UnDraw()

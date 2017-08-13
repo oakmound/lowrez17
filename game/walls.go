@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
@@ -34,7 +35,7 @@ func startupWalls() {
 			}
 		}
 		// Initialize a directional collision space pointing toward the nearby anchor
-		ds := NewDirectionSpace(collision.NewLabeledSpace(w.X(), w.Y(), tileDimf64, tileDimf64, collision.Label(Blocked)),
+		ds := forceSpace.NewDirectionSpace(collision.NewLabeledSpace(w.X(), w.Y(), tileDimf64, tileDimf64, collision.Label(Blocked)),
 			physics.NewForceVector(w.Sub(minV).Normalize(), 10))
 		collision.Add(ds.Space)
 		tileSpaces = append(tileSpaces, ds.Space)
@@ -57,8 +58,8 @@ func startupFans() {
 				}
 			}
 			// set the direction of the fan to be towards that close second fan
-			ds := NewDirectionSpace(collision.NewLabeledSpace(f.X()-tileDimf64, f.Y()-tileDimf64, tileDimf64*3, tileDimf64*3, collision.Label(PressureFan)),
-				physics.NewForceVector(f.Sub(fans[minFan]).Normalize(), 5))
+			ds := forceSpace.NewDirectionSpace(collision.NewLabeledSpace(f.X()-tileDimf64, f.Y()-tileDimf64, tileDimf64*3, tileDimf64*3, collision.Label(PressureFan)),
+				physics.NewForceVector(f.Sub(fans[minFan]).Normalize(), 1))
 			collision.Add(ds.Space)
 			tileSpaces = append(tileSpaces, ds.Space)
 

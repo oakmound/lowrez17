@@ -3,6 +3,8 @@ package game
 import (
 	"image/color"
 
+	"fmt"
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -21,11 +23,12 @@ func LevelInit(prevScene string, inLevel interface{}) {
 
 	Init()
 	b := GetBody(inLevel.(string))
+	fmt.Println("LEVEL IS ", inLevel)
 
 	thisBody = b
 	var firstVein = true
 	var playerStart int
-	render.Draw(b.overlay, bodyOverlayLayer)
+	render.Draw(b.overlay, layers.BodyOverlayLayer)
 	for i, n := range b.graph {
 		pos := n.Vec()
 		var r render.Modifiable
@@ -35,7 +38,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 			pos = pos.Copy().Sub(physics.NewVector(float64(w)/2, float64(h)/2))
 			r.SetPos(pos.X(), pos.Y())
 			n.SetPos(pos)
-			render.Draw(r, organLayer)
+			render.Draw(r, layers.OrganLayer)
 		} else {
 			if firstVein {
 				playerStart = i
@@ -46,14 +49,14 @@ func LevelInit(prevScene string, inLevel interface{}) {
 			pos.Sub(physics.NewVector(1, 1))
 			r.SetPos(pos.X(), pos.Y())
 			n.SetPos(pos)
-			render.Draw(r, veinLayer)
+			render.Draw(r, layers.VeinLayer)
 		}
 	}
 	for i, list := range b.adjacency {
 		for _, j := range list {
 			if i > j {
 				v := NewVein(b.graph[i], b.graph[j], b)
-				render.Draw(v, veinLayer)
+				render.Draw(v, layers.VeinLayer)
 				b.veins[i][j] = v
 				b.veins[j][i] = v
 			}
@@ -64,6 +67,12 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	for i := uint8(0); i < 127; i++ {
 		diseasedPalette = append(diseasedPalette, color.RGBA{i * (uint8(rd)), i * (uint8(gd)), i * (uint8(bd)), 255})
 	}
+
+	//TODO: remove this before final build
+	oak.AddCommand("complete", func(nothing []string) {
+		thisBody.complete = true
+	})
+
 	// Place player
 	pos := NodeCenter(b.graph[playerStart])
 	traveler = NewBodyTraveler(pos.X(), pos.Y())
@@ -95,6 +104,6 @@ func LevelEnd() (nextScene string, result *oak.SceneResult) {
 	oak.ClearPalette()
 	return "menu", &oak.SceneResult{
 		NextSceneInput: thisBody.Stats(),
-		Transition:     oak.TransitionZoom(.56, .56, 500, -.001),
+		Transition:     oak.TransitionZoom(.56, .56, 400, -.001),
 	}
 }

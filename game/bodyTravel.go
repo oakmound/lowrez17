@@ -7,6 +7,7 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/lowrez17/game/layers"
 )
 
 //A BodyTraveler is an entity that travels along the veins of a body on the body layer
@@ -30,7 +31,7 @@ func NewBodyTraveler(x, y float64) *BodyTraveler {
 	bt.Bind(startTravelerMove, "MoveTraveler")
 	bt.Bind(moveTraveler, "EnterFrame")
 	bt.active = true
-	render.Draw(bt.R, travelerLayer)
+	render.Draw(bt.R, layers.TravelerLayer)
 	return bt
 }
 

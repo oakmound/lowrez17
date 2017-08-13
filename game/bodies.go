@@ -49,27 +49,32 @@ func Body1() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLung(24, 25),
-		NewLiver(27, 55),
-		NewHeart(35, 8),
-		NewRLung(34, 25))
-	b.AddNodes(NewVeinNode(10, 40, b.veinColor),
-		NewVeinNode(23, 5, b.veinColor),
-		NewVeinNode(30, 38, b.veinColor),
-		NewVeinNode(50, 22, b.veinColor))
+	b.AddNodes(NewLung(20, 27),
+		NewLiver(20, 55),
+		NewHeart(27, 40),
+		NewRLung(38, 27),
+		NewBrain(27, 10))
+	b.AddNodes(NewVeinNode(27, 30, b.veinColor),
+		NewVeinNode(30, 48, b.veinColor),
+		NewVeinNode(16, 45, b.veinColor))
 
-	b.Connect(0, 5)
 	b.Connect(0, 4)
-	b.Connect(0, 6)
-	b.Connect(2, 5)
-	b.Connect(2, 7)
-	b.Connect(3, 5)
-	b.Connect(3, 7)
-	b.Connect(1, 4)
+	b.Connect(3, 4)
+
+	b.Connect(5, 0)
+	b.Connect(5, 3)
+
+	b.Connect(5, 2)
+	b.Connect(2, 1)
+
+	b.Connect(0, 7)
+	b.Connect(3, 6)
+
 	b.Connect(1, 7)
-	b.Connect(6, 7)
-	b.Connect(4, 5)
-	//
+	b.Connect(1, 6)
+
+	b.Connect(2, 7)
+	b.Connect(2, 6)
 
 	b.InfectionPattern([][]int{{0}, {1}})
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
@@ -80,7 +85,7 @@ func Body1() *Body {
 	return b
 }
 
-//Body2 infection of the (Liver Stomach) Heart Lung
+//Body2 infection of the (Liver Stomach) Heart RLung
 func Body2() *Body {
 	//(Liver Stomach) Heart Lung
 	b := new(Body)
@@ -90,17 +95,44 @@ func Body2() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLiver(24, 25),
-		NewStomach(27, 55),
-		NewHeart(35, 8),
-		NewRLung(34, 25),
-		NewLung(2, 2))
-	b.AddNodes(NewVeinNode(10, 40, b.veinColor))
+	b.AddNodes(NewLiver(19, 55),
+		NewStomach(31, 40),
+		NewHeart(24, 14),
+		NewRLung(38, 27),
+		NewLung(20, 27),
+		NewBrain(28, 4))
+	b.AddNodes(NewVeinNode(16, 41, b.veinColor),
+		NewVeinNode(28, 23, b.veinColor),
+		NewVeinNode(42, 53, b.veinColor),
+		NewVeinNode(36, 14, b.veinColor))
 
 	b.InfectionPattern([][]int{{0, 1}, {2}, {3}})
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
 		b.Infect(oNum)
 	}
+
+	b.Connect(6, 0)
+	b.Connect(6, 1)
+
+	b.Connect(7, 3)
+	b.Connect(7, 4)
+
+	b.Connect(0, 1)
+	b.Connect(1, 7)
+
+	b.Connect(2, 3)
+	b.Connect(2, 4)
+	b.Connect(2, 7)
+	b.Connect(2, 3)
+
+	b.Connect(8, 6)
+	b.Connect(8, 3)
+	b.Connect(8, 1)
+
+	b.Connect(5, 2)
+
+	b.Connect(5, 9)
+	b.Connect(3, 9)
 
 	b.InitVeins()
 	return b

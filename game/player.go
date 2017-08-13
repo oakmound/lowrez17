@@ -12,6 +12,7 @@ import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
+	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type Player struct {
@@ -47,7 +48,7 @@ func NewPlayer() *Player {
 }
 
 func startupPlayer() {
-	render.Draw(player.R, entityLayer)
+	render.Draw(player.R, layers.EntityLayer)
 	collision.Add(player.RSpace.Space)
 
 	player.Bind(playerMove, "EnterFrame")
@@ -136,6 +137,6 @@ func playerMove(id int, frame interface{}) int {
 	return 0
 }
 func playerHurt(s1, s2 *collision.Space) {
-	oak.SetPalette(hurtPalette)
+	//oak.SetPalette(hurtPalette)
 	bounceEntity(s1, s2)
 }

@@ -4,6 +4,7 @@ import (
 	"image/color"
 	"time"
 
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -30,7 +31,7 @@ func MakeShot(pos physics.Vector, dir physics.Vector, speed, accel float64, w in
 	s.Speed = dir.Copy().Scale(speed)
 	s.speedMax = 10
 	s.RSpace.Space.UpdateLabel(label)
-	render.Draw(s.R, entityLayer)
+	render.Draw(s.R, layers.EntityLayer)
 	s.deathTime = time.Now().Add(dur)
 	s.Bind(shotEnter, "EnterFrame")
 	s.RSpace.Add(collision.Label(Blocked), shotBlocked)

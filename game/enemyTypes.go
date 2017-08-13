@@ -9,6 +9,7 @@ import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
+	"github.com/oakmound/lowrez17/game/forceSpace"
 )
 
 type EnemyType int
@@ -200,7 +201,7 @@ func Vacuum(p *Entity) {
 		pos = basePos.Add(perpendicular).Copy()
 		for j := 0; j < 15; j++ {
 			pos.Add(delta)
-			NewHurtBox(pos.X(), pos.Y(), 3, 3, 150*time.Millisecond, Opposing, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 150*time.Millisecond, Opposing, fv)
 		}
 	}
 }
