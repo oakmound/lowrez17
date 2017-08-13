@@ -7,6 +7,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type Vent struct {
@@ -35,7 +36,7 @@ func NewVent(x, y int, r render.Renderable) {
 		"open":   m2,
 	})
 	v.cmp.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
-	render.Draw(v.cmp, tileLayer)
+	render.Draw(v.cmp, layers.TileLayer)
 	v.s = collision.NewLabeledSpace(float64(x)*tileDimf64, float64(y)*tileDimf64,
 		tileDimf64, tileDimf64, collision.Label(Blocked))
 	collision.Add(v.s)

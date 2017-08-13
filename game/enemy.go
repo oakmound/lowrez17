@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -36,7 +37,7 @@ type EnemyCreation func(x, y int, difficulty float64) *Enemy
 
 func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64) (e *Enemy) {
 	e = new(Enemy)
-	render.Draw(r, entityLayer)
+	render.Draw(r, layers.EntityLayer)
 	e.Entity = *NewEntity(x, y, w, h, r, e.Init(), friction, mass)
 	collision.Add(e.RSpace.Space)
 	e.Dir = physics.NewVector(1, 0)

@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/lowrez17/game/layers"
 )
 
 const (
@@ -105,7 +106,7 @@ func (t Tile) Place(x, y int, typ OrganType) {
 	cb := render.NewColorBox(tileDim, tileDim, c.Poll())
 	if tileDraw[t] {
 		cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
-		render.Draw(cb, tileLayer)
+		render.Draw(cb, layers.TileLayer)
 	}
 	tileInit[t](x, y, cb)
 	tileRs = append(tileRs, cb)

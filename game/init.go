@@ -117,10 +117,10 @@ func Init() {
 
 	levelBodies = map[string]*Body{
 		"level1": Body1(),
-		"level2": DemoBody(),
-		"level3": DemoBody(),
-		"level4": DemoBody(),
-		"level5": DemoBody(),
+		"level2": Body2(),
+		"level3": Body3(),
+		"level4": Body4(),
+		"level5": Body5(),
 	}
 
 	for i := uint8(0); i < 127; i++ {

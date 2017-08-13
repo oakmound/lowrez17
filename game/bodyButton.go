@@ -9,6 +9,7 @@ import (
 	"github.com/oakmound/oak/mouse"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type BodyButton struct {
@@ -73,7 +74,7 @@ func highlightBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
 	if bb.IsTravelerAdjacent() {
 		bb.highlight.SetPos(bb.GetX()-1, bb.GetY()-1)
-		render.Draw(bb.highlight, highlightLayer)
+		render.Draw(bb.highlight, layers.HighlightLayer)
 	}
 	return 0
 }

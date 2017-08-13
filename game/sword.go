@@ -3,6 +3,7 @@ package game
 import (
 	"time"
 
+	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 )
@@ -16,7 +17,7 @@ func SwordLeft(label collision.Label) func(p *Entity) {
 			yDelta := p.Dir.Copy().Rotate(j).Scale(4)
 			pos = basePos.Copy()
 			for i := 0; i < 4; i++ {
-				NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+				forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 				pos.Add(yDelta)
 			}
 		}
@@ -31,7 +32,7 @@ func SwordRight(label collision.Label) func(p *Entity) {
 			yDelta := p.Dir.Copy().Rotate(j).Scale(4)
 			pos = basePos.Copy()
 			for i := 0; i < 4; i++ {
-				NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+				forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 				pos.Add(yDelta)
 			}
 		}
@@ -51,7 +52,7 @@ func SwordDash(label collision.Label) func(p *Entity) {
 			pos = basePos.Add(perpendicular).Copy()
 			for j := 0; j < 12; j++ {
 				pos.Add(delta)
-				NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+				forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 			}
 		}
 	}

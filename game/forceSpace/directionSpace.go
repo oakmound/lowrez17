@@ -1,4 +1,4 @@
-package game
+package forceSpace
 
 import (
 	"github.com/oakmound/oak/collision"
