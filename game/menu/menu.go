@@ -81,7 +81,7 @@ func StartScene(_ string, levelData interface{}) {
 	collision.Add(collision.NewLabeledSpace(64, 0, 64, 35, blocking))
 	collision.Add(collision.NewLabeledSpace(126, 0, 2, 64, blocking))
 	collision.Add(collision.NewLabeledSpace(64, 60, 30, 2, blocking))
-	collision.Add(collision.NewLabeledSpace(104, 60, 30, 2, blocking))
+	collision.Add(collision.NewLabeledSpace(102, 60, 30, 2, blocking))
 	// not walls
 	collision.Add(collision.NewLabeledSpace(0, 17, 14, 22, blocking))
 	collision.Add(collision.NewLabeledSpace(43, 17, 20, 17, blocking))
@@ -109,7 +109,7 @@ func StartScene(_ string, levelData interface{}) {
 		collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
 	}
 	// door to morgue
-	collision.Add(collision.NewLabeledSpace(26, 17, 10, 2, door))
+	collision.Add(collision.NewLabeledSpace(26, 17, 12, 2, door))
 	// door back
 	collision.Add(collision.NewLabeledSpace(26+64, 60, 10, 2, doorBack))
 	// Background

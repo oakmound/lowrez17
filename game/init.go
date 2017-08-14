@@ -26,15 +26,14 @@ var (
 
 func Init() {
 
-	levelBodies = map[string]*Body{
-		"level1": Body1(),
-		"level2": Body2(),
-		"level3": Body3(),
-		"level4": Body4(),
-		"level5": Body5(),
-	}
-
 	if inited {
+		levelBodies = map[string]*Body{
+			"level1": Body1(),
+			"level2": Body2(),
+			"level3": Body3(),
+			"level4": Body4(),
+			"level5": Body5(),
+		}
 		return
 	}
 	inited = true
@@ -130,7 +129,16 @@ func Init() {
 	for i := uint8(0); i < 127; i++ {
 		grayScale = append(grayScale, color.RGBA{i * 2, i * 2, i * 2, 255})
 	}
+
 	//for i := uint8(0); i < 127; i++ {
 	//	diseasedPalette = append(diseasedPalette, color.RGBA{(i - 127) * 2, (i - 127) * 2, (i - 127) * 2, 255})
 	//}
+
+	levelBodies = map[string]*Body{
+		"level1": Body1(),
+		"level2": Body2(),
+		"level3": Body3(),
+		"level4": Body4(),
+		"level5": Body5(),
+	}
 }
