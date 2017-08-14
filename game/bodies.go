@@ -49,8 +49,17 @@ func Body1() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLung(20, 27),
-		NewLiver(20, 55),
+	b.AddNodes(
+		NewLung(20, 27).Waves(
+			Wave{SRD, 1.0, 20 * time.Second},
+			Wave{SMD, 1.0, 20 * time.Second},
+			Wave{MNSD, 1.0, 1 * time.Second},
+		),
+		NewLiver(20, 55).Waves(
+			Wave{SNSD, 1.0, 15 * time.Second},
+			Wave{MMD, 1.0, 15 * time.Second},
+			Wave{MNSD, 1.0, 1 * time.Second},
+		),
 		NewHeart(27, 40),
 		NewRLung(38, 27),
 		NewBrain(27, 10))
@@ -95,10 +104,25 @@ func Body2() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLiver(19, 55),
-		NewStomach(31, 40),
-		NewHeart(24, 14),
-		NewRLung(38, 27),
+	b.AddNodes(
+		NewLiver(19, 55).Waves(
+			Wave{MBD, 1.0, 10 * time.Second},
+			Wave{SRD, 1.0, 10 * time.Second},
+			Wave{MSD, 1.0, 1 * time.Second},
+		),
+		NewStomach(31, 40).Waves(
+			Wave{SSD, 1.0, 10 * time.Second},
+			Wave{LMD, 1.0, 30 * time.Second},
+			Wave{LBD, 1.0, 1 * time.Second},
+		),
+		NewHeart(24, 14).Waves(
+			Wave{SMD, 1.0, 20 * time.Second},
+			Wave{SRD, 1.0, 1 * time.Second},
+		),
+		NewRLung(38, 27).Waves(
+			Wave{LBD, 1.0, 20 * time.Second},
+			Wave{LNRD, 1.0, 1 * time.Second},
+		),
 		NewLung(20, 27),
 		NewBrain(28, 4))
 	b.AddNodes(NewVeinNode(16, 41, b.veinColor),
@@ -146,10 +170,26 @@ func Body3() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewStomach(25, 45),
-		NewHeart(26, 18),
-		NewLiver(15, 28),
-		NewStomach(39, 45),
+	b.AddNodes(
+		NewStomach(25, 45).Waves(
+			Wave{LRD, 1.0, 15 * time.Second},
+			Wave{MBD, 1.0, 1 * time.Second},
+		),
+		NewHeart(26, 18).Waves(
+			Wave{SBD, 1.0, 5 * time.Second},
+			Wave{MBD, 1.0, 1 * time.Second},
+		),
+		NewLiver(15, 28).Waves(
+			Wave{SNMD, 1.0, 5 * time.Second},
+			Wave{SBD, 1.0, 5 * time.Second},
+			Wave{SMD, 1.0, 5 * time.Second},
+			Wave{LSD, 1.0, 1 * time.Second},
+		),
+		NewStomach(39, 45).Waves(
+			Wave{LMD, 1.0, 20 * time.Second},
+			Wave{LSD, 1.0, 10 * time.Second},
+			Wave{LNMD, 1.0, 1 * time.Second},
+		),
 		NewLiver(48, 28))
 	b.AddNodes(NewVeinNode(36, 10, b.veinColor),
 		NewVeinNode(33, 21, b.veinColor))
@@ -188,11 +228,33 @@ func Body4() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLung(8, 55),
-		NewStomach(27, 30),
-		NewBrain(20, 8),
-		NewLiver(34, 55),
-		NewBrain(35, 8),
+	b.AddNodes(
+		NewLung(8, 55).Waves(
+			Wave{LBD, 1.0, 10 * time.Second},
+			Wave{LBD, 1.0, 20 * time.Second},
+			Wave{LSD, 1.0, 1 * time.Second},
+		),
+		NewStomach(27, 30).Waves(
+			Wave{MSD, 1.0, 10 * time.Second},
+			Wave{LBD, 1.0, 10 * time.Second},
+			Wave{RandomDist(70), 1.0, 1 * time.Second},
+		),
+		NewBrain(20, 8).Waves(
+			Wave{SBD, 1.0, 20 * time.Second},
+			Wave{SMD, 1.0, 20 * time.Second},
+			Wave{SRD, 1.0, 1 * time.Second},
+		),
+		NewLiver(34, 55).Waves(
+			Wave{RandomDist(5), 1.0, 5 * time.Second},
+			Wave{RandomDist(15), 1.0, 5 * time.Second},
+			Wave{RandomDist(30), 1.0, 1 * time.Second},
+		),
+		NewHeart(35, 8).Waves(
+			Wave{SSD, 1.0, 15 * time.Second},
+			Wave{MMD, 1.0, 30 * time.Second},
+			Wave{LBD, 1.0, 20 * time.Second},
+			Wave{LNRD, 1.0, 1 * time.Second},
+		),
 		NewRLung(52, 55))
 	b.AddNodes(NewVeinNode(28, 43, b.veinColor),
 		NewVeinNode(14, 33, b.veinColor),
@@ -231,14 +293,50 @@ func Body5() *Body {
 	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
-	b.AddNodes(NewLiver(18, 42),
-		NewHeart(27, 25),
-		NewStomach(37, 47),
-		NewBrain(31, 6),
-		NewLung(48, 28),
-		NewRLung(55, 28),
-		NewHeart(34, 25),
-		NewLung(8, 28),
+	b.AddNodes(
+		NewLiver(18, 42).Waves(
+			Wave{LBD, 1.0, 20 * time.Second},
+			Wave{LBD, 1.0, 20 * time.Second},
+			Wave{SSD, 1.0, 1 * time.Second},
+		),
+		NewHeart(27, 25).Waves(
+			Wave{SBD, 1.0, 10 * time.Second},
+			Wave{LRD, 1.0, 1 * time.Second},
+		),
+		NewStomach(37, 47).Waves(
+			Wave{RandomDist(40), 1.0, 10 * time.Second},
+			Wave{RandomDist(30), 1.0, 10 * time.Second},
+			Wave{RandomDist(20), 1.0, 1 * time.Second},
+		),
+		NewBrain(31, 6).Waves(
+			Wave{MBD, 1.0, 20 * time.Second},
+			Wave{LBD, 1.0, 1 * time.Second},
+		),
+		NewLung(48, 28).Waves(
+			Wave{RandomDist(10), 1.0, 10 * time.Second},
+			Wave{RandomDist(15), 1.0, 10 * time.Second},
+			Wave{RandomDist(20), 1.0, 10 * time.Second},
+			Wave{RandomDist(50), 1.0, 1 * time.Second},
+		),
+		NewRLung(55, 28).Waves(
+			Wave{RandomDist(10), 1.0, 10 * time.Second},
+			Wave{RandomDist(15), 1.0, 10 * time.Second},
+			Wave{RandomDist(20), 1.0, 10 * time.Second},
+			Wave{RandomDist(50), 1.0, 1 * time.Second},
+		),
+		NewHeart(34, 25).Waves(
+			Wave{RandomDist(20), 1.0, 10 * time.Second},
+			Wave{LBD, 1.0, 10 * time.Second},
+			Wave{LBD, 1.0, 15 * time.Second},
+			Wave{LSD, 1.0, 1 * time.Second},
+		),
+		NewBrain(8, 28).Waves(
+			Wave{SSD, 1.0, 10 * time.Second},
+			Wave{MBD, 1.0, 10 * time.Second},
+			Wave{MRD, 1.0, 10 * time.Second},
+			Wave{LMD, 1.0, 10 * time.Second},
+			Wave{LBD, 1.0, 1 * time.Second},
+		),
 		NewRLung(15, 28),
 	)
 	b.AddNodes(NewVeinNode(46, 12, b.veinColor),

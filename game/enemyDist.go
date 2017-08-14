@@ -47,6 +47,32 @@ var (
 	LargeNoRangedDist     = EnemyDist{40, []float64{1.0, 0.0, 1.0}}
 )
 
+// Short names
+
+var (
+	SMD  = SmallMeleeDist
+	MMD  = ModerateMeleeDist
+	LMD  = LargeMeleeDist
+	SRD  = SmallRangedDist
+	MRD  = ModerateRangedDist
+	LRD  = LargeRangedDist
+	SSD  = SmallSpecialDist
+	MSD  = ModerateSpecialDist
+	LSD  = LargeSpecialDist
+	SBD  = SmallBalancedDist
+	MBD  = ModerateBalancedDist
+	LBD  = LargeBalancedDist
+	SNMD = SmallNoMeleeDist
+	MNMD = ModerateNoMeleeDist
+	LNMD = LargeNoMeleeDist
+	SNSD = SmallNoSpecialDist
+	MNSD = ModerateNoSpecialDist
+	LNSD = LargeNoSpecialDist
+	SNRD = SmallNoRangedDist
+	MNRD = ModerateNoRangedDist
+	LNRD = LargeNoRangedDist
+)
+
 func RandomDist(enemyCount int) EnemyDist {
 	fr := floatrange.NewLinear(0.1, 1.0)
 	ed := EnemyDist{

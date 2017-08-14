@@ -16,6 +16,7 @@ import (
 type Organ interface {
 	BodyNode
 	Place()
+	Waves(...Wave) Organ
 }
 
 type basicOrgan struct {
@@ -51,6 +52,11 @@ func (b *basicOrgan) Dims() (int, int) {
 
 func (b *basicOrgan) Organ() (Organ, bool) {
 	return b, true
+}
+
+func (b *basicOrgan) Waves(wvs ...Wave) Organ {
+	b.waves = wvs
+	return b
 }
 
 //NewBasicOrgan creates a new default organ

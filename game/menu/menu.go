@@ -61,7 +61,7 @@ func StartScene(_ string, levelData interface{}) {
 			currentLevel = 1
 		}
 	}
-	currentLevel = 1
+	//currentLevel = 1
 	jsonData, err := json.Marshal(stats)
 	if err != nil {
 		dlog.Error(err)
