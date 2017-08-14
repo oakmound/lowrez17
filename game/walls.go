@@ -11,9 +11,11 @@ import (
 // once they are all tracked
 
 var (
-	anchors = []physics.Vector{}
-	walls   = []physics.Vector{}
-	fans    = []physics.Vector{}
+	anchors         = []physics.Vector{}
+	walls           = []physics.Vector{}
+	fans            = []physics.Vector{}
+	lowDamageWalls  = []physics.Vector{}
+	highDamageWalls = []physics.Vector{}
 )
 
 func addTo(vs *[]physics.Vector) func(x, y int, r render.Renderable) {
@@ -24,22 +26,32 @@ func addTo(vs *[]physics.Vector) func(x, y int, r render.Renderable) {
 
 func startupWalls() {
 	for _, w := range walls {
-		// Find the minimum distance anchor to this wall
-		minDist := w.Distance(anchors[0])
-		minV := anchors[0]
-		for i := 1; i < len(anchors); i++ {
-			dist := w.Distance(anchors[i])
-			if minDist > dist {
-				minDist = dist
-				minV = anchors[i]
-			}
-		}
-		// Initialize a directional collision space pointing toward the nearby anchor
-		ds := forceSpace.NewDirectionSpace(collision.NewLabeledSpace(w.X(), w.Y(), tileDimf64, tileDimf64, collision.Label(Blocked)),
-			physics.NewForceVector(w.Sub(minV).Normalize(), 10))
-		collision.Add(ds.Space)
-		tileSpaces = append(tileSpaces, ds.Space)
+		addWall(w, collision.Label(Blocked))
 	}
+	for _, w := range lowDamageWalls {
+		addWall(w, collision.Label(LowDamage))
+	}
+	for _, w := range highDamageWalls {
+		addWall(w, collision.Label(HighDamage))
+	}
+}
+
+func addWall(w physics.Vector, label collision.Label) {
+	// Find the minimum distance anchor to this wall
+	minDist := w.Distance(anchors[0])
+	minV := anchors[0]
+	for i := 1; i < len(anchors); i++ {
+		dist := w.Distance(anchors[i])
+		if minDist > dist {
+			minDist = dist
+			minV = anchors[i]
+		}
+	}
+	// Initialize a directional collision space pointing toward the nearby anchor
+	ds := forceSpace.NewDirectionSpace(collision.NewLabeledSpace(w.X(), w.Y(), tileDimf64, tileDimf64, label),
+		physics.NewForceVector(w.Sub(minV).Normalize(), 10))
+	collision.Add(ds.Space)
+	tileSpaces = append(tileSpaces, ds.Space)
 }
 
 func startupFans() {

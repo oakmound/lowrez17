@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
@@ -29,6 +30,8 @@ func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
 	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
 	// Todo: Distinguish these two, when we start tracking hits on walls
 	e.RSpace.Add(collision.Label(Blocked), bounceEntity)
+	e.RSpace.Add(collision.Label(LowDamage), infectBounce(0.001))
+	e.RSpace.Add(collision.Label(HighDamage), infectBounce(0.005))
 	e.RSpace.Add(collision.Label(PressureFan), nudgeEntity)
 	e.RSpace.Add(Stun, stopEntity)
 	return e
@@ -65,6 +68,16 @@ func (e *Entity) applyMovement() {
 		e.ShiftPos(e.Delta.X(), e.Delta.Y())
 	}
 	e.ApplyFriction(envFriction)
+}
+
+func infectBounce(rate float64) func(s1, s2 *collision.Space) {
+	return func(s1, s2 *collision.Space) {
+		i := thisBody.VecIndex(traveler.Vector)
+		o := thisBody.graph[i]
+		oak.SetPalette(grayScale)
+		o.Infect(rate)
+		bounceEntity(s1, s2)
+	}
 }
 
 func bounceEntity(s1, s2 *collision.Space) {

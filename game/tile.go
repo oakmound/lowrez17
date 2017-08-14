@@ -37,6 +37,8 @@ const (
 	PressureFan
 	Ventricle
 	Acid
+	LowDamage
+	HighDamage
 	// ...
 )
 
@@ -48,15 +50,17 @@ var (
 			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 		},
 		Brain: {
-			Open:    colorrange.NewLinear(color.RGBA{230, 50, 5, 254}, color.RGBA{254, 60, 140, 254}),
-			Blocked: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 60, 254}),
-			Exit:    colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
+			Open:       colorrange.NewLinear(color.RGBA{230, 50, 5, 254}, color.RGBA{254, 60, 140, 254}),
+			Blocked:    colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 60, 254}),
+			HighDamage: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 60, 254}),
+			Exit:       colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 		},
 		Heart: {
 			Open:      colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
 			Blocked:   colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
 			Exit:      colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			Ventricle: colorrange.NewLinear(color.RGBA{254, 100, 100, 254}, color.RGBA{255, 110, 110, 255}),
+			LowDamage: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
 		},
 		Lung: {
 			Open:        colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
@@ -77,21 +81,16 @@ var (
 			player.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 		},
 		Blocked:     addTo(&walls),
+		LowDamage:   addTo(&lowDamageWalls),
+		HighDamage:  addTo(&highDamageWalls),
 		Exit:        addTileSpace(collision.Label(Exit)),
 		Anchor:      addTo(&anchors),
 		PressureFan: addTo(&fans),
 		Acid:        addTileSpace(collision.Label(Acid)),
 		Ventricle:   NewVent,
 	}
-	tileDraw = map[Tile]bool{
-		Open:        true,
-		PlayerStart: true,
-		Blocked:     true,
-		Exit:        true,
-		Anchor:      true,
-		PressureFan: true,
-		Acid:        true,
-		Ventricle:   false,
+	tileUnDraw = map[Tile]bool{
+		Ventricle: true,
 	}
 	tileRs     = []render.Renderable{}
 	tileSpaces = []*collision.Space{}
@@ -104,7 +103,7 @@ func (t Tile) Place(x, y int, typ OrganType) {
 		c = tileColors[typ][Open]
 	}
 	cb := render.NewColorBox(tileDim, tileDim, c.Poll())
-	if tileDraw[t] {
+	if !tileUnDraw[t] {
 		cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 		render.Draw(cb, layers.TileLayer)
 		tileRs = append(tileRs, cb)

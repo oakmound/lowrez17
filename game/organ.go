@@ -106,6 +106,10 @@ func ImageTiles(rgba *image.RGBA) [][]Tile {
 				out[x][y] = Open
 			case color.RGBA{0, 0, 0, 255}:
 				out[x][y] = Blocked
+			case color.RGBA{128, 128, 128, 255}:
+				out[x][y] = HighDamage
+			case color.RGBA{64, 64, 64, 255}:
+				out[x][y] = LowDamage
 			case color.RGBA{255, 216, 0, 255}:
 				out[x][y] = Exit
 			case color.RGBA{0, 255, 33, 255}:

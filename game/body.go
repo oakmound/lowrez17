@@ -3,12 +3,13 @@ package game
 import (
 	"image/color"
 
+	"math/rand"
+	"time"
+
 	"github.com/oakmound/lowrez17/game/menu"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"math/rand"
-	"time"
 )
 
 type Body struct {
