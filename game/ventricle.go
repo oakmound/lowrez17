@@ -38,7 +38,7 @@ func NewVent(x, y int, r render.Renderable) {
 	v.cmp.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 	render.Draw(v.cmp, layers.TileLayer)
 	v.s = collision.NewLabeledSpace(float64(x)*tileDimf64, float64(y)*tileDimf64,
-		tileDimf64, tileDimf64, collision.Label(Blocked))
+		tileDimf64, tileDimf64, Stun)
 	collision.Add(v.s)
 	v.Bind(toggleVent, "Heartbeat")
 
