@@ -37,6 +37,11 @@ func (e *Enemy) Destroy() {
 	e.Cleanup()
 }
 
+func (e *Enemy) Cleanup() {
+	e.minimapR.UnDraw()
+	e.Entity.Cleanup()
+}
+
 type EnemyCreation func(x, y int, difficulty float64) *Enemy
 
 func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64) (e *Enemy) {

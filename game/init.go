@@ -103,6 +103,11 @@ func Init() {
 			),
 		}))
 
+	images["whip"] = render.LoadSprite(filepath.Join("raw", "whip.png"))
+	images["sword"] = render.LoadSprite(filepath.Join("raw", "sword.png"))
+	images["net"] = render.LoadSprite(filepath.Join("raw", "net.png"))
+	images["spear"] = render.LoadSprite(filepath.Join("raw", "spear.png"))
+
 	for k, v := range images {
 		images[k] = v.Modify(render.TrimColor(color.RGBA{1, 1, 1, 1}))
 	}

@@ -63,7 +63,7 @@ var (
 			LowDamage: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
 		},
 		Lung: {
-			Open:        colorrange.NewLinear(color.RGBA{70, 140, 100, 254}, color.RGBA{140, 230, 180, 254}),
+			Open:        colorrange.NewLinear(color.RGBA{20, 140, 100, 254}, color.RGBA{40, 230, 180, 254}),
 			Blocked:     colorrange.NewLinear(color.RGBA{30, 35, 40, 254}, color.RGBA{40, 60, 90, 254}),
 			Exit:        colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
 			PressureFan: colorrange.NewLinear(color.RGBA{220, 220, 220, 254}, color.RGBA{230, 254, 240, 254}),
