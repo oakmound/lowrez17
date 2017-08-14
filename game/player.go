@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/disintegration/gift"
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
@@ -12,7 +13,6 @@ import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
-	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type Player struct {
@@ -42,8 +42,8 @@ func NewPlayer() *Player {
 		e.speedMax = 7
 		collision.Add(e.RSpace.Space)
 		player = e
+		player.Weapon = Sword
 	}
-	player.Weapon = Spear
 	return player
 }
 

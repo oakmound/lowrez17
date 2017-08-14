@@ -25,6 +25,15 @@ var (
 )
 
 func Init() {
+
+	levelBodies = map[string]*Body{
+		"level1": Body1(),
+		"level2": Body2(),
+		"level3": Body3(),
+		"level4": Body4(),
+		"level5": Body5(),
+	}
+
 	if inited {
 		return
 	}
@@ -113,14 +122,6 @@ func Init() {
 			ts := ImageTiles(sp.GetRGBA())
 			levels[v] = append(levels[v], ts)
 		}
-	}
-
-	levelBodies = map[string]*Body{
-		"level1": Body1(),
-		"level2": Body2(),
-		"level3": Body3(),
-		"level4": Body4(),
-		"level5": Body5(),
 	}
 
 	for i := uint8(0); i < 127; i++ {
