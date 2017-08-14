@@ -2,9 +2,11 @@ package game
 
 import (
 	"fmt"
+	"image/color"
 	"time"
 
 	"github.com/oakmound/lowrez17/game/layers"
+	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -21,6 +23,7 @@ type Enemy struct {
 	Health int
 	AttackSet
 	MoveSet
+	minimapR render.Renderable
 }
 
 func (e *Enemy) Init() event.CID {
@@ -30,6 +33,7 @@ func (e *Enemy) Init() event.CID {
 
 func (e *Enemy) Destroy() {
 	enemyCh <- true
+	e.minimapR.UnDraw()
 	e.Cleanup()
 }
 
@@ -47,6 +51,9 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 
 	e.speedMax = maxSpeed
 
+	e.minimapR = render.NewColorBox(1, 1, color.RGBA{0, 0, 0, 128})
+	render.Draw(e.minimapR, layers.DebugLayer)
+
 	go timing.DoAfter(100*time.Millisecond, func() {
 		e.Bind(enemyEnter, "EnterFrame")
 	})
@@ -62,6 +69,40 @@ func enemyEnter(id int, frame interface{}) int {
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
 	// e.R.(*render.Reverting).RevertAndModify(1,
 	// 	render.RotateInterpolated(int(-e.Dir.Angle()), gift.NearestNeighborInterpolation))
+
+	v := oak.ViewVector()
+	delta := e.Vec().Copy().Sub(v)
+	if delta.X() > 0 {
+		if delta.Y() > 0 {
+			if delta.X() < 64 {
+				if delta.Y() < 64 {
+					v.Sub(physics.NewVector(1, 1))
+				} else {
+					v.Add(physics.NewVector(delta.X(), 63))
+				}
+			} else {
+				if delta.Y() < 64 {
+					v.Add(physics.NewVector(63, delta.Y()))
+				} else {
+					v.Add(physics.NewVector(63, 63))
+				}
+			}
+		} else {
+			if delta.X() > 64 {
+				v.ShiftX(63)
+			} else {
+				v.ShiftX(delta.X())
+			}
+		}
+	} else if delta.Y() > 0 {
+		if delta.Y() > 64 {
+			v.ShiftY(63)
+		} else {
+			v.ShiftY(delta.Y())
+		}
+	}
+
+	e.minimapR.SetPos(v.X(), v.Y())
 
 	e.attack(e)
 	e.move(frame.(int), e)
