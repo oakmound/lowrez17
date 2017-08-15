@@ -7,4 +7,5 @@ const (
 	_                        = iota
 	Ally     collision.Label = iota << 4 // 00001 -> 010000
 	Opposing                 = iota << 4 // 00010 -> 100000
+	Stun                     = iota << 4 // 00011 -> 110000
 )

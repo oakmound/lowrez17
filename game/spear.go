@@ -12,9 +12,8 @@ import (
 )
 
 const (
-	Stun        collision.Label = 100
-	spearWidth                  = 9
-	spearDamage                 = 7
+	spearWidth  = 9
+	spearDamage = 7
 )
 
 func SpearJab(label collision.Label) func(*Entity) {

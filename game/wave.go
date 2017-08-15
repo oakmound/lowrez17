@@ -27,6 +27,7 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 	for {
 		es := waves[i].Poll()
 		enemiesLeft += len(es)
+		fmt.Println("wave", i, "enemies left", enemiesLeft)
 		for _, t := range es {
 			x := wrange.Poll()
 			y := hrange.Poll()
@@ -34,14 +35,14 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 				x = wrange.Poll()
 				y = hrange.Poll()
 			}
-			e := enemyFns[t][typ](x, y, waves[i].Difficulty, false)
-			enemies = append(enemies, e)
+			enemies = append(enemies, enemyFns[t][typ](x, y, waves[i].Difficulty, false))
 		}
 	handleOuter:
 		for {
 			select {
 			case <-enemyCh:
 				enemiesLeft--
+				fmt.Println("Enemies Left", enemiesLeft)
 				if enemiesLeft <= 0 {
 					break handleOuter
 				}
@@ -57,9 +58,10 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 			break
 		}
 	}
-	for enemiesLeft != 0 {
+	for enemiesLeft > 0 {
 		select {
 		case <-enemyCh:
+			fmt.Println("Enemies Left", enemiesLeft)
 			enemiesLeft--
 		case <-waveExitCh:
 			return
