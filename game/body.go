@@ -133,7 +133,6 @@ func spreadInfection(id int, frame interface{}) int {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				if n.Infect() == true {
-					sfx.Audios["FailOrgan"].Play()
 					thisBody.InfectionProgress()
 				}
 				for j, v := range thisBody.veins[i] {
@@ -147,8 +146,8 @@ func spreadInfection(id int, frame interface{}) int {
 		o := thisBody.graph[thisBody.VecIndex(traveler.Vector)]
 		if frame.(int)%200 == 0 {
 			oak.SetPalette(grayScale)
-			o.Infect()
-			if o.DiseaseLevel() == 1 {
+			if o.Infect() {
+				sfx.Audios["FailOrgan"].Play()
 				CleanupActiveOrgan(false)
 			}
 		}
