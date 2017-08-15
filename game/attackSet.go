@@ -16,6 +16,9 @@ type AttackSet struct {
 
 func (a *AttackSet) attack(e HasE) {
 	if time.Now().After(a.NextAttack) {
+		if len(a.AttackWeights) == 0 {
+			return
+		}
 		a.Attacks[alg.ChooseX(a.AttackWeights, 1)[0]].Do(e)
 		a.NextAttack = time.Now().Add(time.Duration(a.WaitMillis.Poll()) * time.Millisecond)
 	}

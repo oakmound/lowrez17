@@ -21,6 +21,7 @@ type Enemy struct {
 	Health int
 	AttackSet
 	MoveSet
+	summoned bool
 	minimapR render.Renderable
 }
 
@@ -30,7 +31,9 @@ func (e *Enemy) Init() event.CID {
 }
 
 func (e *Enemy) Destroy() {
-	enemyCh <- true
+	if !e.summoned {
+		enemyCh <- true
+	}
 	e.minimapR.UnDraw()
 	e.Cleanup()
 }
@@ -40,10 +43,11 @@ func (e *Enemy) Cleanup() {
 	e.Entity.Cleanup()
 }
 
-type EnemyCreation func(x, y int, difficulty float64) *Enemy
+type EnemyCreation func(x, y int, difficulty float64, summoned bool) *Enemy
 
-func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64) (e *Enemy) {
+func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, maxSpeed float64, summoned bool) (e *Enemy) {
 	e = new(Enemy)
+	e.summoned = summoned
 	render.Draw(r, layers.EntityLayer)
 	e.Entity = *NewEntity(x, y, w, h, r, e.Init(), friction, mass)
 	collision.Add(e.RSpace.Space)

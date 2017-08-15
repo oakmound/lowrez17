@@ -1,8 +1,9 @@
 package game
 
 import (
-	"github.com/oakmound/oak/alg"
 	"math/rand"
+
+	"github.com/oakmound/oak/alg"
 )
 
 type MoveSet struct {
@@ -12,6 +13,9 @@ type MoveSet struct {
 }
 
 func (m *MoveSet) move(frame int, e HasE) {
+	if len(m.moves) == 0 {
+		return
+	}
 	aIndex := frame % len(m.moves[m.currentSet])
 	//Check if the move set should change
 	if aIndex == 0 {

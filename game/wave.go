@@ -33,7 +33,7 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 				x = wrange.Poll()
 				y = hrange.Poll()
 			}
-			e := enemyFns[t][typ](x, y, waves[i].Difficulty)
+			e := enemyFns[t][typ](x, y, waves[i].Difficulty, false)
 			enemies = append(enemies, e)
 		}
 	handleOuter:
