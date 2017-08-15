@@ -106,10 +106,9 @@ func (b *Body) MonitorInfections() {
 	}()
 }
 
-//InfectionProgress is called when an organ fails and is responsible for
+//InfectionProgress is called when an organ is finished and is responsible for
 // updating overall infection and level progress
 func (b *Body) InfectionProgress() {
-	sfx.Audios["FailOrgan"].Play()
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
 		if b.graph[oNum].DiseaseLevel() != 0 && b.graph[oNum].DiseaseLevel() != 1 {
 			return
@@ -134,6 +133,7 @@ func spreadInfection(id int, frame interface{}) int {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				if n.Infect() == true {
+					sfx.Audios["FailOrgan"].Play()
 					thisBody.InfectionProgress()
 				}
 				for j, v := range thisBody.veins[i] {

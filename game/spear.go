@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	Stun collision.Label = 100
+	Stun        collision.Label = 100
+	spearWidth                  = 9
+	spearDamage                 = 7
 )
 
 func SpearJab(label collision.Label) func(*Entity) {
@@ -22,13 +24,15 @@ func SpearJab(label collision.Label) func(*Entity) {
 
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(20))
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 200*time.Millisecond, label, fv)
+		for i := 0; i < spearDamage; i++ {
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), spearWidth, spearWidth, 200*time.Millisecond, label, fv)
+		}
 
 		spear := images["spear"].Copy()
 		RotateAbout(spear, p.CenterPos().Add(p.Dir.Copy().Scale(4)), p.CenterPos(), p.Dir.Angle())
 		render.Draw(spear, layers.DebugLayer)
 
-		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
+		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), spearWidth, spearWidth, Stun)
 		collision.Add(stick)
 		go timing.DoAfter(200*time.Millisecond, func() {
 			collision.Remove(stick)
@@ -44,13 +48,15 @@ func SpearThrust(label collision.Label) func(*Entity) {
 
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(23))
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 700*time.Millisecond, label, fv)
+		for i := 0; i < spearDamage; i++ {
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), spearWidth, spearWidth, 700*time.Millisecond, label, fv)
+		}
 
 		spear := images["spear"].Copy()
 		RotateAbout(spear, p.CenterPos().Add(p.Dir.Copy().Scale(5)), p.CenterPos(), p.Dir.Angle())
 		render.Draw(spear, layers.DebugLayer)
 
-		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
+		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), spearWidth, spearWidth, Stun)
 		collision.Add(stick)
 		go timing.DoAfter(500*time.Millisecond, func() {
 			collision.Remove(stick)
@@ -73,7 +79,9 @@ func SpearDash(label collision.Label) func(*Entity) {
 		render.Draw(spear, layers.DebugLayer)
 		render.UndrawAfter(spear, 75*time.Millisecond)
 
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 400*time.Millisecond, label, fv)
-
+		// More boxes -- more damage
+		for i := 0; i < spearDamage*3; i++ {
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), spearWidth, spearWidth, 400*time.Millisecond, label, fv)
+		}
 	}
 }
