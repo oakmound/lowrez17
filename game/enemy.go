@@ -12,6 +12,7 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"math"
 )
 
 var (
@@ -70,7 +71,8 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 
 func enemyEnter(id int, frame interface{}) int {
 	e := event.GetEntity(id).(*Enemy)
-	if e.Health < 1 {
+	if e.Health < 1 && e.Health > -math.MaxInt64/2 {
+		e.Health = -math.MaxInt64 / 2
 		fmt.Println("An enemy is dead!")
 		e.Destroy()
 	}
