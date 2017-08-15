@@ -98,7 +98,7 @@ func NetLeft(label collision.Label) func(*Entity) {
 
 		for a := 0; a < 90; a += 10 {
 			pos := basePos.Copy().Add(rot.Copy().Scale(6))
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv, false)
 			rot.Rotate(10)
 		}
 	}
@@ -124,14 +124,14 @@ func NetRight(label collision.Label) func(*Entity) {
 
 		for a := 0; a < 90; a += 10 {
 			pos := basePos.Copy().Add(rot.Copy().Scale(6))
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv, false)
 			rot.Rotate(-10)
 		}
 	}
 }
 func NetRotateAbout(r *render.Reverting, pos, center physics.Vector, angle float64) {
 	r.RevertAndModify(1, render.Rotate(int(-angle)))
-	pos2 := pos.Copy().Add(physics.AngleVector(angle).Scale(2))
+	pos2 := pos.Copy().Add(physics.AngleVector(angle).Scale(3))
 	r.SetPos(pos2.X(), pos2.Y())
 	w, h := r.GetDims()
 	if pos2.X() < center.X()-1 {
@@ -144,16 +144,28 @@ func NetRotateAbout(r *render.Reverting, pos, center physics.Vector, angle float
 
 func NetTwirl(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
-		go func() {
-			basePos := p.CenterPos()
-			rot := p.Dir.Copy().Rotate(-10)
+		basePos := p.CenterPos()
+		rot := p.Dir.Copy().Rotate(-10)
+		go func(basePos, rot physics.Vector) {
+			net := render.NewReverting(images["net"].Copy())
+			render.Draw(net, layers.DebugLayer)
+			for a := 0; a < 260; a += 10 {
+				pos := basePos.Copy()
+				rot.Rotate(-10)
+				NetRotateAbout(net, pos, basePos, rot.Angle())
+				time.Sleep(20 * time.Millisecond)
+			}
+			net.UnDraw()
+		}(basePos.Copy(), rot.Copy())
+
+		go func(basePos, rot physics.Vector) {
 			for a := 0; a < 260; a += 10 {
 				pos := basePos.Copy().Add(rot.Copy().Scale(6))
 				fv := physics.NewForceVector(rot.Copy().Rotate(90), 3)
-				forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv)
+				forceSpace.NewHurtBox(pos.X(), pos.Y(), 5, 5, 75*time.Millisecond, label, fv, false)
 				rot.Rotate(-10)
 				time.Sleep(5 * time.Millisecond)
 			}
-		}()
+		}(basePos, rot)
 	}
 }

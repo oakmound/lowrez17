@@ -100,10 +100,10 @@ func SwordDash(label collision.Label) func(p *Entity) {
 		SwordRotateAbout(sword, pos.Copy().Sub(perpendicular, perpendicular), p.CenterPos(), p.Dir.Angle())
 
 		go func() {
-			for i := 0; i < 10; i++ {
+			for i := 0; i < 8; i++ {
 				sword.ShiftX(delta.X())
 				sword.ShiftY(delta.Y())
-				time.Sleep(10 * time.Millisecond)
+				time.Sleep(15 * time.Millisecond)
 			}
 			sword.UnDraw()
 		}()
