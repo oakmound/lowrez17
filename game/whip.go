@@ -70,10 +70,28 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
 		rot := p.Dir.Copy().Scale(16)
 		basePos := p.CenterPos()
+		whip := render.NewReverting(images["whip"].Copy())
+		whip.SetPos(basePos.X(), basePos.Y())
+		render.Draw(whip, layers.DebugLayer)
+		go func(whip *render.Reverting) {
+			for i := 0; i < 360; i += 5 {
+				whip.RevertAndModify(1, render.Rotate(-i))
+				whip.SetPos(basePos.X(), basePos.Y())
+				w, h := whip.GetDims()
+				if i > 90 && i < 270 {
+					whip.ShiftX(float64(-w))
+				}
+				if i > 180 {
+					whip.ShiftY(float64(-h))
+				}
+				time.Sleep(5 * time.Millisecond)
+			}
+			whip.UnDraw()
+		}(whip)
 		for angle := 0; angle < 360; angle += 10 {
 			pos := basePos.Copy().Add(rot.Rotate(10))
 			fv := physics.NewForceVector(rot.Copy(), 20)
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 150*time.Millisecond, label, fv)
 		}
 	}
 }
