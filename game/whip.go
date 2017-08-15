@@ -24,6 +24,9 @@ func RotateAbout(r render.Modifiable, pos, center physics.Vector, angle float64)
 
 func WhipLeft(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("WhipLight", p.X(), p.Y())
+
 		out := p.Dir.Copy().Rotate(30)
 		center := p.CenterPos()
 		pos := center.Copy().Add(out.Copy().Scale(6))
@@ -43,6 +46,9 @@ func WhipLeft(label collision.Label) func(p *Entity) {
 }
 func WhipRight(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("WhipLight", p.X(), p.Y())
+
 		out := p.Dir.Copy().Rotate(-30)
 		center := p.CenterPos()
 		pos := center.Copy().Add(out.Copy().Scale(6))
@@ -64,6 +70,9 @@ func WhipRight(label collision.Label) func(p *Entity) {
 
 func WhipTwirl(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("WhipHeavy", p.X(), p.Y())
+
 		rot := p.Dir.Copy().Scale(16)
 		basePos := p.CenterPos()
 		whip := render.NewReverting(images["whip"].Copy())

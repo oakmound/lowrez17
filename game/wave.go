@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
+	"github.com/oakmound/lowrez17/game/sfx"
 )
 
 type Wave struct {
@@ -66,6 +67,7 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 	}
 	// Beat the organ
 	fmt.Println("Organ beat")
+	sfx.Audios["ClearOrgan"].Play()
 	<-time.After(2 * time.Second)
 	CleanupActiveOrgan(true)
 }

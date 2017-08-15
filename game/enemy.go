@@ -35,7 +35,7 @@ func (e *Enemy) Init() event.CID {
 
 func (e *Enemy) Destroy() {
 	if !e.summoned {
-		enemyCh <- true
+		go func() { enemyCh <- true }()
 	}
 	e.minimapR.UnDraw()
 	e.Cleanup()

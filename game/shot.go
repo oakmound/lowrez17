@@ -72,8 +72,9 @@ func shotReflect(s1, s2 *collision.Space) {
 	}
 }
 
-func Shoot(speed, accel float64, w int, c color.Color, label collision.Label, dur time.Duration, friction, mass float64) func(e *Entity) {
+func Shoot(speed, accel float64, w int, c color.Color, label collision.Label, dur time.Duration, friction, mass float64, sfx string) func(e *Entity) {
 	return func(e *Entity) {
+		PlayAt(sfx, e.X(), e.Y())
 		v := e.Vector.Copy().Add(e.Dir.Copy().Scale(4).Rotate(180))
 		MakeShot(v, e.Dir.Copy(), speed, accel, w, c, label, dur, friction, mass)
 	}

@@ -26,25 +26,25 @@ var (
 	SingleMelee           = EnemyDist{1, []float64{1.0, 0.0, 0.0}}
 	SmallMeleeDist        = EnemyDist{8, []float64{1.0, 0.0, 0.0}}
 	ModerateMeleeDist     = EnemyDist{16, []float64{1.0, 0.0, 0.0}}
-	LargeMeleeDist        = EnemyDist{40, []float64{1.0, 0.0, 0.0}}
+	LargeMeleeDist        = EnemyDist{24, []float64{1.0, 0.0, 0.0}}
 	SmallRangedDist       = EnemyDist{8, []float64{0.0, 1.0, 0.0}}
 	ModerateRangedDist    = EnemyDist{16, []float64{0.0, 1.0, 0.0}}
-	LargeRangedDist       = EnemyDist{40, []float64{0.0, 1.0, 0.0}}
+	LargeRangedDist       = EnemyDist{24, []float64{0.0, 1.0, 0.0}}
 	SmallSpecialDist      = EnemyDist{8, []float64{0.0, 0.0, 1.0}}
 	ModerateSpecialDist   = EnemyDist{16, []float64{0.0, 0.0, 1.0}}
-	LargeSpecialDist      = EnemyDist{40, []float64{0.0, 0.0, 1.0}}
+	LargeSpecialDist      = EnemyDist{24, []float64{0.0, 0.0, 1.0}}
 	SmallBalancedDist     = EnemyDist{8, []float64{1.0, 1.0, 1.0}}
 	ModerateBalancedDist  = EnemyDist{16, []float64{1.0, 1.0, 1.0}}
-	LargeBalancedDist     = EnemyDist{40, []float64{1.0, 1.0, 1.0}}
+	LargeBalancedDist     = EnemyDist{24, []float64{1.0, 1.0, 1.0}}
 	SmallNoMeleeDist      = EnemyDist{8, []float64{0.0, 1.0, 1.0}}
 	ModerateNoMeleeDist   = EnemyDist{16, []float64{0.0, 1.0, 1.0}}
-	LargeNoMeleeDist      = EnemyDist{40, []float64{0.0, 1.0, 1.0}}
+	LargeNoMeleeDist      = EnemyDist{24, []float64{0.0, 1.0, 1.0}}
 	SmallNoSpecialDist    = EnemyDist{8, []float64{1.0, 1.0, 0.0}}
 	ModerateNoSpecialDist = EnemyDist{16, []float64{1.0, 1.0, 0.0}}
-	LargeNoSpecialDist    = EnemyDist{40, []float64{1.0, 1.0, 0.0}}
+	LargeNoSpecialDist    = EnemyDist{24, []float64{1.0, 1.0, 0.0}}
 	SmallNoRangedDist     = EnemyDist{8, []float64{1.0, 0.0, 1.0}}
 	ModerateNoRangedDist  = EnemyDist{16, []float64{1.0, 0.0, 1.0}}
-	LargeNoRangedDist     = EnemyDist{40, []float64{1.0, 0.0, 1.0}}
+	LargeNoRangedDist     = EnemyDist{24, []float64{1.0, 0.0, 1.0}}
 )
 
 // Short names

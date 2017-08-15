@@ -12,6 +12,9 @@ import (
 
 func SwordLeft(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("SwordLight", p.X(), p.Y())
+
 		center := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(-55)
 		pos := center.Copy().Add(rot.Scale(7))
@@ -44,6 +47,9 @@ func SwordLeft(label collision.Label) func(p *Entity) {
 }
 func SwordRight(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("SwordLight", p.X(), p.Y())
+
 		center := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(55)
 		pos := center.Add(rot.Copy().Scale(7))
@@ -89,6 +95,9 @@ func SwordRotateAbout(r *render.Reverting, pos, center physics.Vector, angle flo
 
 func SwordDash(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
+
+		PlayAt("SwordHeavy", p.X(), p.Y())
+
 		p.Delta.Add(p.Dir.Copy().Scale(24 * p.Speed.Y()))
 		fv := physics.NewForceVector(p.Dir.Copy().Rotate(180).Normalize(), 10)
 		delta := p.Dir.Copy().Scale(3)

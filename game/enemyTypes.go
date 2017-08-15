@@ -69,7 +69,7 @@ func NewRanged(x, y int, diff float64, summoned bool) *Enemy {
 	e.Health = 50
 	e.AttackSet = NewAttackSet(intrange.NewLinear(1000, 2000),
 		[]float64{1.0},
-		[]*Action{NewAction(Shoot(1, 1, 2, color.RGBA{255, 255, 255, 255}, Opposing, 3*time.Second, .5, 2), 0)})
+		[]*Action{NewAction(Shoot(1, 1, 2, color.RGBA{255, 255, 255, 255}, Opposing, 3*time.Second, .5, 2, "RangedAttack"), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, .2, 0.2, 1.0, 2.0},
 		Move(Left, 5),
 		Move(Forward, 5),
@@ -103,8 +103,8 @@ func explode(id int, nothing interface{}) int {
 	if e.Health < 50 {
 		e.Health = 1000
 		go timing.DoAfter(500*time.Millisecond, func() {
-			// todo: Animate explosion
-			for i := 0; i < 360; i += 5 {
+			PlayAt("BoomerAttack", e.X(), e.Y())
+			for i := 0; i < 360; i += 30 {
 				dir := physics.AngleVector(float64(i))
 				MakeShot(e.Vector, dir, 3, .9, 3, color.RGBA{100, 10, 10, 255}, Opposing, 3*time.Second, .5, 5)
 			}
@@ -121,7 +121,7 @@ func NewWizard(x, y int, diff float64, summoned bool) *Enemy {
 	e.Health = 150
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0},
-		[]*Action{NewAction(Shoot(1, 1.2, 4, color.RGBA{190, 20, 20, 190}, Opposing, 5*time.Second, .25, 1), 0)})
+		[]*Action{NewAction(Shoot(1, 1.2, 4, color.RGBA{190, 20, 20, 190}, Opposing, 5*time.Second, .25, 1, "WizardAttack"), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 1.0, 1.0, 1.0},
 		Teleport(Left, 15),
 		Teleport(Forward, 5),
@@ -138,7 +138,7 @@ func NewDasher(x, y int, diff float64, summoned bool) *Enemy {
 	e.Health = 100
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0, 1.0},
-		[]*Action{NewAction(Shoot(2, 1, 2, color.RGBA{50, 50, 255, 255}, Opposing, 6*time.Second, .5, 2), 0),
+		[]*Action{NewAction(Shoot(2, 1, 2, color.RGBA{50, 50, 255, 255}, Opposing, 6*time.Second, .5, 2, "DasherAttack"), 0),
 			NewAction(SwordDash(Opposing), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, .2, 1.0, .2},
 		Move(Left, 5),
@@ -154,7 +154,7 @@ func NewSummoner(x, y int, diff float64, summoned bool) *Enemy {
 	w, h := r.GetDims()
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 10, 0.1, 4, summoned)
 	e.Health = 250
-	e.AttackSet = NewAttackSet(intrange.NewLinear(4000, 12000),
+	e.AttackSet = NewAttackSet(intrange.NewLinear(6000, 18000),
 		[]float64{1.0, 1.0},
 		[]*Action{NewAction(Summon(NewMelee), 0),
 			NewAction(Summon(NewRanged), 0)})
@@ -178,6 +178,7 @@ func stopAttacking(id int, nothing interface{}) int {
 
 func Summon(ec EnemyCreation) func(*Entity) {
 	return func(e *Entity) {
+		PlayAt("SummonAttack", e.X(), e.Y())
 		en := ec(int(e.X()+e.Dir.X()*4)/tileDim, int(e.Y()+e.Dir.Y()*4)/tileDim, 1.0, true)
 		enemies = append(enemies, en)
 	}
@@ -204,6 +205,7 @@ func NewVacuumer(x, y int, diff float64, summoned bool) *Enemy {
 }
 
 func Vacuum(p *Entity) {
+	PlayAt("Vacuum", p.X(), p.Y())
 	fv := physics.NewForceVector(p.Dir.Copy().Normalize(), 5)
 	delta := p.Dir.Copy().Scale(3)
 	perpendicular := delta.Copy().Rotate(90)

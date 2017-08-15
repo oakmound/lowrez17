@@ -38,8 +38,6 @@ func Init() {
 	}
 	inited = true
 
-	InitAudio()
-
 	bodySheet := render.GetSheet(filepath.Join("64x64", "midbodies.png"))
 	images["body1"] = bodySheet[0][0]
 	images["body2"] = bodySheet[0][1]

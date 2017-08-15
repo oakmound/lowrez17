@@ -12,6 +12,9 @@ import (
 
 func NetLeft(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
+
+		PlayAt("NetLight", p.X(), p.Y())
+
 		fv := physics.NewForceVector(p.Dir.Copy().Rotate(180), 3)
 		basePos := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(-130)
@@ -38,6 +41,9 @@ func NetLeft(label collision.Label) func(*Entity) {
 
 func NetRight(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
+
+		PlayAt("NetLight", p.X(), p.Y())
+
 		fv := physics.NewForceVector(p.Dir.Copy().Rotate(180), 3)
 		basePos := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(130)
@@ -76,6 +82,9 @@ func NetRotateAbout(r *render.Reverting, pos, center physics.Vector, angle float
 
 func NetTwirl(label collision.Label) func(*Entity) {
 	return func(p *Entity) {
+
+		PlayAt("NetHeavy", p.X(), p.Y())
+
 		basePos := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(-10)
 		go func(basePos, rot physics.Vector) {

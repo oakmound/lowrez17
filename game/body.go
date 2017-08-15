@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/oakmound/lowrez17/game/menu"
+	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
@@ -105,9 +106,10 @@ func (b *Body) MonitorInfections() {
 	}()
 }
 
-//InfectionProgress is called when an organ fails or is cleansed and is responsible for
+//InfectionProgress is called when an organ fails and is responsible for
 // updating overall infection and level progress
 func (b *Body) InfectionProgress() {
+	sfx.Audios["FailOrgan"].Play()
 	for _, oNum := range b.infectionPattern[b.infectionSet] {
 		if b.graph[oNum].DiseaseLevel() != 0 && b.graph[oNum].DiseaseLevel() != 1 {
 			return

@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/oakmound/oak/render"
 
 	"image/color"
@@ -18,6 +20,7 @@ func (i *Infectable) Infect(fs ...float64) bool {
 		infection = i.diseaseRate
 	} else {
 		for _, f := range fs {
+			fmt.Println(f)
 			infection += f
 		}
 	}

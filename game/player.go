@@ -6,6 +6,7 @@ import (
 
 	"github.com/disintegration/gift"
 	"github.com/oakmound/lowrez17/game/layers"
+	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
@@ -43,7 +44,7 @@ func NewPlayer() *Player {
 		collision.Add(e.RSpace.Space)
 		player = e
 		player.Weapon = Sword
-		UpdateEars(player)
+		sfx.UpdateEars(player)
 	}
 	return player
 }
