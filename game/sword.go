@@ -123,7 +123,7 @@ func SwordDash(label collision.Label) func(p *Entity) {
 			pos = basePos.Add(perpendicular).Copy()
 			for j := 0; j < 12; j++ {
 				pos.Add(delta)
-				forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv, false)
+				forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 75*time.Millisecond, label, fv)
 			}
 		}
 	}
