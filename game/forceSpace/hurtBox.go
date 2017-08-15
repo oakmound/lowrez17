@@ -28,5 +28,9 @@ func NewHurtBox(x, y, w, h float64, duration time.Duration, l collision.Label, f
 			collision.Remove(hb.Space)
 			cb.UnDraw()
 		})
+	} else {
+		go timing.DoAfter(duration, func() {
+			collision.Remove(hb.Space)
+		})
 	}
 }
