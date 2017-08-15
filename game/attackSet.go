@@ -14,14 +14,16 @@ type AttackSet struct {
 	Attacks       []*Action
 }
 
-func (a *AttackSet) attack(e HasE) {
+func (a *AttackSet) attack(e HasE) bool {
 	if time.Now().After(a.NextAttack) {
 		if len(a.AttackWeights) == 0 {
-			return
+			return false
 		}
 		a.Attacks[alg.ChooseX(a.AttackWeights, 1)[0]].Do(e)
 		a.NextAttack = time.Now().Add(time.Duration(a.WaitMillis.Poll()) * time.Millisecond)
+		return true
 	}
+	return false
 }
 
 func NewAttackSet(wait intrange.Range, weights []float64, attacks []*Action) AttackSet {

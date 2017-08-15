@@ -56,7 +56,11 @@ func Init() {
 		"attacking": render.NewSequence([]render.Modifiable{
 			enemySheet2[0][0].Copy().Modify(render.Rotate(180)),
 			enemySheet2[1][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[2][0].Copy().Modify(render.Rotate(180))}, 2),
+			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[1][0].Copy().Modify(render.Rotate(180)),
+			enemySheet2[1][0].Copy().Modify(render.Rotate(180))}, 2),
 	}))
 	images["heartFoe"] = render.NewReverting(render.NewSequence([]render.Modifiable{
 		enemySheet2[0][1].Copy(),
@@ -71,7 +75,10 @@ func Init() {
 		"attacking": render.NewSequence([]render.Modifiable{
 			enemySheet2[0][2].Copy().Modify(render.Rotate(90)),
 			enemySheet2[1][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[2][2].Copy().Modify(render.Rotate(90))}, 2),
+			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
+			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
+			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
+			enemySheet2[1][2].Copy().Modify(render.Rotate(90))}, 1),
 	}))
 	images["lungFoe"] = render.NewReverting(enemySheet2[0][4].Copy())
 	images["brainFoe"] = render.NewReverting(

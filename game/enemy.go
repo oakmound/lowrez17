@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"image/color"
 
+	"math/rand"
+
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"math/rand"
 )
 
 var (
@@ -22,8 +23,9 @@ type Enemy struct {
 	Health int
 	AttackSet
 	MoveSet
-	summoned bool
-	minimapR render.Renderable
+	summoned   bool
+	minimapR   render.Renderable
+	attackAnim bool
 }
 
 func (e *Enemy) Init() event.CID {
@@ -110,7 +112,9 @@ func enemyEnter(id int, frame interface{}) int {
 
 	e.minimapR.SetPos(v.X(), v.Y())
 
-	e.attack(e)
+	if e.attack(e) && e.attackAnim {
+		e.R.(*render.Reverting).Set("attacking")
+	}
 	e.move(frame.(int), e)
 	e.applyMovement()
 	return 0

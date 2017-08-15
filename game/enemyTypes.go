@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
+	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
 )
 
@@ -163,7 +164,16 @@ func NewSummoner(x, y int, diff float64, summoned bool) *Enemy {
 		Move(Forward, 5),
 		Move(Right, 5),
 		Move(Wait, 30))
+	e.attackAnim = true
+	e.R.(render.Triggerable).SetTriggerID(e.CID)
+	e.Bind(stopAttacking, "AnimationEnd")
 	return e
+}
+
+func stopAttacking(id int, nothing interface{}) int {
+	e := event.GetEntity(id).(*Enemy)
+	e.R.(*render.Reverting).Set("base")
+	return 0
 }
 
 func Summon(ec EnemyCreation) func(*Entity) {
@@ -187,6 +197,9 @@ func NewVacuumer(x, y int, diff float64, summoned bool) *Enemy {
 		Move(Backward, 5),
 		Move(Right, 5),
 		Move(Wait, 30))
+	e.attackAnim = true
+	e.R.(render.Triggerable).SetTriggerID(e.CID)
+	e.Bind(stopAttacking, "AnimationEnd")
 	return e
 }
 
