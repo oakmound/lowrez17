@@ -8,7 +8,6 @@ import (
 	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
-	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
 )
 
@@ -175,7 +174,7 @@ func Summon(ec EnemyCreation) func(*Entity) {
 }
 
 func NewVacuumer(x, y int, diff float64, summoned bool) *Enemy {
-	r := render.NewColorBox(10, 10, color.RGBA{205, 255, 150, 255})
+	r := images["stomachFoe"].Copy()
 	w, h := r.GetDims()
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.8, 2.3, summoned)
 	e.Health = 160

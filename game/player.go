@@ -32,14 +32,14 @@ func NewPlayer() *Player {
 		e := new(Player)
 		s := render.GetSheet(filepath.Join("8x8", "lowerlevelplayer.png"))[1][0].Copy().Modify(render.FlipX)
 		r := render.NewReverting(s)
-		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 13)
+		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 20)
 		e.Speed = physics.NewVector(.3, .3)
 		e.Dir = physics.NewVector(1, 0)
 		e.RSpace.Add(collision.Label(Exit), leaveOrgan)
 
 		e.RSpace.Add(collision.Label(Opposing), bounceEntity)
 		e.RSpace.Add(collision.Label(Opposing), playerHurt)
-		e.speedMax = 7
+		e.speedMax = 6.5
 		collision.Add(e.RSpace.Space)
 		player = e
 		player.Weapon = Sword
