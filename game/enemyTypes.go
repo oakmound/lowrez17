@@ -154,7 +154,7 @@ func NewSummoner(x, y int, diff float64, summoned bool) *Enemy {
 	w, h := r.GetDims()
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 10, 0.1, 4, summoned)
 	e.Health = 250
-	e.AttackSet = NewAttackSet(intrange.NewLinear(3000, 5000),
+	e.AttackSet = NewAttackSet(intrange.NewLinear(4000, 12000),
 		[]float64{1.0, 1.0},
 		[]*Action{NewAction(Summon(NewMelee), 0),
 			NewAction(Summon(NewRanged), 0)})
@@ -169,7 +169,7 @@ func NewSummoner(x, y int, diff float64, summoned bool) *Enemy {
 
 func Summon(ec EnemyCreation) func(*Entity) {
 	return func(e *Entity) {
-		en := ec(int(e.X()+e.Dir.X()*4)/16, int(e.Y()+e.Dir.Y()*4)/16, 1.0, true)
+		en := ec(int(e.X()+e.Dir.X()*4)/tileDim, int(e.Y()+e.Dir.Y()*4)/tileDim, 1.0, true)
 		enemies = append(enemies, en)
 	}
 }
