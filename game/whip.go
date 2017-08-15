@@ -10,6 +10,18 @@ import (
 	"github.com/oakmound/oak/render"
 )
 
+func RotateAbout(r render.Modifiable, pos, center physics.Vector, angle float64) {
+	r.Modify(render.Rotate(int(-angle)))
+	r.SetPos(pos.X(), pos.Y())
+	w, h := r.GetDims()
+	if pos.X() < center.X()-1 {
+		r.ShiftX(float64(-w))
+	}
+	if pos.Y() < center.Y()-1 {
+		r.ShiftY(float64(-h))
+	}
+}
+
 func WhipLeft(label collision.Label) func(p *Entity) {
 	return func(p *Entity) {
 		out := p.Dir.Copy().Rotate(30)
@@ -18,22 +30,14 @@ func WhipLeft(label collision.Label) func(p *Entity) {
 		fv := physics.NewForceVector(out.Copy(), 20)
 
 		whip := images["whip"].Copy()
-		whip.Modify(render.Rotate(int(-out.Angle())))
-		whip.SetPos(pos.X(), pos.Y())
-		w, h := whip.GetDims()
-		if pos.X() < center.X()-1 {
-			whip.ShiftX(float64(-w))
-		}
-		if pos.Y() < center.Y()-1 {
-			whip.ShiftY(float64(-h))
-		}
+		RotateAbout(whip, pos, center, out.Angle())
 
 		render.Draw(whip, layers.DebugLayer)
 		render.UndrawAfter(whip, 75*time.Millisecond)
 
 		for i := 0; i < 25; i++ {
 			pos.Add(out)
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 4, 4, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 4, 4, 75*time.Millisecond, label, fv, false)
 		}
 	}
 }
@@ -44,15 +48,7 @@ func WhipRight(label collision.Label) func(p *Entity) {
 		pos := center.Copy().Add(out.Copy().Scale(6))
 
 		whip := images["whip"].Copy()
-		whip.Modify(render.Rotate(int(-out.Angle())))
-		whip.SetPos(pos.X(), pos.Y())
-		w, h := whip.GetDims()
-		if pos.X() < center.X()-1 {
-			whip.ShiftX(float64(-w))
-		}
-		if pos.Y() < center.Y()-1 {
-			whip.ShiftY(float64(-h))
-		}
+		RotateAbout(whip, pos, center, out.Angle())
 
 		render.Draw(whip, layers.DebugLayer)
 		render.UndrawAfter(whip, 75*time.Millisecond)
@@ -60,7 +56,7 @@ func WhipRight(label collision.Label) func(p *Entity) {
 		fv := physics.NewForceVector(out.Copy(), 20)
 		for i := 0; i < 25; i++ {
 			pos.Add(out)
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 4, 4, 75*time.Millisecond, label, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 4, 4, 75*time.Millisecond, label, fv, false)
 		}
 
 	}
