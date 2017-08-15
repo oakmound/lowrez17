@@ -1,7 +1,6 @@
 package game
 
 import (
-	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
@@ -74,7 +73,7 @@ func infectBounce(rate float64) func(s1, s2 *collision.Space) {
 	return func(s1, s2 *collision.Space) {
 		i := thisBody.VecIndex(traveler.Vector)
 		o := thisBody.graph[i]
-		oak.SetPalette(grayScale)
+		//oak.SetPalette(grayScale)
 		o.Infect(rate)
 		bounceEntity(s1, s2)
 	}
