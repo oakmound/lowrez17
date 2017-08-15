@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
+	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
-	"github.com/oakmound/lowrez17/game/forceSpace"
 )
 
 type EnemyType int
@@ -169,7 +169,8 @@ func NewSummoner(x, y int, diff float64) *Enemy {
 
 func Summon(ec EnemyCreation) func(*Entity) {
 	return func(e *Entity) {
-		ec(int(e.X()+e.Dir.X()*4)/16, int(e.Y()+e.Dir.Y()*4)/16, 1.0)
+		en := ec(int(e.X()+e.Dir.X()*4)/16, int(e.Y()+e.Dir.Y()*4)/16, 1.0)
+		enemies = append(enemies, en)
 	}
 }
 

@@ -3,7 +3,6 @@ package game
 import (
 	"fmt"
 	"image/color"
-	"time"
 
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
@@ -11,7 +10,6 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"github.com/oakmound/oak/timing"
 )
 
 var (
@@ -59,9 +57,7 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 	e.minimapR = render.NewColorBox(1, 1, color.RGBA{0, 0, 0, 128})
 	render.Draw(e.minimapR, layers.DebugLayer)
 
-	go timing.DoAfter(100*time.Millisecond, func() {
-		e.Bind(enemyEnter, "EnterFrame")
-	})
+	e.Bind(enemyEnter, "EnterFrame")
 	return e
 }
 
