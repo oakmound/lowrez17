@@ -17,24 +17,24 @@ type Weapon struct {
 
 var (
 	Sword = Weapon{
-		left:  NewAction(SwordLeft(Ally), 100*time.Millisecond),
-		right: NewAction(SwordRight(Ally), 100*time.Millisecond),
-		space: NewAction(SwordDash(Ally), 500*time.Millisecond),
+		left:  NewAction(SwordLeft(Ally), 250*time.Millisecond),
+		right: NewAction(SwordRight(Ally), 250*time.Millisecond),
+		space: NewAction(SwordDash(Ally), 750*time.Millisecond),
 	}
 	Whip = Weapon{
-		left:  NewAction(WhipLeft(Ally), 200*time.Millisecond),
-		right: NewAction(WhipRight(Ally), 200*time.Millisecond),
-		space: NewAction(WhipTwirl(Ally), 700*time.Millisecond),
+		left:  NewAction(WhipLeft(Ally), 300*time.Millisecond),
+		right: NewAction(WhipRight(Ally), 300*time.Millisecond),
+		space: NewAction(WhipTwirl(Ally), 1200*time.Millisecond),
 	}
 	Spear = Weapon{
-		left:  NewAction(SpearJab(Ally), 150*time.Millisecond),
+		left:  NewAction(SpearJab(Ally), 350*time.Millisecond),
 		right: NewAction(SpearThrust(Ally), 900*time.Millisecond),
 		space: NewAction(SpearDash(Ally), 1000*time.Millisecond),
 	}
 	Net = Weapon{
-		left:  NewAction(NetLeft(Ally), 50*time.Millisecond),
-		right: NewAction(NetRight(Ally), 50*time.Millisecond),
-		space: NewAction(NetTwirl(Ally), 400*time.Millisecond),
+		left:  NewAction(NetLeft(Ally), 100*time.Millisecond),
+		right: NewAction(NetRight(Ally), 100*time.Millisecond),
+		space: NewAction(NetTwirl(Ally), 600*time.Millisecond),
 	}
 )
 
@@ -47,6 +47,7 @@ func SpearJab(label collision.Label) func(*Entity) {
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(15))
 		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 75*time.Millisecond, label, fv)
+
 		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
 		collision.Add(stick)
 		go timing.DoAfter(75*time.Millisecond, func() {
@@ -60,6 +61,7 @@ func SpearThrust(label collision.Label) func(*Entity) {
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(20))
 		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 500*time.Millisecond, label, fv)
+
 		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
 		collision.Add(stick)
 		go timing.DoAfter(500*time.Millisecond, func() {
