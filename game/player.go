@@ -43,6 +43,7 @@ func NewPlayer() *Player {
 		collision.Add(e.RSpace.Space)
 		player = e
 		player.Weapon = Sword
+		UpdateEars(player)
 	}
 	return player
 }

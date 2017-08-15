@@ -108,7 +108,7 @@ func StartScene(_ string, levelData interface{}) {
 		collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
 	}
 	// door to morgue
-	collision.Add(collision.NewLabeledSpace(26, 17, 12, 2, door))
+	collision.Add(collision.NewLabeledSpace(26, 15, 12, 2, door))
 	// door back
 	collision.Add(collision.NewLabeledSpace(26+64, 60, 10, 2, doorBack))
 	// Background
