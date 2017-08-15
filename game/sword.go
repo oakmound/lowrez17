@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/timing"
 )
 
 func SwordLeft(label collision.Label) func(p *Entity) {
@@ -150,5 +151,8 @@ func SwordDash(label collision.Label) func(p *Entity) {
 				forceSpace.NewHurtBox(pos.X(), pos.Y(), 6, 6, 250*time.Millisecond, label, fv)
 			}
 		}
+		go timing.DoAfter(SwordDashCooldown, func() {
+			PlayAt("SwordReady", p.X(), p.Y())
+		})
 	}
 }

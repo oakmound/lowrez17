@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/timing"
 )
 
 func RotateAbout(r render.Modifiable, pos, center physics.Vector, angle float64) {
@@ -98,5 +99,8 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 			fv := physics.NewForceVector(rot.Copy(), 20)
 			forceSpace.NewHurtBox(pos.X(), pos.Y(), 10, 10, 250*time.Millisecond, label, fv)
 		}
+		go timing.DoAfter(WhipTwirlCooldown, func() {
+			PlayAt("WhipReady", p.X(), p.Y())
+		})
 	}
 }

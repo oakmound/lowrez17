@@ -108,5 +108,9 @@ func NetTwirl(label collision.Label) func(*Entity) {
 				time.Sleep(5 * time.Millisecond)
 			}
 		}(basePos, rot)
+		// Net's cooldown is too fast for this to be meaningful
+		// go timing.DoAfter(NetTwirlCooldown, func() {
+		// 	PlayAt("NetReady", p.X(), p.Y())
+		// })
 	}
 }

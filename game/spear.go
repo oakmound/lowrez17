@@ -82,5 +82,8 @@ func SpearDash(label collision.Label) func(*Entity) {
 		for i := 0; i < spearDamage*3; i++ {
 			forceSpace.NewHurtBox(pos.X(), pos.Y(), spearWidth, spearWidth, 400*time.Millisecond, label, fv)
 		}
+		go timing.DoAfter(SpearDashCooldown, func() {
+			PlayAt("SpearReady", p.X(), p.Y())
+		})
 	}
 }

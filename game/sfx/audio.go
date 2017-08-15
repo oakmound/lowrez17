@@ -45,6 +45,10 @@ func InitAudio() {
 		"WhipLight":    SoftSFX,
 		"WizardAttack": SoftSFX,
 		"SummonAttack": SoftSFX,
+		"SwordReady":   SoftSFX,
+		"WhipReady":    SoftSFX,
+		"NetReady":     SoftSFX,
+		"SpearReady":   SoftSFX,
 	}
 	for s, f := range files {
 		a, err := audio.Get(s + ".wav")
