@@ -22,7 +22,7 @@ func SpearJab(label collision.Label) func(*Entity) {
 
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(20))
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 75*time.Millisecond, label, fv)
+		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 200*time.Millisecond, label, fv)
 
 		spear := images["spear"].Copy()
 		RotateAbout(spear, p.CenterPos().Add(p.Dir.Copy().Scale(4)), p.CenterPos(), p.Dir.Angle())
@@ -30,7 +30,7 @@ func SpearJab(label collision.Label) func(*Entity) {
 
 		stick := collision.NewLabeledSpace(pos.X(), pos.Y(), 7, 7, Stun)
 		collision.Add(stick)
-		go timing.DoAfter(75*time.Millisecond, func() {
+		go timing.DoAfter(200*time.Millisecond, func() {
 			collision.Remove(stick)
 			spear.UnDraw()
 		})
@@ -44,7 +44,7 @@ func SpearThrust(label collision.Label) func(*Entity) {
 
 		fv := physics.NewForceVector(physics.NewVector(0, 0), 0)
 		pos := p.CenterPos().Add(p.Dir.Copy().Scale(23))
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 500*time.Millisecond, label, fv)
+		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 700*time.Millisecond, label, fv)
 
 		spear := images["spear"].Copy()
 		RotateAbout(spear, p.CenterPos().Add(p.Dir.Copy().Scale(5)), p.CenterPos(), p.Dir.Angle())
@@ -73,7 +73,7 @@ func SpearDash(label collision.Label) func(*Entity) {
 		render.Draw(spear, layers.DebugLayer)
 		render.UndrawAfter(spear, 75*time.Millisecond)
 
-		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 75*time.Millisecond, label, fv)
+		forceSpace.NewHurtBox(pos.X(), pos.Y(), 7, 7, 400*time.Millisecond, label, fv)
 
 	}
 }

@@ -53,7 +53,7 @@ func NewMelee(x, y int, diff float64, summoned bool) *Enemy {
 	e.Health = 70
 	e.AttackSet = NewAttackSet(intrange.NewLinear(2000, 4000),
 		[]float64{1.0},
-		[]*Action{NewAction(SwordDash(Opposing), 0)})
+		[]*Action{NewAction(EnemySwordDash, 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 0.1, 0.1},
 		Move(Left, 2),
 		Move(Forward, 1),
@@ -139,7 +139,7 @@ func NewDasher(x, y int, diff float64, summoned bool) *Enemy {
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0, 1.0},
 		[]*Action{NewAction(Shoot(2, 1, 2, color.RGBA{50, 50, 255, 255}, Opposing, 6*time.Second, .5, 2, "DasherAttack"), 0),
-			NewAction(SwordDash(Opposing), 0)})
+			NewAction(EnemySwordDash, 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, .2, 1.0, .2},
 		Move(Left, 5),
 		Move(Forward, 5),
