@@ -12,6 +12,7 @@ import (
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
+	"math/rand"
 )
 
 var (
@@ -118,7 +119,9 @@ func enemyEnter(id int, frame interface{}) int {
 func hurtEnemy(s1, _ *collision.Space) {
 	ent := event.GetEntity(int(s1.CID))
 	if e, ok := ent.(*Enemy); ok {
-		e.Health--
+		if rand.Float64() < 0.05 {
+			e.Health--
+		}
 	}
 }
 

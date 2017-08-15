@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
+	"github.com/oakmound/lowrez17/game/forceSpace"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
 	"github.com/oakmound/oak/timing"
-	"github.com/oakmound/lowrez17/game/forceSpace"
 )
 
 type EnemyType int
@@ -174,9 +174,9 @@ func Summon(ec EnemyCreation) func(*Entity) {
 }
 
 func NewVacuumer(x, y int, diff float64) *Enemy {
-	r := render.NewColorBox(10, 10, color.RGBA{255, 255, 150, 255})
+	r := render.NewColorBox(10, 10, color.RGBA{205, 255, 150, 255})
 	w, h := r.GetDims()
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 1, 4)
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.8, 2.3)
 	e.Health = 160
 	e.AttackSet = NewAttackSet(intrange.NewLinear(2000, 3000),
 		[]float64{1.0},
@@ -191,7 +191,7 @@ func NewVacuumer(x, y int, diff float64) *Enemy {
 }
 
 func Vacuum(p *Entity) {
-	fv := physics.NewForceVector(p.Dir.Copy().Normalize(), 10)
+	fv := physics.NewForceVector(p.Dir.Copy().Normalize(), 5)
 	delta := p.Dir.Copy().Scale(3)
 	perpendicular := delta.Copy().Rotate(90)
 	pos := p.CenterPos().Add(delta, perpendicular, perpendicular, perpendicular)
@@ -201,7 +201,7 @@ func Vacuum(p *Entity) {
 		pos = basePos.Add(perpendicular).Copy()
 		for j := 0; j < 15; j++ {
 			pos.Add(delta)
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 150*time.Millisecond, Opposing, fv)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 3, 3, 100*time.Millisecond, Opposing, fv)
 		}
 	}
 }
