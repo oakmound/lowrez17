@@ -46,7 +46,7 @@ func Body1() *Body {
 	b.level = 0
 	b.startTime = time.Now()
 
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
+	b.overlay = images["body1"]
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
@@ -101,7 +101,7 @@ func Body2() *Body {
 	b.level = 1
 	b.startTime = time.Now()
 
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
+	b.overlay = images["body2"]
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
@@ -167,7 +167,7 @@ func Body3() *Body {
 	b := new(Body)
 	b.level = 2
 	b.startTime = time.Now()
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
+	b.overlay = images["body3"]
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
@@ -225,7 +225,7 @@ func Body4() *Body {
 	b.level = 3
 	b.startTime = time.Now()
 
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
+	b.overlay = images["body4"]
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
@@ -290,7 +290,7 @@ func Body5() *Body {
 	b.level = 4
 	b.startTime = time.Now()
 
-	b.overlay = render.NewColorBox(64, 64, color.RGBA{0, 255, 100, 255})
+	b.overlay = images["body5"]
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(

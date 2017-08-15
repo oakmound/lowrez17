@@ -2,7 +2,6 @@ package menu
 
 import (
 	"encoding/json"
-	"image/color"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -69,7 +68,7 @@ func StartScene(_ string, levelData interface{}) {
 		ioutil.WriteFile("save.json", jsonData, os.ModeType)
 	}
 	p := NewPlayer()
-	p.SetPos(55, 34)
+	p.SetPos(53, 34)
 	nextScene = "menu"
 	// Create blocking zones
 	// walls
@@ -163,8 +162,15 @@ func (p *Player) Init() event.CID {
 
 func NewPlayer() *Player {
 	p := new(Player)
-	r := render.NewColorBox(3, 7, color.RGBA{0, 0, 255, 255})
-	p.Reactive = entities.NewReactive(5, 5, 3, 7, r, p.Init())
+	sh := render.GetSheet(filepath.Join("4x16", "topplayer.png"))
+	p.Reactive = entities.NewReactive(5, 5, 4, 16, render.NewCompound(
+		"forward",
+		map[string]render.Modifiable{
+			"forward": sh[0][0].Copy(),
+			"right":   sh[1][0].Copy(),
+			"left":    sh[1][0].Copy().Modify(render.FlipX),
+			"back":    sh[2][0].Copy(),
+		}), p.Init())
 	collision.Add(p.RSpace.Space)
 	render.Draw(p.R, entityLayer)
 	p.RSpace.Add(blocking, playerStop)
@@ -233,7 +239,7 @@ func triggerInteractive(id int, label interface{}) int {
 		p.interactR.SetPos(p.X()-1, p.Y()-8)
 		render.Draw(p.interactR, uiLayer)
 	case door:
-		p.SetPos(96, 50)
+		p.SetPos(96, 40)
 		oak.SetScreen(64, 0)
 	case doorBack:
 		p.SetPos(32, 20)
@@ -281,15 +287,19 @@ func playerWalk(id int, nothing interface{}) int {
 	shiftX := 0.0
 	shiftY := 0.0
 	if oak.IsDown("W") {
+		p.R.(*render.Compound).Set("back")
 		shiftY--
 	}
 	if oak.IsDown("S") {
+		p.R.(*render.Compound).Set("forward")
 		shiftY++
 	}
 	if oak.IsDown("A") {
+		p.R.(*render.Compound).Set("left")
 		shiftX--
 	}
 	if oak.IsDown("D") {
+		p.R.(*render.Compound).Set("right")
 		shiftX++
 	}
 	if p.interactR != nil {

@@ -38,6 +38,12 @@ func Init() {
 	}
 	inited = true
 
+	bodySheet := render.GetSheet(filepath.Join("64x64", "midbodies.png"))
+	images["body1"] = bodySheet[0][0]
+	images["body2"] = bodySheet[0][1]
+	images["body3"] = bodySheet[0][2]
+	images["body4"] = bodySheet[1][0]
+	images["body5"] = bodySheet[1][1]
 	organSheet := render.GetSheet(filepath.Join("16x16", "midlevelorgans.png"))
 
 	images["midliver"] = organSheet[0][0].Copy()
