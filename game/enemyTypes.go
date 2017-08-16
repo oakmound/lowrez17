@@ -119,15 +119,17 @@ func NewWizard(x, y int, diff float64, summoned bool) *Enemy {
 	w, h := r.GetDims()
 	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 5, 0.05, 2, summoned)
 	e.Health = 150
-	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
+	e.AttackSet = NewAttackSet(intrange.NewLinear(1200, 1800),
 		[]float64{1.0},
-		[]*Action{NewAction(Shoot(1, 1.2, 4, color.RGBA{190, 20, 20, 190}, Opposing, 5*time.Second, .25, 1, "WizardAttack"), 0)})
-	e.MoveSet = NewMoveSet([]float64{1.0, 1.0, 1.0, 1.0, 1.0},
-		Teleport(Left, 15),
+		[]*Action{NewAction(Shoot(0.2, 1.05, 6, color.RGBA{190, 20, 200, 190}, Opposing, 5*time.Second, .25, 60, "WizardAttack"), 0)})
+	e.MoveSet = NewMoveSet([]float64{1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 10.0},
+		Teleport(Left, 10),
 		Teleport(Forward, 5),
 		Teleport(Backward, 5),
-		Teleport(Right, 15),
-		Move(Wait, 45))
+		Teleport(Forward, 15),
+		Teleport(Backward, 15),
+		Teleport(Right, 10),
+		Move(Wait, 60))
 	return e
 }
 

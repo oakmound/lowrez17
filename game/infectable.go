@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"github.com/oakmound/oak/render"
 
 	"image/color"
@@ -20,7 +18,7 @@ func (i *Infectable) Infect(fs ...float64) bool {
 		infection = i.diseaseRate
 	} else {
 		for _, f := range fs {
-			fmt.Println(f)
+
 			infection += f
 		}
 	}
@@ -29,6 +27,9 @@ func (i *Infectable) Infect(fs ...float64) bool {
 	i.Disease += infection
 	if i.Disease >= 1 {
 		i.Disease = 1
+	}
+	if !traveler.active {
+		return i.Disease == 1
 	}
 	if len(fs) != 0 {
 		//Infect with fs is currently used only for setup

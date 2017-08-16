@@ -29,8 +29,8 @@ func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
 	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
 	// Todo: Distinguish these two, when we start tracking hits on walls
 	e.RSpace.Add(collision.Label(Blocked), bounceEntity)
-	e.RSpace.Add(collision.Label(LowDamage), infectBounce(0.001))
-	e.RSpace.Add(collision.Label(HighDamage), infectBounce(0.005))
+	e.RSpace.Add(collision.Label(LowDamage), infectBounce(0.0001))
+	e.RSpace.Add(collision.Label(HighDamage), infectBounce(0.0005))
 	e.RSpace.Add(collision.Label(PressureFan), nudgeEntity)
 	e.RSpace.Add(Stun, stopEntity)
 	return e
