@@ -152,7 +152,7 @@ func spreadInfection(id int, frame interface{}) int {
 			}
 		}
 		if frame.(int)%10 == 9 {
-			oak.ClearPalette()
+			oak.ClearScreenFilter()
 		}
 	}
 

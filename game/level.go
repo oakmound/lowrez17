@@ -117,7 +117,7 @@ func LevelLoop() bool {
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {
 	sfx.Audios["fantastic"].Stop()
-	oak.ClearPalette()
+	oak.ClearScreenFilter()
 	return "menu", &oak.SceneResult{
 		NextSceneInput: thisBody.Stats(),
 		Transition:     oak.TransitionFade(.03, 100),

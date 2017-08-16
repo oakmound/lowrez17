@@ -141,7 +141,7 @@ func CleanupActiveOrgan(cleared bool) {
 	CleanupTiles()
 	CleanupEnemies()
 	oak.SetScreen(0, 0)
-	oak.ClearPalette()
+	oak.ClearScreenFilter()
 
 	i := thisBody.VecIndex(traveler.Vector)
 	o := thisBody.graph[i]
