@@ -123,20 +123,20 @@ func NewWizard(x, y int, diff float64, summoned bool) *Enemy {
 		[]float64{1.0},
 		[]*Action{NewAction(Shoot(0.2, 1.05, 6, color.RGBA{190, 20, 200, 190}, Opposing, 5*time.Second, .25, 60, "WizardAttack"), 0)})
 	e.MoveSet = NewMoveSet([]float64{1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 10.0},
-		Teleport(Left, 10),
-		Teleport(Forward, 5),
+		Teleport(Left, 25),
+		Teleport(Forward, 20),
+		Teleport(Backward, 10),
+		Teleport(Forward, 30),
 		Teleport(Backward, 5),
-		Teleport(Forward, 15),
-		Teleport(Backward, 15),
-		Teleport(Right, 10),
-		Move(Wait, 60))
+		Teleport(Right, 25),
+		Move(Wait, 90))
 	return e
 }
 
 func NewDasher(x, y int, diff float64, summoned bool) *Enemy {
 	r := images["lungFoe"].Copy()
 	w, h := r.GetDims()
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.4, 4, 2, 8, summoned)
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.4, 4, 2, 6, summoned)
 	e.Health = 100
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0, 1.0},
