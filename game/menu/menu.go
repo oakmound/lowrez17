@@ -27,6 +27,7 @@ var (
 func StartScene(_ string, levelData interface{}) {
 	initLetters()
 	sfx.InitAudio()
+	sfx.Audios["fantastic_muted"].Play()
 
 	if stats == nil {
 		stats = &LevelStorage{}
@@ -126,6 +127,7 @@ func LoopScene() bool {
 }
 
 func EndScene() (string, *oak.SceneResult) {
+	sfx.Audios["fantastic_muted"].Stop()
 	go func() {
 		sfx.Audios["Shrink"].Play()
 		sfx.Audios["Shrink"].Play()

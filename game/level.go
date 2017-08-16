@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/oakmound/lowrez17/game/layers"
+	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
@@ -23,6 +24,7 @@ var (
 func LevelInit(prevScene string, inLevel interface{}) {
 
 	Init()
+	sfx.Audios["fantastic"].Play()
 	b := GetBody(inLevel.(string))
 	b.level, _ = strconv.Atoi(inLevel.(string)[5:])
 	thisBody = b
@@ -111,6 +113,7 @@ func LevelLoop() bool {
 }
 
 func LevelEnd() (nextScene string, result *oak.SceneResult) {
+	sfx.Audios["fantastic"].Stop()
 	oak.ClearPalette()
 	return "menu", &oak.SceneResult{
 		NextSceneInput: thisBody.Stats(),

@@ -17,38 +17,41 @@ var (
 )
 
 func InitAudio() {
-	if inited {
-		return
-	}
-	inited = true
+
+	LoudSFX.Filter(filter.Volume(.5))
+	SoftSFX.Filter(filter.Volume(.25))
+	Music.Filter(filter.Volume(.4), filter.LoopOn())
+
 	files := map[string]*font.Font{
-		"BoomerAttack": SoftSFX,
-		"ClearOrgan":   LoudSFX,
-		"DasherAttack": SoftSFX,
-		"FailOrgan":    LoudSFX,
-		"Footstep":     SoftSFX,
-		"InfectHeavy":  SoftSFX,
-		"InfectLight":  SoftSFX,
-		"InfectMedium": SoftSFX,
-		"NetHeavy":     SoftSFX,
-		"NetLight":     SoftSFX,
-		"RangedAttack": SoftSFX,
-		"Shrink":       LoudSFX,
-		"Shrink2":      LoudSFX,
-		"Shrink3":      LoudSFX,
-		"SpearHeavy":   SoftSFX,
-		"SpearLight":   SoftSFX,
-		"SwordHeavy":   SoftSFX,
-		"SwordLight":   SoftSFX,
-		"Vacuum":       SoftSFX,
-		"WhipHeavy":    SoftSFX,
-		"WhipLight":    SoftSFX,
-		"WizardAttack": SoftSFX,
-		"SummonAttack": SoftSFX,
-		"SwordReady":   SoftSFX,
-		"WhipReady":    SoftSFX,
-		"NetReady":     SoftSFX,
-		"SpearReady":   SoftSFX,
+		"BoomerAttack":    SoftSFX,
+		"ClearOrgan":      LoudSFX,
+		"DasherAttack":    SoftSFX,
+		"FailOrgan":       LoudSFX,
+		"Footstep":        SoftSFX,
+		"InfectHeavy":     SoftSFX,
+		"InfectLight":     SoftSFX,
+		"InfectMedium":    SoftSFX,
+		"NetHeavy":        SoftSFX,
+		"NetLight":        SoftSFX,
+		"RangedAttack":    SoftSFX,
+		"Shrink":          LoudSFX,
+		"Shrink2":         LoudSFX,
+		"Shrink3":         LoudSFX,
+		"SpearHeavy":      SoftSFX,
+		"SpearLight":      SoftSFX,
+		"SwordHeavy":      SoftSFX,
+		"SwordLight":      SoftSFX,
+		"Vacuum":          SoftSFX,
+		"WhipHeavy":       SoftSFX,
+		"WhipLight":       SoftSFX,
+		"WizardAttack":    SoftSFX,
+		"SummonAttack":    SoftSFX,
+		"SwordReady":      SoftSFX,
+		"WhipReady":       SoftSFX,
+		"NetReady":        SoftSFX,
+		"SpearReady":      SoftSFX,
+		"fantastic":       Music,
+		"fantastic_muted": Music,
 	}
 	for s, f := range files {
 		a, err := audio.Get(s + ".wav")
@@ -67,5 +70,5 @@ func UpdateEars(player physics.Attachable) {
 
 	LoudSFX.Filter(filter.Volume(.5), audio.PosFilter(ears))
 	SoftSFX.Filter(filter.Volume(.25), audio.PosFilter(ears))
-	Music.Filter(filter.Volume(.5))
+	Music.Filter(filter.Volume(.4), filter.LoopOn())
 }
