@@ -96,8 +96,8 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 		}(whip)
 		for angle := 0; angle < 360; angle += 10 {
 			pos := basePos.Copy().Add(rot.Rotate(10))
-			fv := physics.NewForceVector(rot.Copy(), 20)
-			forceSpace.NewHurtBox(pos.X(), pos.Y(), 10, 10, 250*time.Millisecond, label, fv)
+			fv := physics.NewForceVector(rot.Copy(), 25)
+			forceSpace.NewHurtBox(pos.X(), pos.Y(), 10, 10, 275*time.Millisecond, label, fv)
 		}
 		go timing.DoAfter(WhipTwirlCooldown, func() {
 			PlayAt("WhipReady", p.X(), p.Y())
