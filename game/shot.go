@@ -37,6 +37,9 @@ func MakeShot(pos physics.Vector, dir physics.Vector, speed, accel float64, w in
 	s.RSpace.Add(collision.Label(Blocked), shotBlocked)
 	s.RSpace.Add(collision.Label(Ally), shotReflect)
 
+	s.RSpace.Add(collision.Label(LowDamage), shotBlocked)
+	s.RSpace.Add(collision.Label(HighDamage), shotBlocked)
+
 	return s
 }
 
