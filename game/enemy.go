@@ -3,8 +3,11 @@ package game
 import (
 	"fmt"
 	"image/color"
+	"time"
 
 	"math/rand"
+
+	"math"
 
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak"
@@ -12,7 +15,6 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"math"
 )
 
 var (
@@ -27,6 +29,8 @@ type Enemy struct {
 	summoned   bool
 	minimapR   render.Renderable
 	attackAnim bool
+	flashing   bool
+	flashStop  time.Time
 }
 
 func (e *Enemy) Init() event.CID {
@@ -77,9 +81,8 @@ func enemyEnter(id int, frame interface{}) int {
 		e.Destroy()
 	}
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
-	// e.R.(*render.Reverting).RevertAndModify(1,
-	// 	render.RotateInterpolated(int(-e.Dir.Angle()), gift.NearestNeighborInterpolation))
 
+	// Minimap logic
 	v := oak.ViewVector()
 	delta := e.Vec().Copy().Sub(v)
 	if delta.X() > 0 {
@@ -117,6 +120,10 @@ func enemyEnter(id int, frame interface{}) int {
 	if e.attack(e) && e.attackAnim {
 		e.R.(*render.Reverting).Set("attacking")
 	}
+	if e.flashing && time.Now().After(e.flashStop) {
+		e.R.(*render.Reverting).Revert(1)
+		e.flashing = false
+	}
 	e.move(frame.(int), e)
 	e.applyMovement()
 	return 0
@@ -126,6 +133,7 @@ func hurtEnemy(s1, _ *collision.Space) {
 	ent := event.GetEntity(int(s1.CID))
 	if e, ok := ent.(*Enemy); ok {
 		if rand.Float64() < 0.05 {
+			flash(e)
 			e.Health--
 		}
 	}
@@ -134,8 +142,21 @@ func hurtEnemy(s1, _ *collision.Space) {
 func hitEnemy(s1, s2 *collision.Space) {
 	ent := event.GetEntity(int(s1.CID))
 	if e, ok := ent.(*Enemy); ok {
+		flash(e)
 		e.Health--
 		bounceEntity(s1, s2)
+	}
+}
+
+func flash(ent *Enemy) {
+	if !ent.flashing {
+		ent.flashing = true
+		if r, ok := ent.R.(*render.Reverting); ok {
+			r.Modify(render.Brighten(50))
+			ent.flashStop = time.Now().Add(50 * time.Millisecond)
+		}
+	} else {
+		ent.flashStop = time.Now().Add(50 * time.Millisecond)
 	}
 }
 
