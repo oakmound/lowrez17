@@ -106,31 +106,31 @@ func StartScene(_ string, levelData interface{}) {
 		cb = render.NewColorBox(w, h, color.RGBA{0, 0, 128, 128})
 		cb.SetPos(68, y2)
 		render.Draw(cb, entityLayer)
-		collision.Add(collision.NewLabeledSpace(67, 40, 8, 2, level1))
+		collision.Add(collision.NewLabeledSpace(68, 40, 6, 2, level1))
 	}
 	if stats.Stats[1].Score > 0 {
 		cb = render.NewColorBox(w, h, color.RGBA{128, 96, 0, 128})
 		cb.SetPos(80, y2)
 		render.Draw(cb, entityLayer)
-		collision.Add(collision.NewLabeledSpace(79, 40, 8, 2, level2))
+		collision.Add(collision.NewLabeledSpace(80, 40, 6, 2, level2))
 	}
 	if stats.Stats[2].Score > 0 {
 		cb = render.NewColorBox(w, h, color.RGBA{128, 0, 96, 128})
 		cb.SetPos(92, y2)
 		render.Draw(cb, entityLayer)
-		collision.Add(collision.NewLabeledSpace(91, 40, 8, 2, level3))
+		collision.Add(collision.NewLabeledSpace(92, 40, 6, 2, level3))
 	}
 	if stats.Stats[3].Score > 0 {
 		cb = render.NewColorBox(w, h, color.RGBA{0, 0, 0, 128})
 		cb.SetPos(104, y2)
 		render.Draw(cb, entityLayer)
-		collision.Add(collision.NewLabeledSpace(103, 40, 8, 2, level4))
+		collision.Add(collision.NewLabeledSpace(104, 40, 6, 2, level4))
 	}
 	if stats.Stats[4].Score > 0 {
 		cb = render.NewColorBox(w, h, color.RGBA{128, 128, 0, 128})
 		cb.SetPos(116, y2)
 		render.Draw(cb, entityLayer)
-		collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
+		collision.Add(collision.NewLabeledSpace(116, 40, 6, 2, level5))
 	}
 	// door to morgue
 	collision.Add(collision.NewLabeledSpace(26, 15, 12, 2, door))
@@ -254,7 +254,7 @@ func triggerInteractive(id int, label interface{}) int {
 		p.interactR.SetPos(p.X()-1, p.Y()-8)
 		render.Draw(p.interactR, uiLayer)
 	case door:
-		p.SetPos(96, 40)
+		p.SetPos(96, 43)
 		oak.SetScreen(64, 0)
 	case doorBack:
 		p.SetPos(32, 20)
@@ -273,8 +273,10 @@ func setLevelInteracts(p *Player) {
 	}
 	render.Draw(p.interactR, uiLayer)
 	p.interactFn = func() {
-		nextScene = "level"
-		sceneContinue = false
+		if levelData != "" {
+			nextScene = "level"
+			sceneContinue = false
+		}
 	}
 }
 
