@@ -98,14 +98,6 @@ func (b *Body) VecIndex(v physics.Vector) int {
 	return -1
 }
 
-// MonitorInfections Monitors ongoing cleared organs, advancing to the next set
-// or beating the level when appropriate
-func (b *Body) MonitorInfections() {
-	go func() {
-		// Todo
-	}()
-}
-
 //InfectionProgress is called when an organ is finished and is responsible for
 // updating overall infection and level progress
 func (b *Body) InfectionProgress() {
@@ -129,7 +121,7 @@ func (b *Body) InfectionProgress() {
 
 func spreadInfection(id int, frame interface{}) int {
 
-	if traveler.active && frame.(int)%4 == 0 {
+	if traveler.active && frame.(int)%20 == 0 {
 		for i, n := range thisBody.graph {
 			if n.DiseaseLevel() > 0 {
 				if n.Infect() == true {

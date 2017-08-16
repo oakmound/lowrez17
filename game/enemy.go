@@ -74,8 +74,8 @@ func NewEnemy(x, y, w, h float64, r render.Renderable, friction, mass, speed, ma
 
 func enemyEnter(id int, frame interface{}) int {
 	e := event.GetEntity(id).(*Enemy)
-	if e.Health < 1 && e.Health > -math.MaxInt64/2 {
-		e.Health = -math.MaxInt64 / 2
+	if e.Health < 1 && e.Health > -math.MaxInt32/2 {
+		e.Health = -math.MaxInt32 / 2
 		e.Destroy()
 	}
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
