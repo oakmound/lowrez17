@@ -16,5 +16,5 @@ func (ls *LevelStats) CalculateScore() {
 }
 
 type LevelStorage struct {
-	Stats [6]LevelStats `json:"stats"`
+	Stats [5]LevelStats `json:"stats"`
 }

@@ -87,8 +87,8 @@ func leaveOrgan(_, _ *collision.Space) {
 			}
 		}
 	} else {
-		player.leaveTime = time.Now().Add(1500 * time.Millisecond)
-		go timing.DoAfter(1600*time.Millisecond, func() {
+		player.leaveTime = time.Now().Add(3000 * time.Millisecond)
+		go timing.DoAfter(3100*time.Millisecond, func() {
 			player.hitExit = false
 		})
 	}

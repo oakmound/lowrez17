@@ -2,6 +2,7 @@ package menu
 
 import (
 	"encoding/json"
+	"image/color"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -96,20 +97,39 @@ func StartScene(_ string, levelData interface{}) {
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
 
 	// Add level specific zones if those levels have been cleared before
-	// todo: also add coloration indicating the morgue slots are open
+	w := 8
+	h := 4
+	y2 := 28.0
+	var cb render.Renderable
+
 	if stats.Stats[0].Score > 0 {
+		cb = render.NewColorBox(w, h, color.RGBA{128, 128, 0, 128})
+		cb.SetPos(68, y2)
+		render.Draw(cb, entityLayer)
 		collision.Add(collision.NewLabeledSpace(67, 40, 8, 2, level1))
 	}
 	if stats.Stats[1].Score > 0 {
+		cb = render.NewColorBox(w, h, color.RGBA{0, 0, 0, 128})
+		cb.SetPos(80, y2)
+		render.Draw(cb, entityLayer)
 		collision.Add(collision.NewLabeledSpace(79, 40, 8, 2, level2))
 	}
 	if stats.Stats[2].Score > 0 {
+		cb = render.NewColorBox(w, h, color.RGBA{128, 0, 96, 128})
+		cb.SetPos(92, y2)
+		render.Draw(cb, entityLayer)
 		collision.Add(collision.NewLabeledSpace(91, 40, 8, 2, level3))
 	}
 	if stats.Stats[3].Score > 0 {
+		cb = render.NewColorBox(w, h, color.RGBA{128, 96, 0, 128})
+		cb.SetPos(104, y2)
+		render.Draw(cb, entityLayer)
 		collision.Add(collision.NewLabeledSpace(103, 40, 8, 2, level4))
 	}
 	if stats.Stats[4].Score > 0 {
+		cb = render.NewColorBox(w, h, color.RGBA{0, 0, 128, 128})
+		cb.SetPos(116, y2)
+		render.Draw(cb, entityLayer)
 		collision.Add(collision.NewLabeledSpace(115, 40, 8, 2, level5))
 	}
 	// door to morgue
