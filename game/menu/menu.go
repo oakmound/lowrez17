@@ -64,7 +64,8 @@ func StartScene(_ string, levelData interface{}) {
 			currentLevel = 1
 		}
 	}
-	//currentLevel = 1
+	currentLevel = 4
+	placeBody(currentLevel)
 	jsonData, err := json.Marshal(stats)
 	if err != nil {
 		dlog.Error(err)
@@ -143,6 +144,25 @@ func EndScene() (string, *oak.SceneResult) {
 		NextSceneInput: levelData,
 		Transition:     oak.TransitionZoom(.51, .67, 50, .009),
 	}
+}
+
+func placeBody(level int) {
+	var y int
+	switch level {
+	case 0:
+	case 1:
+		y = 2
+	case 2:
+		y = 4
+	case 3:
+		y = 1
+	case 4:
+		y = 3
+	}
+	sh := render.GetSheet(filepath.Join("32x16", "topbodies.png"))
+	s := sh[0][y].Copy()
+	s.SetPos(15, 33)
+	render.Draw(s, entityLayer)
 }
 
 var letters = map[rune]render.Modifiable{}
