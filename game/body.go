@@ -75,7 +75,7 @@ func (b *Body) InitVeins() {
 // Infect infects organs that have not previously been cleansed.
 // If an organ is not already infected it is then added to the body's diseased organs list.
 func (b *Body) Infect(i int) {
-	b.graph[i].Infect(float64(len(levelBodies)-b.level)*0.08 + rand.Float64()*0.1)
+	b.graph[i].Infect(float64(len(levelBodies)-(b.level-1))*0.08 + rand.Float64()*0.1)
 	//if _, ok := b.cleansed[i]; ok {
 	//	return
 	//}

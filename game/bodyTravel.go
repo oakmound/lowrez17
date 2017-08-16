@@ -3,11 +3,11 @@ package game
 import (
 	"image/color"
 
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"github.com/oakmound/lowrez17/game/layers"
 )
 
 //A BodyTraveler is an entity that travels along the veins of a body on the body layer
@@ -27,7 +27,7 @@ func (bt *BodyTraveler) Init() event.CID {
 //NewBodyTraveler creates a BodyTraveler, binding the appropriate functions to a Sprite
 func NewBodyTraveler(x, y float64) *BodyTraveler {
 	bt := new(BodyTraveler)
-	bt.Doodad = entities.NewDoodad(x, y, render.NewColorBox(3, 3, color.RGBA{0, 0, 255, 255}), bt.Init())
+	bt.Doodad = entities.NewDoodad(x, y, render.NewColorBox(3, 3, color.RGBA{255, 255, 255, 255}), bt.Init())
 	bt.Bind(startTravelerMove, "MoveTraveler")
 	bt.Bind(moveTraveler, "EnterFrame")
 	bt.active = true
