@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/200sc/go-dist/colorrange"
@@ -129,5 +128,4 @@ func CleanupTiles() {
 	tileSpaces = []*collision.Space{}
 	anchors = []physics.Vector{}
 	walls = []physics.Vector{}
-	fmt.Println("Tiles cleaned up")
 }

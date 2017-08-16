@@ -3,8 +3,6 @@ package game
 import (
 	"image/color"
 
-	"fmt"
-
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
@@ -70,15 +68,6 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	for i := uint8(0); i < 127; i++ {
 		diseasedPalette = append(diseasedPalette, color.RGBA{i * (uint8(rd)), i * (uint8(gd)), i * (uint8(bd)), 255})
 	}
-
-	//TODO: remove this before final build
-	oak.AddCommand("complete", func(nothing []string) {
-		thisBody.complete = true
-	})
-
-	oak.AddCommand("level", func(nothing []string) {
-		fmt.Println(thisBody.level)
-	})
 
 	// Place player
 	pos := NodeCenter(b.graph[playerStart])

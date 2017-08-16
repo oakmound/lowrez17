@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
@@ -170,5 +168,4 @@ func CleanupEntities() {
 		event.DestroyEntity(int(c))
 	}
 	tEntities = []event.CID{}
-	fmt.Println("Entities cleaned up")
 }

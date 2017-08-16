@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 	"time"
 
@@ -77,7 +76,6 @@ func enemyEnter(id int, frame interface{}) int {
 	e := event.GetEntity(id).(*Enemy)
 	if e.Health < 1 && e.Health > -math.MaxInt64/2 {
 		e.Health = -math.MaxInt64 / 2
-		fmt.Println("An enemy is dead!")
 		e.Destroy()
 	}
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
@@ -165,5 +163,4 @@ func CleanupEnemies() {
 		e.Cleanup()
 	}
 	enemies = []*Enemy{}
-	fmt.Println("Enemies cleaned up")
 }

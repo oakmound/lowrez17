@@ -1,15 +1,14 @@
 package game
 
 import (
-	"fmt"
 	"image/color"
 
+	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/mouse"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
-	"github.com/oakmound/lowrez17/game/layers"
 )
 
 type BodyButton struct {
@@ -33,7 +32,6 @@ func (bb *BodyButton) IsTravelerAdjacent() bool {
 	thisIndex := thisBody.VecIndex(bb.CenterPos())
 	travelIndex := thisBody.VecIndex(traveler.CenterPos())
 	if thisIndex == -1 || travelIndex == -1 {
-		fmt.Println("Vector not on body:", thisIndex, travelIndex)
 		return false
 	}
 	return thisBody.IsAdjacent(thisIndex, travelIndex)

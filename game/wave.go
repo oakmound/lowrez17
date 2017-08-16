@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/200sc/go-dist/intrange"
@@ -27,7 +26,6 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 	for {
 		es := waves[i].Poll()
 		enemiesLeft += len(es)
-		fmt.Println("wave", i, "enemies left", enemiesLeft)
 		for _, t := range es {
 			x := wrange.Poll()
 			y := hrange.Poll()
@@ -42,7 +40,6 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 			select {
 			case <-enemyCh:
 				enemiesLeft--
-				fmt.Println("Enemies Left", enemiesLeft)
 				if enemiesLeft <= 0 {
 					break handleOuter
 				}
@@ -61,14 +58,12 @@ func handleWaves(waves []Wave, tiles [][]Tile, typ OrganType) {
 	for enemiesLeft > 0 {
 		select {
 		case <-enemyCh:
-			fmt.Println("Enemies Left", enemiesLeft)
 			enemiesLeft--
 		case <-waveExitCh:
 			return
 		}
 	}
 	// Beat the organ
-	fmt.Println("Organ beat")
 	sfx.Audios["ClearOrgan"].Play()
 	<-time.After(2 * time.Second)
 	CleanupActiveOrgan(true)
