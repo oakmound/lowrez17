@@ -100,6 +100,7 @@ func StartScene(_ string, levelData interface{}) {
 	collision.Add(collision.NewLabeledSpace(43, 17, 20, 17, blocking))
 	// Create zones that lead to levels, menu
 	collision.Add(collision.NewLabeledSpace(50, 35, 10, 2, wasd))
+	collision.Add(collision.NewLabeledSpace(6, 45, 5, 2, tutorial))
 	// Next level zone
 	collision.Add(collision.NewLabeledSpace(19, 35, 27, 10, nextLevel))
 	collision.Add(collision.NewLabeledSpace(21, 37, 23, 6, blocking))
@@ -222,15 +223,23 @@ const (
 	endurance
 	// other places
 	settings
+	tutorial
 	wasd
 	door
 	doorBack
 	/// ...
 )
 
+var (
+	tutorialR render.Renderable
+)
+
 func triggerInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
 	switch label.(collision.Label) {
+	case tutorial:
+		tutorialR = render.LoadSprite(filepath.Join("raw", "tutorial.png"))
+		render.Draw(tutorialR, titleLayer)
 	case level1:
 		levelData = "level1"
 		setLevelInteracts(p)
@@ -291,6 +300,9 @@ func setLevelInteracts(p *Player) {
 func unbindInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
 	if label.(collision.Label) != blocking {
+		if tutorialR != nil && tutorialR.GetLayer() != render.Undraw {
+			tutorialR.UnDraw()
+		}
 		p.Vector = p.Vector.Detach()
 		p.interactFn = nil
 		p.interactR.UnDraw()
