@@ -237,7 +237,7 @@ func Body4() *Body {
 		NewStomach(27, 24).Waves(
 			Wave{MSD, 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 10 * time.Second},
-			Wave{RandomDist(70), 1.0, 1 * time.Second},
+			Wave{RandomDist(40), 1.0, 1 * time.Second},
 		),
 		NewBrain(20, 8).Waves(
 			Wave{SBD, 1.0, 20 * time.Second},
@@ -316,13 +316,13 @@ func Body5() *Body {
 			Wave{RandomDist(10), 1.0, 10 * time.Second},
 			Wave{RandomDist(15), 1.0, 10 * time.Second},
 			Wave{RandomDist(20), 1.0, 10 * time.Second},
-			Wave{RandomDist(50), 1.0, 1 * time.Second},
+			Wave{RandomDist(25), 1.0, 1 * time.Second},
 		),
 		NewRLung(55, 28).Waves(
 			Wave{RandomDist(10), 1.0, 10 * time.Second},
 			Wave{RandomDist(15), 1.0, 10 * time.Second},
 			Wave{RandomDist(20), 1.0, 10 * time.Second},
-			Wave{RandomDist(50), 1.0, 1 * time.Second},
+			Wave{RandomDist(25), 1.0, 1 * time.Second},
 		),
 		NewHeart(35, 25).Waves(
 			Wave{RandomDist(20), 1.0, 10 * time.Second},

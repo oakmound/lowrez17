@@ -66,11 +66,13 @@ func shotBlocked(s1, s2 *collision.Space) {
 func shotReflect(s1, s2 *collision.Space) {
 	ent := event.GetEntity(int(s1.CID))
 	if sh, ok := ent.(*Shot); ok {
-		s1.UpdateLabel(Ally)
-		if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
-			physics.Push(psh, sh)
-			sh.Speed = sh.Delta.Copy().Normalize()
-			sh.Dir = sh.Speed.Copy()
+		if s1.Label != Ally {
+			s1.UpdateLabel(Ally)
+			if psh, ok := event.GetEntity(int(s2.CID)).(physics.Pushes); ok {
+				physics.Push(psh, sh)
+				sh.Speed = sh.Delta.Copy().Normalize()
+				sh.Dir = sh.Speed.Copy()
+			}
 		}
 	}
 }
