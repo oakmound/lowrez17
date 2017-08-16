@@ -58,15 +58,15 @@ func Init() {
 	images["meleeFoe"] = render.NewReverting(enemySheet1[0][0].Copy())
 	images["rangedFoe"] = render.NewReverting(enemySheet1[0][1].Copy())
 	images["stomachFoe"] = render.NewReverting(render.NewCompound("base", map[string]render.Modifiable{
-		"base": enemySheet2[0][0].Copy().Modify(render.Rotate(180)),
+		"base": enemySheet2[0][0].Copy(),
 		"attacking": render.NewSequence([]render.Modifiable{
-			enemySheet2[0][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[1][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[2][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[1][0].Copy().Modify(render.Rotate(180)),
-			enemySheet2[1][0].Copy().Modify(render.Rotate(180))}, 2),
+			enemySheet2[0][0].Copy(),
+			enemySheet2[1][0].Copy(),
+			enemySheet2[2][0].Copy(),
+			enemySheet2[2][0].Copy(),
+			enemySheet2[2][0].Copy(),
+			enemySheet2[1][0].Copy(),
+			enemySheet2[1][0].Copy()}, 2),
 	}))
 	images["heartFoe"] = render.NewReverting(render.NewSequence([]render.Modifiable{
 		enemySheet2[0][1].Copy(),
@@ -77,14 +77,14 @@ func Init() {
 		enemySheet2[1][1].Copy(),
 	}, 4))
 	images["liverFoe"] = render.NewReverting(render.NewCompound("base", map[string]render.Modifiable{
-		"base": enemySheet2[0][2].Copy().Modify(render.Rotate(90)),
+		"base": enemySheet2[0][2].Copy(),
 		"attacking": render.NewSequence([]render.Modifiable{
-			enemySheet2[0][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[1][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[2][2].Copy().Modify(render.Rotate(90)),
-			enemySheet2[1][2].Copy().Modify(render.Rotate(90))}, 1),
+			enemySheet2[0][2].Copy(),
+			enemySheet2[1][2].Copy(),
+			enemySheet2[2][2].Copy(),
+			enemySheet2[2][2].Copy(),
+			enemySheet2[2][2].Copy(),
+			enemySheet2[1][2].Copy()}, 1),
 	}))
 	images["lungFoe"] = render.NewReverting(enemySheet2[0][4].Copy())
 	images["brainFoe"] = render.NewReverting(
