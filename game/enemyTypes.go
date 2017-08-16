@@ -106,7 +106,7 @@ func explode(id int, nothing interface{}) int {
 			PlayAt("BoomerAttack", e.X(), e.Y())
 			for i := 0; i < 360; i += 30 {
 				dir := physics.AngleVector(float64(i))
-				MakeShot(e.Vector, dir, 3, .9, 3, color.RGBA{100, 10, 10, 255}, Opposing, 3*time.Second, .5, 5)
+				MakeShot(e.Vector, dir, 8, .9, 5, color.RGBA{100, 10, 10, 255}, Opposing, 5*time.Second, .5, 40)
 			}
 			e.Destroy()
 		})
