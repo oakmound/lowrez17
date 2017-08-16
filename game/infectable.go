@@ -18,7 +18,6 @@ func (i *Infectable) Infect(fs ...float64) bool {
 		infection = i.diseaseRate
 	} else {
 		for _, f := range fs {
-
 			infection += f
 		}
 	}
@@ -28,9 +27,9 @@ func (i *Infectable) Infect(fs ...float64) bool {
 	if i.Disease >= 1 {
 		i.Disease = 1
 	}
-	if !traveler.active {
-		return i.Disease == 1
-	}
+	//if !traveler.active {
+	//	return i.Disease == 1
+	//}
 	if len(fs) != 0 {
 		//Infect with fs is currently used only for setup
 		//If modifications are applied while in setup (predraw) it can cause the image to disappear on revert.
