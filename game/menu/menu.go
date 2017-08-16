@@ -64,7 +64,7 @@ func StartScene(_ string, levelData interface{}) {
 			currentLevel = 1
 		}
 	}
-	currentLevel = 4
+	//currentLevel = 0
 	placeBody(currentLevel)
 	jsonData, err := json.Marshal(stats)
 	if err != nil {

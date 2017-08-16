@@ -55,16 +55,16 @@ func Body1() *Body {
 			Wave{SMD, 1.0, 20 * time.Second},
 			Wave{MNSD, 1.0, 1 * time.Second},
 		),
-		NewLiver(20, 55).Waves(
+		NewLiver(24, 55).Waves(
 			Wave{SNSD, 1.0, 15 * time.Second},
 			Wave{MMD, 1.0, 15 * time.Second},
 			Wave{MNSD, 1.0, 1 * time.Second},
 		),
-		NewHeart(27, 40),
-		NewRLung(38, 27),
-		NewBrain(27, 10))
+		NewHeart(32, 40),
+		NewRLung(43, 27),
+		NewBrain(32, 10))
 	b.AddNodes(NewVeinNode(27, 30, b.veinColor),
-		NewVeinNode(30, 48, b.veinColor),
+		NewVeinNode(35, 48, b.veinColor),
 		NewVeinNode(16, 45, b.veinColor))
 
 	b.Connect(0, 4)
@@ -105,7 +105,7 @@ func Body2() *Body {
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
-		NewLiver(19, 55).Waves(
+		NewLiver(10, 37).Waves(
 			Wave{MBD, 1.0, 10 * time.Second},
 			Wave{SRD, 1.0, 10 * time.Second},
 			Wave{MSD, 1.0, 1 * time.Second},
@@ -127,7 +127,7 @@ func Body2() *Body {
 		NewBrain(28, 4))
 	b.AddNodes(NewVeinNode(16, 41, b.veinColor),
 		NewVeinNode(28, 23, b.veinColor),
-		NewVeinNode(42, 53, b.veinColor),
+		NewVeinNode(50, 45, b.veinColor),
 		NewVeinNode(36, 14, b.veinColor))
 
 	b.InfectionPattern([][]int{{0, 1}, {2}, {3}})
@@ -229,12 +229,12 @@ func Body4() *Body {
 	b.veinColor = color.RGBA{255, 0, 0, 255}
 	b.veinColor2 = color.RGBA{0, 0, 255, 255}
 	b.AddNodes(
-		NewLung(8, 55).Waves(
+		NewLung(25, 53).Waves(
 			Wave{LBD, 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 20 * time.Second},
 			Wave{LSD, 1.0, 1 * time.Second},
 		),
-		NewStomach(27, 30).Waves(
+		NewStomach(27, 24).Waves(
 			Wave{MSD, 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 10 * time.Second},
 			Wave{RandomDist(70), 1.0, 1 * time.Second},
@@ -244,7 +244,7 @@ func Body4() *Body {
 			Wave{SMD, 1.0, 20 * time.Second},
 			Wave{SRD, 1.0, 1 * time.Second},
 		),
-		NewLiver(34, 55).Waves(
+		NewLiver(40, 55).Waves(
 			Wave{RandomDist(5), 1.0, 5 * time.Second},
 			Wave{RandomDist(15), 1.0, 5 * time.Second},
 			Wave{RandomDist(30), 1.0, 1 * time.Second},
@@ -255,10 +255,10 @@ func Body4() *Body {
 			Wave{LBD, 1.0, 20 * time.Second},
 			Wave{LNRD, 1.0, 1 * time.Second},
 		),
-		NewRLung(52, 55))
+		NewRLung(48, 15))
 	b.AddNodes(NewVeinNode(28, 43, b.veinColor),
-		NewVeinNode(14, 33, b.veinColor),
-		NewVeinNode(46, 33, b.veinColor))
+		NewVeinNode(20, 25, b.veinColor),
+		NewVeinNode(40, 33, b.veinColor))
 
 	b.Connect(2, 4)
 	b.Connect(2, 1)
@@ -324,7 +324,7 @@ func Body5() *Body {
 			Wave{RandomDist(20), 1.0, 10 * time.Second},
 			Wave{RandomDist(50), 1.0, 1 * time.Second},
 		),
-		NewHeart(34, 25).Waves(
+		NewHeart(35, 25).Waves(
 			Wave{RandomDist(20), 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 15 * time.Second},
@@ -337,7 +337,7 @@ func Body5() *Body {
 			Wave{LMD, 1.0, 10 * time.Second},
 			Wave{LBD, 1.0, 1 * time.Second},
 		),
-		NewRLung(15, 28),
+		NewRLung(18, 28),
 	)
 	b.AddNodes(NewVeinNode(46, 12, b.veinColor),
 		NewVeinNode(12, 12, b.veinColor),
