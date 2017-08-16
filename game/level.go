@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"fmt"
+
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
@@ -100,6 +101,7 @@ func enterOrgan(no int, nothing interface{}) int {
 	i := thisBody.VecIndex(traveler.Vector)
 	if o, ok := thisBody.graph[i].Organ(); ok {
 		if o.DiseaseLevel() > 0 && o.DiseaseLevel() < 1 {
+			oak.SetScreenFilter(FadeBy(o.DiseaseLevel()))
 			traveler.active = false
 			NewPlayer()
 			o.Place()

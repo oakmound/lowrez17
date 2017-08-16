@@ -78,7 +78,7 @@ func NewBasicOrgan(x, y float64, w, h float64, r render.Modifiable, typ OrganTyp
 	}
 	bo.w = w
 	bo.h = h
-	bo.diseaseRate = .001
+	bo.diseaseRate = .005
 	return bo
 }
 

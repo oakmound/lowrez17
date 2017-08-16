@@ -142,21 +142,22 @@ func spreadInfection(id int, frame interface{}) int {
 				}
 			}
 		}
-	} else if traveler.active == false {
+	} else if !traveler.active {
 		o := thisBody.graph[thisBody.VecIndex(traveler.Vector)]
 		if frame.(int)%200 == 0 {
-			oak.SetPalette(diseasedPalette)
+			oak.SetScreenFilter(FadeBy(o.DiseaseLevel()))
 			if o.Infect() {
 				sfx.Audios["FailOrgan"].Play()
 				CleanupActiveOrgan(false)
 			}
 		}
-		if frame.(int)%10 == 9 {
-			oak.ClearScreenFilter()
-		}
 	}
 
 	return 0
+}
+
+func FadeBy(f float64) render.InPlaceMod {
+	return render.InPlace(render.Saturate(-float32(f) * 99))
 }
 
 // Random body ideas:
