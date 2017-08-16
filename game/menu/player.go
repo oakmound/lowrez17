@@ -3,10 +3,7 @@ package menu
 import (
 	"path/filepath"
 
-	"github.com/200sc/go-dist/intrange"
-	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
-	"github.com/oakmound/oak/audio"
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/dlog"
 	"github.com/oakmound/oak/entities"
@@ -20,7 +17,6 @@ type Player struct {
 	stop       bool
 	interactFn func()
 	interactR  render.Renderable
-	footCh     chan audio.ChannelSignal
 }
 
 func (p *Player) Init() event.CID {
@@ -40,7 +36,6 @@ func NewPlayer() *Player {
 			"back":    sh[2][0].Copy(),
 		}), p.Init())
 	var err error
-	p.footCh, err = audio.GetChannel(sfx.SoftSFX, intrange.NewLinear(140, 300), "Footstep.wav")
 	if err != nil {
 		dlog.Error(err)
 	}
