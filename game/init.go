@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/oakmound/oak/dlog"
 	"github.com/oakmound/oak/render"
 )
 
@@ -68,14 +69,15 @@ func Init() {
 			enemySheet2[1][0].Copy(),
 			enemySheet2[1][0].Copy()}, 2),
 	}))
-	images["heartFoe"] = render.NewReverting(render.NewSequence([]render.Modifiable{
-		enemySheet2[0][1].Copy(),
-		enemySheet2[0][1].Copy(),
-		enemySheet2[0][1].Copy(),
-		enemySheet2[1][1].Copy(),
-		enemySheet2[2][1].Copy(),
-		enemySheet2[1][1].Copy(),
-	}, 4))
+	sh, err := render.LoadSheet("images", filepath.Join("16x16", "specialfoes.png"), 16, 16, 0)
+	if err != nil {
+		dlog.Error(err)
+	}
+	an, err := render.NewAnimation(sh, 2, []int{0, 1, 0, 1, 0, 1, 1, 1, 2, 1, 1, 1})
+	if err != nil {
+		dlog.Error(err)
+	}
+	images["heartFoe"] = render.NewReverting(an)
 	images["liverFoe"] = render.NewReverting(render.NewCompound("base", map[string]render.Modifiable{
 		"base": enemySheet2[0][2].Copy(),
 		"attacking": render.NewSequence([]render.Modifiable{
