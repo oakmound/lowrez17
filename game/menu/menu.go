@@ -26,6 +26,14 @@ var (
 )
 
 func StartScene(_ string, levelData interface{}) {
+	if levelData == nil {
+		title := render.LoadSprite(filepath.Join("raw", "titlecard.png"))
+		render.Draw(title, titleLayer)
+		event.GlobalBind(func(int, interface{}) int {
+			title.UnDraw()
+			return event.UnbindSingle
+		}, "KeyUpSpacebar")
+	}
 	initLetters()
 	sfx.InitAudio()
 	sfx.Audios["fantastic_muted"].Play()
