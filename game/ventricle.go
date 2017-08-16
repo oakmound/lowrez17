@@ -44,6 +44,7 @@ func NewVent(x, y int, r render.Renderable) {
 
 	tileRs = append(tileRs, v.cmp)
 	tileSpaces = append(tileSpaces, v.s)
+	tEntities = append(tEntities, v.CID)
 }
 
 func toggleVent(id int, nothing interface{}) int {

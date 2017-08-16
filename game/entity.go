@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
@@ -156,4 +158,17 @@ func (e *Entity) enforceSpeedMax() {
 	if e.Delta.Magnitude() > e.speedMax {
 		e.Delta.Scale(e.speedMax / e.Delta.Magnitude())
 	}
+}
+
+var (
+	tEntities = []event.CID{}
+)
+
+func CleanupEntities() {
+	for _, c := range tEntities {
+		c.UnbindAll()
+		event.DestroyEntity(int(c))
+	}
+	tEntities = []event.CID{}
+	fmt.Println("Entities cleaned up")
 }

@@ -140,6 +140,7 @@ func CleanupActiveOrgan(cleared bool) {
 	stopPlayer()
 	CleanupTiles()
 	CleanupEnemies()
+	CleanupEntities()
 	oak.SetScreen(0, 0)
 	oak.ClearScreenFilter()
 

@@ -1,8 +1,8 @@
 package menu
 
 type LevelStats struct {
-	Score   int     `json:"score"`
-	Time    int     `json:"time"`
+	Score   int64   `json:"score"`
+	Time    int64   `json:"time"`
 	Cleared float64 `json:"cleared"`
 	Level   int     `json:"level"`
 }
@@ -12,7 +12,7 @@ func (ls *LevelStats) CalculateScore() {
 		return
 	}
 	// Fairly basic but sufficient, lower score is better
-	ls.Score = int(float64(ls.Time) * 1 / ls.Cleared)
+	ls.Score = int64(float64(ls.Time) * 1 / ls.Cleared)
 }
 
 type LevelStorage struct {

@@ -179,7 +179,7 @@ func (b *Body) Stats() menu.LevelStats {
 	cleared /= total
 	return menu.LevelStats{
 		Score:   -1,
-		Time:    int(time.Now().Sub(b.startTime).Nanoseconds()),
+		Time:    time.Now().Sub(b.startTime).Nanoseconds(),
 		Cleared: cleared,
 		Level:   b.level,
 	}
