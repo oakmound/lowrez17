@@ -3,8 +3,7 @@ package game
 import (
 	"image/color"
 
-	"strconv"
-
+	"fmt"
 	"github.com/oakmound/lowrez17/game/layers"
 	"github.com/oakmound/lowrez17/game/sfx"
 	"github.com/oakmound/oak"
@@ -26,7 +25,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	Init()
 	sfx.Audios["fantastic"].Play()
 	b := GetBody(inLevel.(string))
-	b.level, _ = strconv.Atoi(inLevel.(string)[5:])
+
 	thisBody = b
 	var firstVein = true
 	var playerStart int
@@ -73,6 +72,10 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	//TODO: remove this before final build
 	oak.AddCommand("complete", func(nothing []string) {
 		thisBody.complete = true
+	})
+
+	oak.AddCommand("level", func(nothing []string) {
+		fmt.Println(thisBody.level)
 	})
 
 	// Place player
