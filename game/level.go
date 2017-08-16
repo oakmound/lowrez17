@@ -26,6 +26,7 @@ func LevelInit(prevScene string, inLevel interface{}) {
 	Init()
 	sfx.Audios["fantastic"].Play()
 	b := GetBody(inLevel.(string))
+	player = nil
 
 	thisBody = b
 	var firstVein = true
