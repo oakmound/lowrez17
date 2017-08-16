@@ -136,7 +136,7 @@ func NewWizard(x, y int, diff float64, summoned bool) *Enemy {
 func NewDasher(x, y int, diff float64, summoned bool) *Enemy {
 	r := images["lungFoe"].Copy()
 	w, h := r.GetDims()
-	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.2, 4, 2, 8, summoned)
+	e := NewEnemy(float64(x*tileDim), float64(y*tileDim), float64(w), float64(h), r, 0.4, 4, 2, 8, summoned)
 	e.Health = 100
 	e.AttackSet = NewAttackSet(intrange.NewLinear(200, 1000),
 		[]float64{1.0, 1.0},
