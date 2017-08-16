@@ -59,7 +59,7 @@ var (
 			Open:      colorrange.NewLinear(color.RGBA{230, 10, 5, 254}, color.RGBA{254, 20, 60, 254}),
 			Blocked:   colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
 			Exit:      colorrange.NewLinear(color.RGBA{230, 100, 5, 254}, color.RGBA{254, 254, 140, 254}),
-			Ventricle: colorrange.NewLinear(color.RGBA{254, 100, 100, 254}, color.RGBA{255, 110, 110, 255}),
+			Ventricle: colorrange.NewLinear(color.RGBA{70, 10, 10, 254}, color.RGBA{80, 15, 15, 255}),
 			LowDamage: colorrange.NewLinear(color.RGBA{110, 10, 5, 254}, color.RGBA{140, 20, 30, 254}),
 		},
 		Lung: {
