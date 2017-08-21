@@ -11,6 +11,7 @@ import (
 	"github.com/oakmound/oak"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 )
 
 type Body struct {
@@ -148,8 +149,8 @@ func spreadInfection(id int, frame interface{}) int {
 	return 0
 }
 
-func FadeBy(f float64) render.InPlaceMod {
-	return render.InPlace(render.Saturate(-float32(f) * 99))
+func FadeBy(f float64) mod.Filter {
+	return mod.InPlace(render.Saturate(-float32(f) * 99))
 }
 
 // Random body ideas:
