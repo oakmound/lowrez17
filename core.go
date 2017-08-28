@@ -33,6 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	oak.SetAspectRatio(1.0)
 	oak.LoadConf("oak.config")
 	oak.AddScene("menu",
 		menu.StartScene,
