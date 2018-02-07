@@ -1,6 +1,6 @@
 package game
 
-import "github.com/oakmound/oak/render"
+import "github.com/oakmound/oak/render/mod"
 
 func NewLiver(x, y float64) Organ {
 	r := images["midliver"].Copy()
@@ -21,7 +21,7 @@ func NewLung(x, y float64) Organ {
 }
 func NewRLung(x, y float64) Organ {
 	r := images["midlung"].Copy()
-	r = r.Modify(render.FlipX).Copy()
+	r = r.Modify(mod.FlipX).Copy()
 	w, h := r.GetDims()
 	return NewBasicOrgan(x, y, float64(w), float64(h), r, Lung)
 }

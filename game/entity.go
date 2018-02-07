@@ -9,7 +9,7 @@ import (
 )
 
 type Entity struct {
-	entities.Interactive
+	*entities.Interactive
 	physics.Mass
 	Dir                 physics.Vector
 	speedMax            float64
@@ -18,15 +18,14 @@ type Entity struct {
 }
 
 func (e *Entity) Init() event.CID {
-	e.CID = event.NextID(e)
-	return e.CID
+	return event.NextID(e)
 }
 
 func NewEntity(x, y, w, h float64, r render.Renderable, id event.CID,
 	friction, mass float64) *Entity {
 	e := new(Entity)
 	e.SetMass(mass)
-	e.Interactive = entities.NewInteractive(x, y, w, h, r, id.Parse(e), friction)
+	e.Interactive = entities.NewInteractive(x, y, w, h, r, nil, id.Parse(e), friction)
 	// Todo: Distinguish these two, when we start tracking hits on walls
 	e.RSpace.Add(collision.Label(Blocked), bounceEntity)
 	e.RSpace.Add(collision.Label(LowDamage), infectBounce(0.0001))
@@ -47,7 +46,7 @@ func (e *Entity) E() *Entity {
 func (e *Entity) Cleanup() {
 	e.UnbindAll()
 	collision.Remove(e.RSpace.Space)
-	e.R.UnDraw()
+	e.R.Undraw()
 	event.DestroyEntity(int(e.CID))
 }
 

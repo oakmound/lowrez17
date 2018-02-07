@@ -150,7 +150,7 @@ func spreadInfection(id int, frame interface{}) int {
 }
 
 func FadeBy(f float64) mod.Filter {
-	return mod.InPlace(render.Saturate(-float32(f) * 99))
+	return mod.Saturate(-float32(f) * 99)
 }
 
 // Random body ideas:

@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 	"github.com/oakmound/oak/timing"
 )
 
@@ -34,7 +35,7 @@ func SwordLeft(label collision.Label) func(p *Entity) {
 					SwordRotateAbout(sword, pos, center, rot2.Angle())
 					time.Sleep(10 * time.Millisecond)
 				}
-				sword.UnDraw()
+				sword.Undraw()
 			}(pos)
 		}
 
@@ -68,7 +69,7 @@ func SwordRight(label collision.Label) func(p *Entity) {
 					SwordRotateAbout(sword, pos, center, rot2.Angle())
 					time.Sleep(10 * time.Millisecond)
 				}
-				sword.UnDraw()
+				sword.Undraw()
 			}(pos)
 		}
 
@@ -86,7 +87,7 @@ func SwordRight(label collision.Label) func(p *Entity) {
 }
 
 func SwordRotateAbout(r *render.Reverting, pos, center physics.Vector, angle float64) {
-	r.RevertAndModify(1, render.Rotate(int(-angle)))
+	r.RevertAndModify(1, mod.Rotate(float32(-angle)))
 	pos2 := pos.Copy().Add(physics.AngleVector(angle).Scale(3))
 	r.SetPos(pos2.X(), pos2.Y())
 	w, h := r.GetDims()
@@ -139,7 +140,7 @@ func SwordDash(label collision.Label) func(p *Entity) {
 				sword.ShiftY(delta.Y())
 				time.Sleep(15 * time.Millisecond)
 			}
-			sword.UnDraw()
+			sword.Undraw()
 		}()
 
 		perpendicular.Scale(-1)

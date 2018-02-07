@@ -8,11 +8,12 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 	"github.com/oakmound/oak/timing"
 )
 
 func RotateAbout(r render.Modifiable, pos, center physics.Vector, angle float64) {
-	r.Modify(render.Rotate(int(-angle)))
+	r.Modify(mod.Rotate(float32(-angle)))
 	r.SetPos(pos.X(), pos.Y())
 	w, h := r.GetDims()
 	if pos.X() < center.X()-1 {
@@ -37,7 +38,7 @@ func WhipLeft(label collision.Label) func(p *Entity) {
 		RotateAbout(whip, pos, center, out.Angle())
 
 		render.Draw(whip, layers.DebugLayer)
-		render.UndrawAfter(whip, 75*time.Millisecond)
+		render.DrawForTime(whip, 75*time.Millisecond)
 
 		for i := 0; i < 25; i++ {
 			pos.Add(out)
@@ -58,7 +59,7 @@ func WhipRight(label collision.Label) func(p *Entity) {
 		RotateAbout(whip, pos, center, out.Angle())
 
 		render.Draw(whip, layers.DebugLayer)
-		render.UndrawAfter(whip, 75*time.Millisecond)
+		render.DrawForTime(whip, 75*time.Millisecond)
 
 		fv := physics.NewForceVector(out.Copy(), 20)
 		for i := 0; i < 25; i++ {
@@ -81,7 +82,7 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 		render.Draw(whip, layers.DebugLayer)
 		go func(whip *render.Reverting) {
 			for i := 0; i < 360; i += 5 {
-				whip.RevertAndModify(1, render.Rotate(-i))
+				whip.RevertAndModify(1, mod.Rotate(float32(-i)))
 				whip.SetPos(basePos.X(), basePos.Y())
 				w, h := whip.GetDims()
 				if i > 90 && i < 270 {
@@ -92,7 +93,7 @@ func WhipTwirl(label collision.Label) func(p *Entity) {
 				}
 				time.Sleep(5 * time.Millisecond)
 			}
-			whip.UnDraw()
+			whip.Undraw()
 		}(whip)
 		for angle := 0; angle < 360; angle += 10 {
 			pos := basePos.Copy().Add(rot.Rotate(10))

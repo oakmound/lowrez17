@@ -11,7 +11,7 @@ import (
 )
 
 type Vent struct {
-	cmp  *render.Compound
+	cmp  *render.Switch
 	s    *collision.Space
 	open bool
 	event.CID
@@ -31,7 +31,7 @@ func NewVent(x, y int, r render.Renderable) {
 	v.Init()
 	m1 := r.(render.Modifiable)
 	m2 := render.NewColorBox(tileDim, tileDim, openVentColor.Poll())
-	v.cmp = render.NewCompound("closed", map[string]render.Modifiable{
+	v.cmp = render.NewSwitch("closed", map[string]render.Modifiable{
 		"closed": m1,
 		"open":   m2,
 	})

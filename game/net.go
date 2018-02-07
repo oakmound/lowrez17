@@ -8,6 +8,7 @@ import (
 	"github.com/oakmound/oak/collision"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 )
 
 func NetLeft(label collision.Label) func(*Entity) {
@@ -19,7 +20,7 @@ func NetLeft(label collision.Label) func(*Entity) {
 		basePos := p.CenterPos()
 		rot := p.Dir.Copy().Rotate(-130)
 
-		net := render.NewReverting(images["net"].Copy().Modify(render.FlipY))
+		net := render.NewReverting(images["net"].Copy().Modify(mod.FlipY))
 		render.Draw(net, layers.DebugLayer)
 		go func(rot physics.Vector) {
 			for a := 0; a < 90; a += 10 {
@@ -28,7 +29,7 @@ func NetLeft(label collision.Label) func(*Entity) {
 				NetRotateAbout(net, pos, basePos, rot.Angle())
 				time.Sleep(20 * time.Millisecond)
 			}
-			net.UnDraw()
+			net.Undraw()
 		}(rot.Copy())
 
 		for a := 0; a < 90; a += 10 {
@@ -57,7 +58,7 @@ func NetRight(label collision.Label) func(*Entity) {
 				NetRotateAbout(net, pos, basePos, rot.Angle())
 				time.Sleep(20 * time.Millisecond)
 			}
-			net.UnDraw()
+			net.Undraw()
 		}(rot.Copy())
 
 		for a := 0; a < 90; a += 10 {
@@ -68,7 +69,7 @@ func NetRight(label collision.Label) func(*Entity) {
 	}
 }
 func NetRotateAbout(r *render.Reverting, pos, center physics.Vector, angle float64) {
-	r.RevertAndModify(1, render.Rotate(int(-angle)))
+	r.RevertAndModify(1, mod.Rotate(float32(-angle)))
 	pos2 := pos.Copy().Add(physics.AngleVector(angle).Scale(3))
 	r.SetPos(pos2.X(), pos2.Y())
 	w, h := r.GetDims()
@@ -96,7 +97,7 @@ func NetTwirl(label collision.Label) func(*Entity) {
 				NetRotateAbout(net, pos, basePos, rot.Angle())
 				time.Sleep(20 * time.Millisecond)
 			}
-			net.UnDraw()
+			net.Undraw()
 		}(basePos.Copy(), rot.Copy())
 
 		go func(basePos, rot physics.Vector) {

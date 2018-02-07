@@ -88,7 +88,7 @@ var (
 		Acid:        addTileSpace(collision.Label(Acid)),
 		Ventricle:   NewVent,
 	}
-	tileUnDraw = map[Tile]bool{
+	tileUndraw = map[Tile]bool{
 		Ventricle: true,
 	}
 	tileRs     = []render.Renderable{}
@@ -102,7 +102,7 @@ func (t Tile) Place(x, y int, typ OrganType) {
 		c = tileColors[typ][Open]
 	}
 	cb := render.NewColorBox(tileDim, tileDim, c.Poll())
-	if !tileUnDraw[t] {
+	if !tileUndraw[t] {
 		cb.SetPos(float64(x)*tileDimf64, float64(y)*tileDimf64)
 		render.Draw(cb, layers.TileLayer)
 		tileRs = append(tileRs, cb)
@@ -121,7 +121,7 @@ func addTileSpace(l collision.Label) func(x, y int, r render.Renderable) {
 //CleanupTiles removes and undraws all tiles
 func CleanupTiles() {
 	for _, r := range tileRs {
-		r.UnDraw()
+		r.Undraw()
 	}
 	collision.Remove(tileSpaces...)
 	tileRs = []render.Renderable{}

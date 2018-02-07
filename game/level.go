@@ -9,6 +9,7 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/scene"
 )
 
 var (
@@ -107,11 +108,11 @@ func LevelLoop() bool {
 	return !thisBody.complete
 }
 
-func LevelEnd() (nextScene string, result *oak.SceneResult) {
+func LevelEnd() (nextScene string, result *scene.Result) {
 	sfx.Audios["fantastic"].Stop()
 	oak.ClearScreenFilter()
-	return "menu", &oak.SceneResult{
+	return "menu", &scene.Result{
 		NextSceneInput: thisBody.Stats(),
-		Transition:     oak.TransitionFade(.03, 100),
+		Transition:     scene.Fade(.03, 100),
 	}
 }

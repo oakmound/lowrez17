@@ -12,7 +12,7 @@ import (
 
 //A BodyTraveler is an entity that travels along the veins of a body on the body layer
 type BodyTraveler struct {
-	entities.Doodad
+	*entities.Doodad
 	targetPos      physics.Vector
 	travelSpeed    physics.Vector
 	moving, active bool
@@ -20,8 +20,7 @@ type BodyTraveler struct {
 
 //Init obtains a CID for an entity
 func (bt *BodyTraveler) Init() event.CID {
-	bt.CID = event.NextID(bt)
-	return bt.CID
+	return event.NextID(bt)
 }
 
 //NewBodyTraveler creates a BodyTraveler, binding the appropriate functions to a Sprite

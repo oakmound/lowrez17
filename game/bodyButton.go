@@ -58,7 +58,7 @@ func NewBodyButton(w, h float64) *BodyButton {
 
 func tryHighlightBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
-	me := mouse.LastMouseEvent
+	me := mouse.LastEvent
 	hits := mouse.Hits(me.ToSpace())
 	for _, h := range hits {
 		if h == bb.Space {
@@ -71,7 +71,7 @@ func tryHighlightBB(id int, nothing interface{}) int {
 func highlightBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
 	if bb.IsTravelerAdjacent() {
-		bb.highlight.SetPos(bb.GetX()-1, bb.GetY()-1)
+		bb.highlight.SetPos(bb.X()-1, bb.Y()-1)
 		render.Draw(bb.highlight, layers.HighlightLayer)
 	}
 	return 0
@@ -79,7 +79,7 @@ func highlightBB(id int, nothing interface{}) int {
 
 func unhighlightBB(id int, nothing interface{}) int {
 	bb := event.GetEntity(id).(*BodyButton)
-	bb.highlight.UnDraw()
+	bb.highlight.Undraw()
 	return 0
 }
 

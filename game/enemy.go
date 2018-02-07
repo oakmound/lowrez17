@@ -14,6 +14,7 @@ import (
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 )
 
 var (
@@ -33,20 +34,19 @@ type Enemy struct {
 }
 
 func (e *Enemy) Init() event.CID {
-	e.CID = event.NextID(e)
-	return e.CID
+	return event.NextID(e)
 }
 
 func (e *Enemy) Destroy() {
 	if !e.summoned {
 		go func() { enemyCh <- true }()
 	}
-	e.minimapR.UnDraw()
+	e.minimapR.Undraw()
 	e.Cleanup()
 }
 
 func (e *Enemy) Cleanup() {
-	e.minimapR.UnDraw()
+	e.minimapR.Undraw()
 	e.Entity.Cleanup()
 }
 
@@ -150,7 +150,7 @@ func flash(ent *Enemy) {
 	if !ent.flashing {
 		ent.flashing = true
 		if r, ok := ent.R.(*render.Reverting); ok {
-			r.Modify(render.Brighten(50))
+			r.Filter(mod.Brighten(50))
 			ent.flashStop = time.Now().Add(50 * time.Millisecond)
 		}
 	} else {

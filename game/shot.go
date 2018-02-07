@@ -18,8 +18,7 @@ type Shot struct {
 }
 
 func (s *Shot) Init() event.CID {
-	s.CID = event.NextID(s)
-	return s.CID
+	return event.NextID(s)
 }
 
 func MakeShot(pos physics.Vector, dir physics.Vector, speed, accel float64, w int, c color.Color,

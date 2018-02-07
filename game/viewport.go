@@ -10,7 +10,8 @@ import (
 
 func viewportFollow(id int, frame interface{}) int {
 	e := event.GetEntity(id).(HasE).E()
-	viewportGoalPos := e.CenterPos().Copy().Add(mouse.LastMouseEvent.ToVector().Sub(physics.NewVector(32, 32)))
+	v := physics.NewVector(mouse.LastEvent.X(), mouse.LastEvent.Y())
+	viewportGoalPos := e.CenterPos().Copy().Add(v.Sub(physics.NewVector(32, 32)))
 	viewportGoalPos = viewportGoalPos.Sub(physics.NewVector(float64(oak.ScreenWidth/2), float64(oak.ScreenHeight/2)))
 	delta := viewportGoalPos.Sub(physics.NewVector(float64(oak.ViewPos.X), float64(oak.ViewPos.Y)))
 

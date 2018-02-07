@@ -9,10 +9,11 @@ import (
 	"github.com/oakmound/oak/entities"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 )
 
 type Player struct {
-	entities.Reactive
+	*entities.Reactive
 	collision.Phase
 	stop       bool
 	interactFn func()
@@ -20,21 +21,21 @@ type Player struct {
 }
 
 func (p *Player) Init() event.CID {
-	p.CID = event.NextID(p)
-	return p.CID
+	return event.NextID(p)
 }
 
 func NewPlayer() *Player {
 	p := new(Player)
-	sh := render.GetSheet(filepath.Join("4x16", "topplayer.png"))
-	p.Reactive = entities.NewReactive(5, 5, 4, 16, render.NewCompound(
+	shtt, _ := render.GetSheet(filepath.Join("4x16", "topplayer.png"))
+	sh := shtt.ToSprites()
+	p.Reactive = entities.NewReactive(5, 5, 4, 16, render.NewSwitch(
 		"forward",
 		map[string]render.Modifiable{
 			"forward": sh[0][0].Copy(),
 			"right":   sh[1][0].Copy(),
-			"left":    sh[1][0].Copy().Modify(render.FlipX),
+			"left":    sh[1][0].Copy().Modify(mod.FlipX),
 			"back":    sh[2][0].Copy(),
-		}), p.Init())
+		}), nil, p.Init())
 	var err error
 	if err != nil {
 		dlog.Error(err)
@@ -68,19 +69,19 @@ func playerWalk(id int, nothing interface{}) int {
 	shiftX := 0.0
 	shiftY := 0.0
 	if oak.IsDown("W") {
-		p.R.(*render.Compound).Set("back")
+		p.R.(*render.Switch).Set("back")
 		//p.footCh <- audio.NewPosSignal(0, p.X(), p.Y())
 		shiftY--
 	} else if oak.IsDown("S") {
-		p.R.(*render.Compound).Set("forward")
+		p.R.(*render.Switch).Set("forward")
 		//p.footCh <- audio.NewPosSignal(0, p.X(), p.Y())
 		shiftY++
 	} else if oak.IsDown("A") {
-		p.R.(*render.Compound).Set("left")
+		p.R.(*render.Switch).Set("left")
 		//p.footCh <- audio.NewPosSignal(0, p.X(), p.Y())
 		shiftX--
 	} else if oak.IsDown("D") {
-		p.R.(*render.Compound).Set("right")
+		p.R.(*render.Switch).Set("right")
 		//p.footCh <- audio.NewPosSignal(0, p.X(), p.Y())
 		shiftX++
 	}

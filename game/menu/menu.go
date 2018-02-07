@@ -15,6 +15,7 @@ import (
 	"github.com/oakmound/oak/dlog"
 	"github.com/oakmound/oak/event"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/scene"
 )
 
 var (
@@ -27,10 +28,10 @@ var (
 
 func StartScene(_ string, levelData interface{}) {
 	if levelData == nil {
-		title := render.LoadSprite(filepath.Join("raw", "titlecard.png"))
+		title, _ := render.GetSprite(filepath.Join("raw", "titlecard.png"))
 		render.Draw(title, titleLayer)
 		event.GlobalBind(func(int, interface{}) int {
-			title.UnDraw()
+			title.Undraw()
 			return event.UnbindSingle
 		}, "KeyUpSpacebar")
 	}
@@ -146,8 +147,9 @@ func StartScene(_ string, levelData interface{}) {
 	// door back
 	collision.Add(collision.NewLabeledSpace(26+64, 60, 10, 2, doorBack))
 	// Background
-	render.Draw(render.LoadSprite(filepath.Join("raw", "toplayer.png")), backgroundLayer)
-	morgue := render.LoadSprite(filepath.Join("raw", "morgue.png"))
+	r, _ := render.GetSprite(filepath.Join("raw", "toplayer.png"))
+	render.Draw(r, backgroundLayer)
+	morgue, _ := render.GetSprite(filepath.Join("raw", "morgue.png"))
 	morgue.SetPos(64, 0)
 	render.Draw(morgue, backgroundLayer)
 }
@@ -156,7 +158,7 @@ func LoopScene() bool {
 	return sceneContinue
 }
 
-func EndScene() (string, *oak.SceneResult) {
+func EndScene() (string, *scene.Result) {
 	sfx.Audios["fantastic_muted"].Stop()
 	go func() {
 		sfx.Audios["Shrink"].Play()
@@ -169,9 +171,9 @@ func EndScene() (string, *oak.SceneResult) {
 		sfx.Audios["Shrink"].Play()
 	}()
 	sceneContinue = true
-	return nextScene, &oak.SceneResult{
+	return nextScene, &scene.Result{
 		NextSceneInput: levelData,
-		Transition:     oak.TransitionZoom(.51, .67, 50, .0045),
+		Transition:     scene.Zoom(.51, .67, 50, .0045),
 	}
 }
 
@@ -188,7 +190,8 @@ func placeBody(level int) {
 	case 4:
 		y = 3
 	}
-	sh := render.GetSheet(filepath.Join("32x16", "topbodies.png"))
+	shtt, _ := render.GetSheet(filepath.Join("32x16", "topbodies.png"))
+	sh := shtt.ToSprites()
 	s := sh[0][y].Copy()
 	s.SetPos(15, 33)
 	render.Draw(s, entityLayer)
@@ -198,7 +201,8 @@ var letters = map[rune]render.Modifiable{}
 
 func initLetters() {
 	frameRate := 1.5
-	sh := render.GetSheet(filepath.Join("5x7", "letters.png"))
+	shtt, _ := render.GetSheet(filepath.Join("5x7", "letters.png"))
+	sh := shtt.ToSprites()
 	runeMap := map[rune]int{
 		'e': 0,
 		'w': 1,
@@ -207,7 +211,7 @@ func initLetters() {
 		'd': 4,
 	}
 	for r, col := range runeMap {
-		letters[r] = render.NewSequence([]render.Modifiable{sh[0][col], sh[1][col]}, frameRate)
+		letters[r] = render.NewSequence(frameRate, sh[0][col], sh[1][col])
 	}
 }
 
@@ -238,7 +242,7 @@ func triggerInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
 	switch label.(collision.Label) {
 	case tutorial:
-		tutorialR = render.LoadSprite(filepath.Join("raw", "tutorial.png"))
+		tutorialR, _ = render.GetSprite(filepath.Join("raw", "tutorial.png"))
 		render.Draw(tutorialR, titleLayer)
 	case level1:
 		levelData = "level1"
@@ -267,7 +271,7 @@ func triggerInteractive(id int, label interface{}) int {
 		w.SetPos(0, -7)
 		a.SetPos(-5, 0)
 		d.SetPos(5, 0)
-		p.interactR = render.NewComposite([]render.Modifiable{w, a, s, d})
+		p.interactR = render.NewCompositeM(w, a, s, d)
 		p.interactR.SetPos(p.X()-1, p.Y()-8)
 		render.Draw(p.interactR, uiLayer)
 	case door:
@@ -301,11 +305,11 @@ func unbindInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
 	if label.(collision.Label) != blocking {
 		if tutorialR != nil && tutorialR.GetLayer() != render.Undraw {
-			tutorialR.UnDraw()
+			tutorialR.Undraw()
 		}
 		p.Vector = p.Vector.Detach()
 		p.interactFn = nil
-		p.interactR.UnDraw()
+		p.interactR.Undraw()
 		levelData = ""
 	}
 	return 0

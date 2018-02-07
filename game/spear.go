@@ -35,7 +35,7 @@ func SpearJab(label collision.Label) func(*Entity) {
 		collision.Add(stick)
 		go timing.DoAfter(200*time.Millisecond, func() {
 			collision.Remove(stick)
-			spear.UnDraw()
+			spear.Undraw()
 		})
 	}
 }
@@ -59,7 +59,7 @@ func SpearThrust(label collision.Label) func(*Entity) {
 		collision.Add(stick)
 		go timing.DoAfter(500*time.Millisecond, func() {
 			collision.Remove(stick)
-			spear.UnDraw()
+			spear.Undraw()
 		})
 	}
 }
@@ -76,7 +76,7 @@ func SpearDash(label collision.Label) func(*Entity) {
 		spear := images["spear"].Copy()
 		RotateAbout(spear, p.CenterPos().Add(p.Dir.Copy().Scale(5)), p.CenterPos(), p.Dir.Angle())
 		render.Draw(spear, layers.DebugLayer)
-		render.UndrawAfter(spear, 75*time.Millisecond)
+		render.DrawForTime(spear, 75*time.Millisecond)
 
 		// More boxes -- more damage
 		for i := 0; i < spearDamage*3; i++ {

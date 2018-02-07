@@ -35,11 +35,11 @@ func main() {
 	}
 	oak.SetAspectRatio(1.0)
 	oak.LoadConf("oak.config")
-	oak.AddScene("menu",
+	oak.Add("menu",
 		menu.StartScene,
 		menu.LoopScene,
 		menu.EndScene)
-	oak.AddScene("level",
+	oak.Add("level",
 		game.LevelInit,
 		game.LevelLoop,
 		game.LevelEnd)

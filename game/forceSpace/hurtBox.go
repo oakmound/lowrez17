@@ -26,7 +26,7 @@ func NewHurtBox(x, y, w, h float64, duration time.Duration, l collision.Label, f
 		render.Draw(cb, layers.DebugLayer)
 		go timing.DoAfter(duration, func() {
 			collision.Remove(hb.Space)
-			cb.UnDraw()
+			cb.Undraw()
 		})
 	} else {
 		go timing.DoAfter(duration, func() {

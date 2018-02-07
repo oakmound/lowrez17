@@ -13,6 +13,7 @@ import (
 	"github.com/oakmound/oak/mouse"
 	"github.com/oakmound/oak/physics"
 	"github.com/oakmound/oak/render"
+	"github.com/oakmound/oak/render/mod"
 	"github.com/oakmound/oak/timing"
 )
 
@@ -24,14 +25,15 @@ type Player struct {
 }
 
 func (p *Player) Init() event.CID {
-	p.CID = event.NextID(p)
-	return p.CID
+	return event.NextID(p)
 }
 
 func NewPlayer() *Player {
 	if player == nil {
 		e := new(Player)
-		s := render.GetSheet(filepath.Join("8x8", "lowerlevelplayer.png"))[1][0].Copy().Modify(render.FlipX)
+		shtt, _ := render.GetSheet(filepath.Join("8x8", "lowerlevelplayer.png"))
+		sh := shtt.ToSprites()
+		s := sh[1][0].Copy().Modify(mod.FlipX)
 		r := render.NewReverting(s)
 		e.Entity = *NewEntity(0, 0, 8, 8, r, e.Init(), .8, 20)
 		e.Speed = physics.NewVector(.3, .3)
@@ -75,7 +77,7 @@ func stopPlayer() {
 	player.SetPos(-1000, -1000)
 	collision.Remove(player.RSpace.Space)
 	player.UnbindAll()
-	player.R.UnDraw()
+	player.R.Undraw()
 }
 
 func leaveOrgan(_, _ *collision.Space) {
@@ -110,12 +112,12 @@ func playerAttack(id int, mouseEvent interface{}) int {
 func playerMove(id int, frame interface{}) int {
 	p := event.GetEntity(id).(*Player)
 	// Calculate direction based on mouse position
-	me := mouse.LastMouseEvent
+	me := mouse.LastEvent
 	// Oak viewPos would be great as a vector
 	center := p.CenterPos().Sub(oak.ViewVector())
-	p.Dir = physics.NewVector(float64(me.X), float64(me.Y)).Sub(center).Normalize()
+	p.Dir = physics.NewVector(me.X(), me.Y()).Sub(center).Normalize()
 	p.R.(*render.Reverting).RevertAndModify(1,
-		render.RotateInterpolated(int(-p.Dir.Angle()), gift.NearestNeighborInterpolation))
+		mod.RotateInterpolated(float32(-p.Dir.Angle()), gift.NearestNeighborInterpolation))
 
 	if oak.IsDown("W") {
 		p.moveForward()
