@@ -22,15 +22,16 @@ var (
 )
 
 type Enemy struct {
+	minimapR render.Renderable
 	Entity
-	Health int
 	AttackSet
 	MoveSet
-	summoned   bool
-	minimapR   render.Renderable
-	attackAnim bool
-	flashing   bool
-	flashStop  time.Time
+	flashStop    time.Time
+	Health       int
+	offMapFrames int
+	summoned     bool
+	attackAnim   bool
+	flashing     bool
 }
 
 func (e *Enemy) Init() event.CID {
@@ -79,10 +80,20 @@ func enemyEnter(id int, frame interface{}) int {
 		e.Destroy()
 	}
 	e.Dir = player.Vec().Copy().Sub(e.CenterPos()).Normalize()
+	vc := e.Vec()
+	minX, minY, maxX, maxY, ok := oak.GetViewportBounds()
+	if ok && (vc.X() < float64(minX) || vc.Y() < float64(minY) || vc.X() > float64(maxX) || vc.X() > float64(maxY)) {
+		e.offMapFrames++
+		if e.offMapFrames > 60 {
+			e.Destroy()
+		}
+	} else {
+		e.offMapFrames = 0
+	}
 
 	// Minimap logic
 	v := oak.ViewVector()
-	delta := e.Vec().Copy().Sub(v)
+	delta := vc.Copy().Sub(v)
 	if delta.X() > 0 {
 		if delta.Y() > 0 {
 			if delta.X() < 64 {
