@@ -303,7 +303,8 @@ func setLevelInteracts(p *Player) {
 
 func unbindInteractive(id int, label interface{}) int {
 	p := event.CID(id).E().(*Player)
-	if label.(collision.Label) != blocking {
+	lbl := label.(collision.Label)
+	if lbl != blocking && lbl != collision.NilLabel {
 		if tutorialR != nil && tutorialR.GetLayer() != render.Undraw {
 			tutorialR.Undraw()
 		}

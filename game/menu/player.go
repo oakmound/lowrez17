@@ -41,7 +41,7 @@ func NewPlayer() *Player {
 		dlog.Error(err)
 	}
 	collision.Add(p.RSpace.Space)
-	render.Draw(p.R, entityLayer)
+	render.Draw(p.R, entityLayer+1)
 	p.RSpace.Add(blocking, playerStop)
 	collision.PhaseCollision(p.RSpace.Space)
 	p.Bind(triggerInteractive, "CollisionStart")
